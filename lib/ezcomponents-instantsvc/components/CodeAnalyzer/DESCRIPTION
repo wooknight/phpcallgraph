@@ -1,0 +1,19 @@
+The CodeAnalyzer component contains classes to gather information about single
+source files or a source tree.
+This information are available for further processing as array structure.
+Analyzed files aren't included in current process space. Instead they are
+processed in a distinct process space.
+
+To prevent execution of unsave code a custom php.ini is provided to the
+sandboxed process disabling all unnecessary functions.
+
+Furthermore, it provides a class loader which checks files for syntax errors and
+includes all valid files.
+This is used to get all necessary class/function definitions into a process
+space to be able to reflect on them.
+
+Important: The PHP5 interpreter has to be available via a 'php' call on the command line.
+           On windows it has to be configured properly and added to the PATH var.
+
+           The ezcBase Class MUST be available via
+           include_once 'ezc/Base/base.php'; or include_once 'Base/base.php';

@@ -1,0 +1,5 @@
+This is some sample text explaining how to define a function
+
+function testfunction_fileload() {
+    return;
+}
