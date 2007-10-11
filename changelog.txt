@@ -1,4 +1,4 @@
-0.6.3 - 5 October 2007
+0.6.3 - 11 October 2007
 ======================
 - fixed Bug #1792171: bad path to php executable
 - basic PEAR classes included (no PEAR installation required)
