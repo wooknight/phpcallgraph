@@ -38,7 +38,7 @@ require_once 'drivers/TextDriver.php';
  */
 class PHPCallGraph {
 
-    const VERSION = '0.6.3';
+    const VERSION = '0.6.4';
 
     protected $internalFunctions;
     protected $internalKeywords;

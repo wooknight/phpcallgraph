@@ -187,10 +187,8 @@ class PHPCallGraphCli {
                 echo $phpcg;
             } else {
                 $phpcg->save($outputfileOption->value);
-                file_put_contents($outputfileOption->value, $driver);
             }
         }
     }
 }
 ?>
-

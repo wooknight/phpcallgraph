@@ -1,5 +1,9 @@
+0.6.4 - 
+========
+- redundant file_put_contents() removed in commandline front end
+
 0.6.3 - 11 October 2007
-======================
+=======================
 - fixed Bug #1792171: bad path to php executable
 - basic PEAR classes included (no PEAR installation required)
 - batch script improved to ease usage under windows
