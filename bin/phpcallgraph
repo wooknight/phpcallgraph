@@ -46,4 +46,3 @@ require_once 'PHPCallGraphCli.php';
 $cli = new PHPCallGraphCli();
 $cli->run();
 ?>
-
