@@ -25,6 +25,10 @@ Usage:
      Go to folder bin and run phpcallgraph.
      The generator requires PHP5.
 
+     In order to generate output formats other that 'txt' or 'cga'
+     the Graphviz toolkit which can be downloaded at
+     http://www.graphviz.org/ is required.
+
      bin/phpcallgraph [-f <string>] [-o <string>] [-r] [-d <string>] [-n] [-p] [-v] [-h] [--] <string:sources> [<string:sources> ...]
 
 Arguments:
