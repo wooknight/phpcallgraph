@@ -205,10 +205,13 @@ class PHPCallGraph {
         }
         //*/
 
+        //TODO: implement a higher level API for working with PHP parser tokens (e.g. TokenIterator)
         foreach ($tokens as $i => $token) {
             //TODO: obtain method signature directly from the source file
-            $lineNumber+= substr_count($token[1], "\n");
-            
+            if (is_array($token)) {
+                $lineNumber+= substr_count($token[1], "\n");
+            }
+
             /*
             if (count($token) == 3) {
                 echo "\t", token_name($token[0]), "\n";
@@ -298,13 +301,13 @@ class PHPCallGraph {
                             }
                         } elseif (
                             (
-                                $peviousPreviousToken[1] == '$this'
+                                isset($peviousPreviousToken[1]) and $peviousPreviousToken[1] == '$this'
                                 and $peviousToken[0]     == T_OBJECT_OPERATOR
                                 and in_array($token[1], $methodNames)
                             )
                             or
                             (
-                                $peviousPreviousToken[1] == 'self'
+                                isset($peviousPreviousToken[1]) and $peviousPreviousToken[1] == 'self'
                                 and $peviousToken[0]     == T_DOUBLE_COLON
                                 and in_array($token[1], $methodNames)
                             )
