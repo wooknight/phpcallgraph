@@ -1,6 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * Call graph generation class.
  *
@@ -125,7 +123,11 @@ class PHPCallGraph {
     }
 
     public function analyseCodeSummary() {
-        //TODO: procedural code
+        //TODO: analyze code in the global scope
+
+        //TODO: analyze functions
+
+        // analyze classes
         if (!empty($this->codeSummary['classes'])) {
             $this->buildLookupTables();
             foreach ($this->codeSummary['classes'] as $className => $class) {
