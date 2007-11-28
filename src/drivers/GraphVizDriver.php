@@ -25,6 +25,9 @@
  * @license    http://www.gnu.org/licenses/gpl.txt GNU General Public License
  */
 
+// reduce warnings because of PEAR dependency
+error_reporting(E_ALL ^ E_NOTICE);
+
 require_once 'CallgraphDriver.php';
 require_once 'Image/GraphViz.php';
 
@@ -34,6 +37,7 @@ require_once 'Image/GraphViz.php';
 class GraphVizDriver implements CallgraphDriver {
 
     protected $outputFormat;
+    protected $dotCommand;
     protected $useColor = true;
     protected $graph;
     protected $currentCaller = '';
@@ -42,22 +46,54 @@ class GraphVizDriver implements CallgraphDriver {
     /**
      * @return CallgraphDriver
      */
-    public function __construct($dotCommand = 'dot', $outputFormat = 'png') {
+    public function __construct($outputFormat = 'png', $dotCommand = 'dot') {
+        $this->initializeNewGraph();
+        $this->setDotCommand($dotCommand);
         $this->setOutputFormat($outputFormat);
-        $this->graph = new Image_GraphViz();
-        $this->graph->dotCommand = $dotCommand;
         $functions = get_defined_functions();
         $this->internalFunctions = $functions['internal'];
+        
     }
 
+    /**
+     * @return void
+     */
+    public function reset() {
+        $this->initializeNewGraph();
+    }
+
+    /**
+     * @return void
+     */
+    protected function initializeNewGraph() {
+        $this->graph = new Image_GraphViz();
+        $this->graph->dotCommand = $this->dotCommand;
+    }
+
+    /**
+     * Sets path to GraphViz/dot command
+     * @param string $dotCommand Path to GraphViz/dot command
+     * @return void
+     */
     public function setDotCommand($dotCommand = 'dot') {
+        $this->dotCommand = $dotCommand;
         $this->graph->dotCommand = $dotCommand;
     }
 
+    /**
+     * Sets output format
+     * @param string $outputFormat One of the output formats supported by GraphViz/dot
+     * @return void
+     */
     public function setOutputFormat($outputFormat = 'png') {
         $this->outputFormat = $outputFormat;
     }
 
+    /**
+     * Enables or disables the use of color
+     * @param boolean $boolean True if color should be used
+     * @return void
+     */
     public function setUseColor($boolean = true) {
         $this->useColor = $boolean;
     }
@@ -137,6 +173,5 @@ class GraphVizDriver implements CallgraphDriver {
     public function __toString() {
         return $this->graph->fetch($this->outputFormat);
     }
-
 }
 ?>
