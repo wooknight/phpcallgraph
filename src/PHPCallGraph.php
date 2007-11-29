@@ -123,13 +123,29 @@ class PHPCallGraph {
     }
 
     public function analyseCodeSummary() {
-        //TODO: analyze code in the global scope
+        $this->buildLookupTables();
 
-        //TODO: analyze functions
+        //TODO: analyze code in the global scope
+        // currently a workarround is to manually wrap such code
+        // in a dummy function called dummyFunctionForFile_filename_php()
+
+        // analyze functions
+        if (!empty($this->codeSummary['functions'])) {
+            foreach ($this->codeSummary['functions'] as $functionName => $function) {
+                $this->parseMethodBody(
+                        '-',
+                        $functionName,
+                        array(),
+                        array(),
+                        $function['file'],
+                        $function['startLine'],
+                        $function['endLine']
+                        );
+            }
+        }
 
         // analyze classes
         if (!empty($this->codeSummary['classes'])) {
-            $this->buildLookupTables();
             foreach ($this->codeSummary['classes'] as $className => $class) {
                 //echo $className, "\n";
                 if (!empty($class['methods'])) {
@@ -174,16 +190,34 @@ class PHPCallGraph {
         }
     }
 
+    /**
+     * @param string  $className
+     * @param string  $methodName
+     * @param array   $propertyNames
+     * @param array   $methodNames
+     * @param string  $file
+     * @param integer $startLine
+     * @param integer $endLine
+     */
     public function parseMethodBody(
         $className,
         $methodName,
-        array $propertyNames,
-        array $methodNames,
+        Array $propertyNames,
+        Array $methodNames,
         $file,
         $startLine,
         $endLine
     ) {
-        $callerName = $className . '::' . $methodName . $this->generateParametersForSignature($this->codeSummary['classes'][$className]['methods'][$methodName]['params']);
+        if ($className == '-') { // we are analyzing a function not a method
+            if (substr($methodName, 0, strlen('dummyFunctionForFile_')) == 'dummyFunctionForFile_') {
+                // the function has been introduced manually to encapsulate code in the global scope
+                $callerName = str_replace('_', '.', substr($methodName, strlen('dummyFunctionForFile_'))) . '(File)';
+            } else {
+                $callerName = $methodName . $this->generateParametersForSignature($this->codeSummary['functions'][$methodName]['params']);
+            }
+        } else {
+            $callerName = $className . '::' . $methodName . $this->generateParametersForSignature($this->codeSummary['classes'][$className]['methods'][$methodName]['params']);
+        }
 
         $offset = $startLine - 1;
         $length = $endLine - $startLine + 1;
