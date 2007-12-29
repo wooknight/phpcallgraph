@@ -1,5 +1,14 @@
-0.6.4 - 
-========
+0.6.4 - 29 December 2007
+========================
+- Analysis for functions implemented
+- Workarround for analyzing code in the global scope (not)
+- Documentation improved
+- New methods reset() and initializeNewGraph() in class GraphVizDriver
+- Constructor parameters of GraphVizDriver reordered
+- New class for displaying example
+- Include path reordered to leverage an existing PEAR installation
+- Fixed some E_STRICT notices
+- Error reporting in GraphVizDriver reduced because of PEAR dependency
 - redundant file_put_contents() removed in commandline front end
 
 0.6.3 - 11 October 2007
