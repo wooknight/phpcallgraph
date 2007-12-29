@@ -5,7 +5,6 @@
 - Documentation improved
 - New methods reset() and initializeNewGraph() in class GraphVizDriver
 - Constructor parameters of GraphVizDriver reordered
-- New class for displaying example
 - Include path reordered to leverage an existing PEAR installation
 - Fixed some E_STRICT notices
 - Error reporting in GraphVizDriver reduced because of PEAR dependency
