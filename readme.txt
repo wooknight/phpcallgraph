@@ -54,6 +54,14 @@ Options:
 
         phpcallgraph -f cga -o testfiles.str test/testfiles/
 
+Analysis of code in the global scope:
+    Code in the global scope (outside any functions or methods) can be analyzed
+    with the help of a little workaround: Such code can be manually wrapped in
+    a dummy function called dummyFunctionForFile_filename_php() which will then
+    be recognized by PHPCallGraph. Of course this is not very elegant but
+    currently the only feasible way due to some conceptual restrictions
+    resulting from the utilization of the InstantSVC CodeAnalyzer.
+
 Examples:
     bin/phpcallgraph -n -f png -o PHPCallGraph.png src/PHPCallGraph.php
     bin/phpcallgraph -f png -o phpcallgraph-library.png src/drivers/ src/PHPCallGraph.php
