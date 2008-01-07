@@ -147,7 +147,11 @@ class PHPCallGraph {
         // analyze classes
         if (!empty($this->codeSummary['classes'])) {
             foreach ($this->codeSummary['classes'] as $className => $class) {
-                //echo $className, "\n";
+                /*
+                echo $className, "\n";
+                var_export($class);
+                echo "\n\n";
+                //*/
                 if (!empty($class['methods'])) {
                     $propertyNames = array_keys($class['properties']);
                     $methodNames   = array_keys($class['methods']);
@@ -332,6 +336,8 @@ class PHPCallGraph {
                                 }
                                 $calleeFile = $this->codeSummary['classes'][$calleeClass]['file'];
                             } else {
+                                // TODO: decide how this case should be handled (could be a PEAR class or a class of a PHP extension, e.g. GTK)
+                                //if ($this->showInternalFunctions)
                                 $calleeName = "$calleeClass::__construct()";
                                 $calleeFile = '';
                             }
