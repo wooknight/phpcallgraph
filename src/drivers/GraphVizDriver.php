@@ -66,7 +66,14 @@ class GraphVizDriver implements CallgraphDriver {
      * @return void
      */
     protected function initializeNewGraph() {
-        $this->graph = new Image_GraphViz();
+        $this->graph = new Image_GraphViz(
+            true,
+            array(
+                'fontname'  => 'Verdana',
+                'fontsize'  => 12.0,
+                //'fontcolor' => 'gray5',
+            )
+        );
         $this->graph->dotCommand = $this->dotCommand;
     }
 
@@ -127,7 +134,7 @@ class GraphVizDriver implements CallgraphDriver {
         $nameParts = explode('::', $name);
         $cluster = 'default';
         $label = $name;
-        $color = 'lightblue2';
+        $color = 'lavender'; //lightblue2, lightsteelblue2, azure2, slategray2
         if (count($nameParts) == 2) {
             if (empty($nameParts[0])) {
                 $cluster = 'class is unknown';
@@ -143,9 +150,14 @@ class GraphVizDriver implements CallgraphDriver {
         $this->graph->addNode(
             $name,
             array(
+                'fontname'  => 'Verdana',
+                'fontsize'  => 12.0,
+                //'fontcolor' => 'gray5',
                 'label' => $label,
-                'style' => ($this->useColor ? 'filled' : ''),
-                'color' => $color,
+                //'style' => 'rounded' . ($this->useColor ? ',filled' : ''), // produces errors in rendering
+                'style' => ($this->useColor ? 'filled' : 'rounded'),
+                'color' => ($this->useColor ? $color : 'black'),
+                'shape' => ($this->useColor ? 'ellipse' : 'rectangle'),
                 ),
             $cluster
             );
@@ -154,8 +166,9 @@ class GraphVizDriver implements CallgraphDriver {
             $cluster,
             $cluster,
             array(
-//                'style' => ($this->useColor ? 'filled' : ''),
-//                'color' => 'slateblue',
+//                'style'   => ($this->useColor ? 'filled' : ''),
+                'color'   => 'gray20',
+//                'bgcolor' => '',
                 )
             );
         //*/

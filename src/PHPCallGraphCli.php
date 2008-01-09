@@ -130,6 +130,8 @@ class PHPCallGraphCli {
                 true
                 );
 
+        //TODO: provide option to disable color
+
         try {
             $input->process();
         } catch (ezcConsoleOptionException $e) {
