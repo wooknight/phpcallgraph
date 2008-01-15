@@ -23,7 +23,7 @@ PHPCallGraph
 
 Usage:
      Go to folder bin and run phpcallgraph.
-     The generator requires PHP5.
+     The generator requires at least PHP 5.2.
 
      In order to generate output formats other that 'txt' or 'cga'
      the Graphviz toolkit which can be downloaded at
