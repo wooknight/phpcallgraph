@@ -135,17 +135,22 @@ class GraphVizDriver implements CallgraphDriver {
         $cluster = 'default';
         $label = $name;
         $color = 'lavender'; //lightblue2, lightsteelblue2, azure2, slategray2
-        if (count($nameParts) == 2) {
+        if (count($nameParts) == 2) { // method call
             if (empty($nameParts[0])) {
                 $cluster = 'class is unknown';
             } else {
                 $cluster = $nameParts[0];
             }
+            // obtain method name
             $label = $nameParts[1];
         }
-        $label = substr($label, 0, strpos($label, '(')); 
-        if (in_array($label, $this->internalFunctions)) {
-            $cluster = 'internal PHP functions';
+        // remove parameter list
+        $label = substr($label, 0, strpos($label, '('));
+
+        if (count($nameParts) == 1) { // function call
+            if (in_array($label, $this->internalFunctions)) { // call to internal function
+                $cluster = 'internal PHP functions';
+            }
         }
         $this->graph->addNode(
             $name,
