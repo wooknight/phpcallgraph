@@ -48,6 +48,11 @@ class PHPCallGraph {
     protected $methodLookupTable;
     protected $propertyLookupTable;
 
+    /**
+     * var string[]
+     */
+    protected $ignoreList = array();
+
     public function __construct(CallgraphDriver $driver = null) {
         if ($driver != null) {
             $this->driver = $driver;
@@ -63,6 +68,9 @@ class PHPCallGraph {
             'isset', 'list', 'print', 'require', 'require_once', 'return',
             'switch', 'unset', 'while', 'catch', 'or', 'and', 'xor', 'new Exception');
         $this->constants = array_keys(get_defined_constants());
+
+        //TODO: provide setter for this
+        //$this->ignoreList = array('PHPCallGraph::setDriver', 'PHPCallGraph::__construct', 'PHPCallGraph::setShowExternalCalls', 'PHPCallGraph::setShowInternalFunctions', 'PHPCallGraph::save', 'PHPCallGraph::__toString');
     }
 
     public function setDriver(CallgraphDriver $driver = null) {
@@ -159,15 +167,14 @@ class PHPCallGraph {
                     //var_export($methodNames);
                     foreach ($class['methods'] as $methodName => $method) {
                         $this->parseMethodBody(
-                                $className,
-                                $methodName,
-                                $propertyNames,
-                                $methodNames,
-                                $class['file'],
-                                $method['startLine'],
-                                $method['endLine']
-                                );
-                    //break;
+                            $className,
+                            $methodName,
+                            $propertyNames,
+                            $methodNames,
+                            $class['file'],
+                            $method['startLine'],
+                            $method['endLine']
+                        );
                     }
                 }
             }
@@ -220,227 +227,232 @@ class PHPCallGraph {
                 $callerName = $methodName . $this->generateParametersForSignature($this->codeSummary['functions'][$methodName]['params']);
             }
         } else {
+            //TODO: visibilities
             $callerName = $className . '::' . $methodName . $this->generateParametersForSignature($this->codeSummary['classes'][$className]['methods'][$methodName]['params']);
         }
 
-        $offset = $startLine - 1;
-        $length = $endLine - $startLine + 1;
+        $callerNameWithoutParameterList = substr($callerName, 0, strpos($callerName, '('));
+        
+        if (!in_array($callerNameWithoutParameterList, $this->ignoreList)) {
+            $offset = $startLine - 1;
+            $length = $endLine - $startLine + 1;
 
-        //echo "\n$callerName defined in $file on line $offset\n";
-        $this->driver->startFunction($offset, $file, $callerName);
+            //echo "\n$callerName defined in $file on line $offset\n";
+            $this->driver->startFunction($offset, $file, $callerName);
 
-        // obtain source code
-        $memberCode = implode('', array_slice(file($file), $offset, $length));
-        $memberCode = "<?php\nclass $className {\n" . $memberCode . "}\n?>\n";
-        //echo $memberCode;
+            // obtain source code
+            $memberCode = implode('', array_slice(file($file), $offset, $length));
+            $memberCode = "<?php\nclass $className {\n" . $memberCode . "}\n?>\n";
+            //echo $memberCode;
 
-        $insideDoubleQuotedString = false;
-        $lineNumber = $offset - 1;
-        $blocksStarted = 0;
-        // parse source code
-        $tokens = token_get_all($memberCode);
-        /*
-        if ($methodName == '__construct') {
-            print_r($tokens);
-        }
-        //*/
-
-        //TODO: implement a higher level API for working with PHP parser tokens (e.g. TokenIterator)
-        foreach ($tokens as $i => $token) {
-            //TODO: obtain method signature directly from the source file
-            if (is_array($token)) {
-                $lineNumber+= substr_count($token[1], "\n");
-            }
-
+            $insideDoubleQuotedString = false;
+            $lineNumber = $offset - 1;
+            $blocksStarted = 0;
+            // parse source code
+            $tokens = token_get_all($memberCode);
             /*
-            if (count($token) == 3) {
-                echo "\t", token_name($token[0]), "\n";
-                echo "\t\t", $token[1], "\n";
-            } else {
-                echo "\t", $token[0], "\n";
+            if ($methodName == '__construct') {
+                print_r($tokens);
             }
             //*/
 
-            // skip call analysis for the method signature
-            if ($blocksStarted < 2) {
-                // method body not yet started
-                if ($token[0] == '{') {
-                    ++$blocksStarted;
+            //TODO: implement a higher level API for working with PHP parser tokens (e.g. TokenIterator)
+            foreach ($tokens as $i => $token) {
+                //TODO: obtain method signature directly from the source file
+                if (is_array($token)) {
+                    $lineNumber+= substr_count($token[1], "\n");
                 }
-                continue;
-            }
 
-            if (!$insideDoubleQuotedString and $token == '"') {
-                $insideDoubleQuotedString = true;
-            } elseif ($insideDoubleQuotedString and $token == '"') {
-                $insideDoubleQuotedString = false;
-            } elseif (!$insideDoubleQuotedString and $token != '"') {
-                if ($token[0] == T_STRING
-                    //and ($token[1] != $className or $tokens[$i - 2][0] == T_NEW )
-                    //and $token[1] != $methodName
-                ) {
-                    if (
-                        !in_array($token[1], $propertyNames) //TODO: property name equals name of a function or method
-                        and !in_array($token[1], $this->constants) //TODO: constant name equals name of a function or method
-                        and $token[1] != 'true'
-                        and $token[1] != 'false'
-                        and $token[1] != 'null'
+                /*
+                if (count($token) == 3) {
+                    echo "\t", token_name($token[0]), "\n";
+                    echo "\t\t", $token[1], "\n";
+                } else {
+                    echo "\t", $token[0], "\n";
+                }
+                //*/
+
+                // skip call analysis for the method signature
+                if ($blocksStarted < 2) {
+                    // method body not yet started
+                    if ($token[0] == '{') {
+                        ++$blocksStarted;
+                    }
+                    continue;
+                }
+
+                if (!$insideDoubleQuotedString and $token == '"') {
+                    $insideDoubleQuotedString = true;
+                } elseif ($insideDoubleQuotedString and $token == '"') {
+                    $insideDoubleQuotedString = false;
+                } elseif (!$insideDoubleQuotedString and $token != '"') {
+                    if ($token[0] == T_STRING
+                        //and ($token[1] != $className or $tokens[$i - 2][0] == T_NEW )
+                        //and $token[1] != $methodName
                     ) {
-                        $peviousPreviousPreviousToken = $tokens[ $i - 3 ];
-                        $peviousPreviousToken         = $tokens[ $i - 2 ];
-                        $peviousToken                 = $tokens[ $i - 1 ];
-                        $nextToken                    = $tokens[ $i + 1 ];
-                        $tokenAfterNext               = $tokens[ $i + 2 ];
+                        if (
+                            !in_array($token[1], $propertyNames) //TODO: property name equals name of a function or method
+                            and !in_array($token[1], $this->constants) //TODO: constant name equals name of a function or method
+                            and $token[1] != 'true'
+                            and $token[1] != 'false'
+                            and $token[1] != 'null'
+                        ) {
+                            $peviousPreviousPreviousToken = $tokens[ $i - 3 ];
+                            $peviousPreviousToken         = $tokens[ $i - 2 ];
+                            $peviousToken                 = $tokens[ $i - 1 ];
+                            $nextToken                    = $tokens[ $i + 1 ];
+                            $tokenAfterNext               = $tokens[ $i + 2 ];
 
-                        if ($nextToken[0] == T_DOUBLE_COLON) {
-                            // beginning of a call to a static method
-                            //nop
-                            continue;
-                        } elseif (
-                            (
-                                $tokens[ $i - 4][0]                  == T_CATCH
-                                and $peviousPreviousPreviousToken[0] == T_WHITESPACE
-                                and $peviousPreviousToken            == '('
-                                and $peviousToken[0]                 == T_WHITESPACE
-                            )
-                            or
-                            (
-                                $peviousPreviousPreviousToken[0] == T_CATCH
-                                and $peviousPreviousToken[0]     == T_WHITESPACE
-                                and $peviousToken                == '('
-                            )
-                            or
-                            (
-                                $peviousPreviousToken[0] == T_CATCH
-                                and $peviousToken        == '('
-                            )
-                        ){
-                            // catch block
-                            continue;
-                        } elseif ($peviousPreviousToken[0] == T_NEW){
-                            // object creation
-                            if (!$this->showExternalCalls) {
+                            if ($nextToken[0] == T_DOUBLE_COLON) {
+                                // beginning of a call to a static method
+                                //nop
                                 continue;
-                            }
-                            $calleeClass = $token[1];
-                            if (isset($this->codeSummary['classes'][$calleeClass])) {
-                                // find constructor method
-                                if (isset($this->codeSummary['classes'][$calleeClass]['methods']['__construct'])) {
-                                    $calleeName = "$calleeClass::__construct"
-                                        . $this->generateParametersForSignature($this->codeSummary['classes'][$calleeClass]['methods']['__construct']['params']);
-                                } elseif (isset($this->codeSummary['classes'][$calleeClass]['methods'][$calleeClass])) {
-                                    $calleeName = "$calleeClass::$calleeClass"
-                                        . $this->generateParametersForSignature($this->codeSummary['classes'][$calleeClass]['methods'][$calleeClass]['params']);
-                                } else {
-                                    $calleeName = "$calleeClass::__construct()";
-                                }
-                                $calleeFile = $this->codeSummary['classes'][$calleeClass]['file'];
-                            } else {
-                                // TODO: decide how this case should be handled (could be a PEAR class or a class of a PHP extension, e.g. GTK)
-                                //if ($this->showInternalFunctions)
-                                $calleeName = "$calleeClass::__construct()";
-                                $calleeFile = '';
-                            }
-                        } elseif (
-                            (
-                                isset($peviousPreviousToken[1]) and $peviousPreviousToken[1] == '$this'
-                                and $peviousToken[0]     == T_OBJECT_OPERATOR
-                                and in_array($token[1], $methodNames)
-                            )
-                            or
-                            (
-                                isset($peviousPreviousToken[1]) and $peviousPreviousToken[1] == 'self'
-                                and $peviousToken[0]     == T_DOUBLE_COLON
-                                and in_array($token[1], $methodNames)
-                            )
-                        ){
-                            // internal method call ($this-> and self:: and $className::)
-                            $calleeName = "$className::{$token[1]}" . $this->generateParametersForSignature($this->codeSummary['classes'][$className]['methods'][$token[1]]['params']);
-                            $calleeFile = $file;
-                        } elseif ($peviousToken[0] == T_OBJECT_OPERATOR) {
-                            // external method call or property access
-                            if (!$this->showExternalCalls) {
+                            } elseif (
+                                (
+                                    $tokens[ $i - 4][0]                  == T_CATCH
+                                    and $peviousPreviousPreviousToken[0] == T_WHITESPACE
+                                    and $peviousPreviousToken            == '('
+                                    and $peviousToken[0]                 == T_WHITESPACE
+                                )
+                                or
+                                (
+                                    $peviousPreviousPreviousToken[0] == T_CATCH
+                                    and $peviousPreviousToken[0]     == T_WHITESPACE
+                                    and $peviousToken                == '('
+                                )
+                                or
+                                (
+                                    $peviousPreviousToken[0] == T_CATCH
+                                    and $peviousToken        == '('
+                                )
+                            ){
+                                // catch block
                                 continue;
-                            }
-                            if ($nextToken == '(' or ($nextToken[0] == T_WHITESPACE and $tokenAfterNext == '(')) {
-                                $calleeName = $token[1];
-                                if (
-                                    isset($this->methodLookupTable[$calleeName])
-                                    and count($this->methodLookupTable[$calleeName]) == 1
-                                ) {
-                                    // there is only one class having a method with this name
-                                    $calleeClass  = $this->methodLookupTable[$calleeName][0];
-                                    $calleeParams =  $this->generateParametersForSignature(
-                                        $this->codeSummary['classes'][$calleeClass]['methods'][$calleeName]['params']
-                                        );
-                                    $calleeFile   = $this->codeSummary['classes'][$calleeClass]['file'];
-                                } else {
-                                    $calleeClass  = '';
-                                    $calleeParams = '()';
-                                    $calleeFile   = '';
-                                }
-                                $calleeName = "$calleeClass::$calleeName$calleeParams";
-                            } else {
-                                // property access
-                                continue;
-                            }
-                        } elseif ($peviousToken[0] == T_DOUBLE_COLON){
-                            // static external method call
-                            if (!$this->showExternalCalls) {
-                                continue;
-                            }
-                            if ($nextToken != '(' and !($nextToken[0] == T_WHITESPACE and $tokenAfterNext == '(')) {
-                                // constant access
-                                continue;
-                            }
-                            $calleeClass  = $peviousPreviousToken[1];
-                            $calleeMethod = $token[1];
-                            $calleeFile = '';
-                            $calleeParams = '()';
-                            // parent::
-                            if ($calleeClass == 'parent' and !empty($this->codeSummary['classes'][$className]['parentClass'])) {
-                                $calleeClass = $this->codeSummary['classes'][$className]['parentClass'];
-                            }
-                            if (isset($this->codeSummary['classes'][$calleeClass])) {
-                                $calleeFile = $this->codeSummary['classes'][$calleeClass]['file'];
-                                if (isset($this->codeSummary['classes'][$calleeClass]['methods'][$calleeMethod]['params'])) {
-                                    $calleeParams = $this->generateParametersForSignature($this->codeSummary['classes'][$calleeClass]['methods'][$calleeMethod]['params']);
-                                }
-                            }
-                            $calleeName = "$calleeClass::$calleeMethod$calleeParams";
-                            //TODO: handle self::myMethod(); $className::myMethod(); here => abolish internal method call case
-                        } else {
-                            // function call
-                            $calledFunction = $token[1];
-                            $calleeFile = '';
-                            $calleeParams = '()';
-                            
-                            if (in_array($calledFunction, $this->internalFunctions)) {
-                                if (!$this->showInternalFunctions) {
-                                    continue;
-                                }
-                            } else {
+                            } elseif ($peviousPreviousToken[0] == T_NEW){
+                                // object creation
                                 if (!$this->showExternalCalls) {
                                     continue;
                                 }
-                                if (isset($this->codeSummary['functions'][$calledFunction])) {
-                                    $calleeFile = $this->codeSummary['functions'][$calledFunction]['file'];
-                                    if (isset($this->codeSummary['functions'][$calledFunction]['params'])) {
-                                        $calleeParams = $this->generateParametersForSignature($this->codeSummary['functions'][$calledFunction]['params']);
+                                $calleeClass = $token[1];
+                                if (isset($this->codeSummary['classes'][$calleeClass])) {
+                                    // find constructor method
+                                    if (isset($this->codeSummary['classes'][$calleeClass]['methods']['__construct'])) {
+                                        $calleeName = "$calleeClass::__construct"
+                                            . $this->generateParametersForSignature($this->codeSummary['classes'][$calleeClass]['methods']['__construct']['params']);
+                                    } elseif (isset($this->codeSummary['classes'][$calleeClass]['methods'][$calleeClass])) {
+                                        $calleeName = "$calleeClass::$calleeClass"
+                                            . $this->generateParametersForSignature($this->codeSummary['classes'][$calleeClass]['methods'][$calleeClass]['params']);
+                                    } else {
+                                        $calleeName = "$calleeClass::__construct()";
+                                    }
+                                    $calleeFile = $this->codeSummary['classes'][$calleeClass]['file'];
+                                } else {
+                                    // TODO: decide how this case should be handled (could be a PEAR class or a class of a PHP extension, e.g. GTK)
+                                    //if ($this->showInternalFunctions)
+                                    $calleeName = "$calleeClass::__construct()";
+                                    $calleeFile = '';
+                                }
+                            } elseif (
+                                (
+                                    isset($peviousPreviousToken[1]) and $peviousPreviousToken[1] == '$this'
+                                    and $peviousToken[0]     == T_OBJECT_OPERATOR
+                                    and in_array($token[1], $methodNames)
+                                )
+                                or
+                                (
+                                    isset($peviousPreviousToken[1]) and $peviousPreviousToken[1] == 'self'
+                                    and $peviousToken[0]     == T_DOUBLE_COLON
+                                    and in_array($token[1], $methodNames)
+                                )
+                            ){
+                                // internal method call ($this-> and self:: and $className::)
+                                $calleeName = "$className::{$token[1]}" . $this->generateParametersForSignature($this->codeSummary['classes'][$className]['methods'][$token[1]]['params']);
+                                $calleeFile = $file;
+                            } elseif ($peviousToken[0] == T_OBJECT_OPERATOR) {
+                                // external method call or property access
+                                if (!$this->showExternalCalls) {
+                                    continue;
+                                }
+                                if ($nextToken == '(' or ($nextToken[0] == T_WHITESPACE and $tokenAfterNext == '(')) {
+                                    $calleeName = $token[1];
+                                    if (
+                                        isset($this->methodLookupTable[$calleeName])
+                                        and count($this->methodLookupTable[$calleeName]) == 1
+                                    ) {
+                                        // there is only one class having a method with this name
+                                        $calleeClass  = $this->methodLookupTable[$calleeName][0];
+                                        $calleeParams =  $this->generateParametersForSignature(
+                                            $this->codeSummary['classes'][$calleeClass]['methods'][$calleeName]['params']
+                                            );
+                                        $calleeFile   = $this->codeSummary['classes'][$calleeClass]['file'];
+                                    } else {
+                                        $calleeClass  = '';
+                                        $calleeParams = '()';
+                                        $calleeFile   = '';
+                                    }
+                                    $calleeName = "$calleeClass::$calleeName$calleeParams";
+                                } else {
+                                    // property access
+                                    continue;
+                                }
+                            } elseif ($peviousToken[0] == T_DOUBLE_COLON){
+                                // static external method call
+                                if (!$this->showExternalCalls) {
+                                    continue;
+                                }
+                                if ($nextToken != '(' and !($nextToken[0] == T_WHITESPACE and $tokenAfterNext == '(')) {
+                                    // constant access
+                                    continue;
+                                }
+                                $calleeClass  = $peviousPreviousToken[1];
+                                $calleeMethod = $token[1];
+                                $calleeFile = '';
+                                $calleeParams = '()';
+                                // parent::
+                                if ($calleeClass == 'parent' and !empty($this->codeSummary['classes'][$className]['parentClass'])) {
+                                    $calleeClass = $this->codeSummary['classes'][$className]['parentClass'];
+                                }
+                                if (isset($this->codeSummary['classes'][$calleeClass])) {
+                                    $calleeFile = $this->codeSummary['classes'][$calleeClass]['file'];
+                                    if (isset($this->codeSummary['classes'][$calleeClass]['methods'][$calleeMethod]['params'])) {
+                                        $calleeParams = $this->generateParametersForSignature($this->codeSummary['classes'][$calleeClass]['methods'][$calleeMethod]['params']);
                                     }
                                 }
+                                $calleeName = "$calleeClass::$calleeMethod$calleeParams";
+                                //TODO: handle self::myMethod(); $className::myMethod(); here => abolish internal method call case
+                            } else {
+                                // function call
+                                $calledFunction = $token[1];
+                                $calleeFile = '';
+                                $calleeParams = '()';
+                                
+                                if (in_array($calledFunction, $this->internalFunctions)) {
+                                    if (!$this->showInternalFunctions) {
+                                        continue;
+                                    }
+                                } else {
+                                    if (!$this->showExternalCalls) {
+                                        continue;
+                                    }
+                                    if (isset($this->codeSummary['functions'][$calledFunction])) {
+                                        $calleeFile = $this->codeSummary['functions'][$calledFunction]['file'];
+                                        if (isset($this->codeSummary['functions'][$calledFunction]['params'])) {
+                                            $calleeParams = $this->generateParametersForSignature($this->codeSummary['functions'][$calledFunction]['params']);
+                                        }
+                                    }
+                                }
+                                $calleeName = $calledFunction . $calleeParams;
                             }
-                            $calleeName = $calledFunction . $calleeParams;
+                            //echo "\t", $calleeName, " called on line $lineNumber and defined in $calleeFile\n";
+                            $this->driver->addCall($lineNumber, $calleeFile, $calleeName);
                         }
-                        //echo "\t", $calleeName, " called on line $lineNumber and defined in $calleeFile\n";
-                        $this->driver->addCall($lineNumber, $calleeFile, $calleeName);
                     }
+                } else {
+                    //TODO: parse calls indside double quoted strings
                 }
-            } else {
-                //TODO: parse calls indside double quoted strings
             }
+            $this->driver->endFunction();
         }
-        $this->driver->endFunction();
     }
 
     public function generateParametersForSignature($parameters) {
