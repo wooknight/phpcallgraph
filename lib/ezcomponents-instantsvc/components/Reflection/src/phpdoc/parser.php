@@ -129,9 +129,9 @@ class ezcReflectionPhpDocParser implements ezcReflectionDocParser {
     */
     protected function parseTag($line) {
         if (strlen($line) > 0) {
-            if ($line{0} == '@') {
+            if ($line[0] == '@') {
                 $line = substr($line, 1);
-                $words = explode(' ', $line, 4);
+                $words = preg_split('/(?<!,)\s+/', $line, 4); // split the line separated by whitespace (not preceded by a comma) into up to 4 parts
                 $tag = ezcReflectionDocTagFactory::createTag($words[0], $words);
                 $this->tags[$tag->getName()][] = $tag;
                 $this->lastTag = $tag;
