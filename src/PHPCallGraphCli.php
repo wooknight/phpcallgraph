@@ -55,7 +55,7 @@ class PHPCallGraphCli {
                 ezcConsoleInput::TYPE_STRING
             )
         );
-        $formatOption->shorthelp = "set output format; can be 'txt', 'cga' or one of the formats supported by dot";
+        $formatOption->shorthelp = "Set output format. Can be 'txt', 'cga' or one of the formats supported by dot, e.g. png, svg, pdf, ps, ... (see http://graphviz.org/doc/info/output.html)";
 
         $outputfileOption = $input->registerOption(
             new ezcConsoleOption( 
@@ -64,7 +64,7 @@ class PHPCallGraphCli {
                 ezcConsoleInput::TYPE_STRING
             )
         );
-        $outputfileOption->shorthelp = 'output file';
+        $outputfileOption->shorthelp = 'Output file';
 
         $recursiveOption = $input->registerOption(
             new ezcConsoleOption( 
@@ -73,7 +73,7 @@ class PHPCallGraphCli {
                 ezcConsoleInput::TYPE_NONE
             )
         );
-        $recursiveOption->shorthelp = 'analyze directories recursive';
+        $recursiveOption->shorthelp = 'Analyze directories recursive';
 
         $dotcommandOption = $input->registerOption(
             new ezcConsoleOption( 
@@ -82,7 +82,7 @@ class PHPCallGraphCli {
                 ezcConsoleInput::TYPE_STRING
             )
         );
-        $dotcommandOption->shorthelp = 'set dot command';
+        $dotcommandOption->shorthelp = 'Set dot command';
 
         $noexternalcallsOption = $input->registerOption(
             new ezcConsoleOption( 
@@ -91,7 +91,7 @@ class PHPCallGraphCli {
                 ezcConsoleInput::TYPE_NONE
             )
         );
-        $noexternalcallsOption->shorthelp = 'do not show calls to methods or functions which are external to a class';
+        $noexternalcallsOption->shorthelp = 'Do not show calls to methods or functions which are external to a class';
 
         $phpfunctionsOption = $input->registerOption(
             new ezcConsoleOption( 
@@ -100,7 +100,16 @@ class PHPCallGraphCli {
                 ezcConsoleInput::TYPE_NONE
             )
         );
-        $phpfunctionsOption->shorthelp = 'show calls to internal PHP functions';
+        $phpfunctionsOption->shorthelp = 'Show calls to internal PHP functions';
+
+        $autoloadOption = $input->registerOption(
+            new ezcConsoleOption( 
+                'a',
+                'autoload',
+                ezcConsoleInput::TYPE_STRING
+            )
+        );
+        $autoloadOption->shorthelp = 'Sets a PHP file with an autoload function which will be included into the sandbox of the InstantSVC CodeAnalyzer';
 
         $verboseOption = $input->registerOption(
             new ezcConsoleOption( 
@@ -109,7 +118,19 @@ class PHPCallGraphCli {
                 ezcConsoleInput::TYPE_NONE
             )
         );
-        $verboseOption->shorthelp = 'verbose mode for text output format';
+        $verboseOption->shorthelp = 'Verbose mode for text output format';
+
+        $debugOption = $input->registerOption(
+            new ezcConsoleOption( 
+                'g',
+                'debug',
+                ezcConsoleInput::TYPE_NONE
+            )
+        );
+        $debugOption->shorthelp = 'Print debug information (helpful if you get no output at all, since it shows errors during code analysis)';
+
+        //TODO: provide option to disable color
+        //TODO: provide an option to enable the ezc autoloader
 
         $helpOption = $input->registerOption( 
             new ezcConsoleOption( 
@@ -118,19 +139,17 @@ class PHPCallGraphCli {
             )
         );
         $helpOption->isHelpOption = true; // if parameter is set, all options marked as mandatory may be skipped
-        $helpOption->shorthelp = 'display help';
+        $helpOption->shorthelp = 'Display help';
 
         $input->argumentDefinition = new ezcConsoleArguments();
         $input->argumentDefinition[0] = new ezcConsoleArgument(
-                'sources',
-                ezcConsoleInput::TYPE_STRING,
-                'files and/or directories to analyze',
-                '',
-                true,
-                true
-                );
-
-        //TODO: provide option to disable color
+            'sources',
+            ezcConsoleInput::TYPE_STRING,
+            'Files and/or directories to analyze',
+            '',
+            true,
+            true
+        );
 
         try {
             $input->process();
@@ -175,9 +194,9 @@ class PHPCallGraphCli {
                 $phpcg->setShowExternalCalls(false);        
             }
 
-            if ($phpfunctionsOption->value !== false) {
-                $phpcg->setShowInternalFunctions(true);        
-            }
+            $phpcg->setShowInternalFunctions($phpfunctionsOption->value);        
+            $phpcg->setDebug($debugOption->value);
+            $phpcg->setAutoloadFile($autoloadOption->value);
 
             // start generation
             $phpcg->parse($input->getArguments(), $recursiveOption->value);

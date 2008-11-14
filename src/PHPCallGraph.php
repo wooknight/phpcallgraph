@@ -49,10 +49,29 @@ class PHPCallGraph {
     protected $propertyLookupTable;
 
     /**
+     * Methods or function to ignore
      * var string[]
      */
     protected $ignoreList = array();
 
+    /**
+     * Decides wether debug information is printed
+     * @var boolean
+     */
+    protected $debug = false;
+
+    /**
+     * PHP file with an autoload function which will be included into the
+     * sandbox of the InstantSVC CodeAnalyzer
+     * @var string
+     */
+    protected $autoloadFile = '';
+
+    /**
+     * Sets the output driver and initializes
+     * @param CallgraphDriver $driver output driver to use
+     * @return PHPCallGraph
+     */
     public function __construct(CallgraphDriver $driver = null) {
         if ($driver != null) {
             $this->driver = $driver;
@@ -79,6 +98,31 @@ class PHPCallGraph {
         }
     }
 
+    /**
+     * Enable or disable printing of debug information
+     * @param boolean $enabled
+     */
+    public function setDebug($enabled = true) {
+        $this->debug = $enabled;
+    }
+
+    /**
+     * Sets a PHP file with an autoload function which will be included into
+     * the sandbox of the InstantSVC CodeAnalyzer
+     * @param string $filename Name of a PHP file with an autoload function
+     * @return boolean success
+     */
+    public function setAutoloadFile($filename) {
+        $returnValue = false;
+        if (!empty($filename) and is_file($filename) and is_readable($filename)) {
+            $this->autoloadFile = $filename;
+            $returnValue = true;
+        } else {
+            //TODO: throw exception
+        }
+        return $returnValue;
+    }
+
     public function setShowExternalCalls($boolean = true) {
         $this->showExternalCalls = $boolean;
     }
@@ -95,7 +139,7 @@ class PHPCallGraph {
             } elseif (is_dir($fileOrDir)) {
                 $globbed = glob("$fileOrDir/*");
                 if ($recursive) {
-                    $files+= $this->collectFileNames($globbed, true);
+                    $files = array_merge($files, $this->collectFileNames($globbed, true));
                 } else {
                     foreach($globbed as $path) {
                         if (is_file($path)) {
@@ -111,6 +155,8 @@ class PHPCallGraph {
     public function parse(array $filesOrDirs, $recursive = false) {
         $files = $this->collectFileNames($filesOrDirs, $recursive);
         $ca = new iscCodeAnalyzer(null);
+        $ca->setDebug($this->debug);
+        $ca->setAutoloadFile($this->autoloadFile);
         $ca->inspectFiles($files);
         $this->codeSummary = $ca->getCodeSummary();
         $this->analyseCodeSummary();
@@ -118,6 +164,8 @@ class PHPCallGraph {
 
     public function parseFile($file) {
         $ca = new iscCodeAnalyzer(null);
+        $ca->setDebug($this->debug);
+        $ca->setAutoloadFile($this->autoloadFile);
         $ca->inspectFiles(array($file));
         $this->codeSummary = $ca->getCodeSummary();
         $this->analyseCodeSummary();
@@ -125,6 +173,8 @@ class PHPCallGraph {
 
     public function parseDir($dir = '.') {
         $ca = new iscCodeAnalyzer($dir);
+        $ca->setDebug($this->debug);
+        $ca->setAutoloadFile($this->autoloadFile);
         $ca->collect();
         $this->codeSummary = $ca->getCodeSummary();
         $this->analyseCodeSummary();
@@ -234,6 +284,9 @@ class PHPCallGraph {
         $callerNameWithoutParameterList = substr($callerName, 0, strpos($callerName, '('));
         
         if (!in_array($callerNameWithoutParameterList, $this->ignoreList)) {
+            if ($this->debug) {
+                echo 'phpCallGraph: analyzing ', $callerName, "\n";
+            }
             $offset = $startLine - 1;
             $length = $endLine - $startLine + 1;
 
@@ -370,6 +423,7 @@ class PHPCallGraph {
                                 $calleeFile = $file;
                             } elseif ($peviousToken[0] == T_OBJECT_OPERATOR) {
                                 // external method call or property access
+                                //TODO: what if a object holds another instance of its class
                                 if (!$this->showExternalCalls) {
                                     continue;
                                 }
