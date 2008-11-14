@@ -62,6 +62,18 @@ class iscCodeAnalyzer {
     protected $docuFlaws;
 
     /**
+     * Decides wether debug information is printed
+     * @var boolean
+     */
+    protected $debug = false;
+
+    /**
+     * PHP file with an autoload function which will be included into the sandbox
+     * @var string 
+     */
+    protected $autoloadFile = '';
+
+    /**
      * @param string $path
      */
     public function __construct($path = '.') {
@@ -80,6 +92,28 @@ class iscCodeAnalyzer {
      */
     public function getStats() {
         return $this->flatStatsArray;
+    }
+
+    /**
+     * Enable or disable printing of debug information
+     * @param boolean $enabled
+     */
+    public function setDebug( $enabled = true ) {
+        $this->debug = $enabled;
+    }
+
+    /**
+     * Sets a PHP file with an autoload function which will be included into the sandbox
+     * @param string $filename Name of a PHP file with an autoload function
+     * @return boolean success
+     */
+    public function setAutoloadFile( $filename ) {
+        $returnValue = false;
+        if ( !empty( $filename ) and is_file( $filename ) and is_readable( $filename ) ) {
+            $this->autoloadFile = $filename;
+            $returnValue = true;
+        }
+        return $returnValue;
     }
 
     /**
@@ -185,7 +219,7 @@ class iscCodeAnalyzer {
             if (!empty($filename)) {
                 $filename = strtr($filename, DIRECTORY_SEPARATOR, '/');
 
-                $result = self::summarizeInSandbox($filename);
+                $result = self::summarizeInSandbox($filename, $this->autoloadFile, $this->debug);
 
                 if (is_array($result)) {
                     //$this->docuFlaws['classes'] = array_merge_recursive($this->docuFlaws['classes'],
@@ -224,15 +258,20 @@ class iscCodeAnalyzer {
 
     /**
      * Calls summarizeFile in a new php process.
-     * @param string[] $classes array with classnames
+     * @param string $filename PHP file to analyze
+     * @param string $autoloadFile PHP file with an autoload function which will be included into the sandbox
+     * @param string $debug Decide wether to print debug information
      * @return array(string => array)
      */
-    public static function summarizeInSandbox($filename) {
+    public static function summarizeInSandbox($filename, $autoloadFile = '', $debug = false) {
         $return = null;
 
-        // prepare php.ini for sandbox        
+        if ( $debug ) {
+            echo 'CodeAnalyzer: inspecting ', $filename, "\n";
+        }
+
+        // adapt the php.ini file for the sandbox to the current PHP configuration
         $functionWhiteList = array(
-            '__autoload',
             'set_include_path',
             'class_exists',
             'ob_start',
@@ -263,17 +302,38 @@ class iscCodeAnalyzer {
             'method_exists',
             'strrpos',
             'trigger_error',
+            'preg_split',
+            'function_exists',
+            // may be needed for autoload implementations
+            '__autoload',
+            'define',
+            'defined',
+            'get_include_path',
+            'glob',
+            'in_array',
+            'is_dir',
+            'is_readable',
+            'strpos',
+            // for analysis of phpDocumentor
+            'extension_loaded',
+            'phpversion',
+            'version_compare',
+            // only for debugging purposes!!!1
+            /*
+            'file_put_contents',
+            'var_export',
+            //*/
         );
 
         $classWhiteList = array(
             'ezcBase',
             'ezcBaseStruct',
-            'iscCodeAnalyzer',
             'ezcReflectionApi',
             'ezcReflectionClass',
             'ezcReflectionClassType',
             'ezcReflectionFunction',
             'ezcReflectionMethod',
+            'iscCodeAnalyzer',
             'Exception',
             'ReflectionException',
             'Reflection',
@@ -318,32 +378,91 @@ class iscCodeAnalyzer {
         $process = proc_open($cmd, $pipeDesc, $pipes);
 
         if (is_resource($process)) {
-            $includes = get_include_path();
-
-            $phpCommands = '<?php
-                set_include_path("'.addslashes($includes).'");
-
-                @include_once \'Base/src/base.php\';
-                if (!class_exists(\'ezcBase\')) {
-                    @include_once \'Base/base.php\';
+            // generate include statements for the sandbox
+            $requiredClasses = array(
+                'ezcReflectionClass',
+                'ezcReflectionType',
+                'ezcReflectionClassType',
+                'ezcReflectionApi',
+                'ezcReflectionDocParser',
+                'ezcReflectionPhpDocParser',
+                'ezcReflectionProperty',
+                'ezcReflectionDocTagFactory',
+                'ezcReflectionDocTag',
+                'ezcReflectionDocTagvar',
+                'ezcReflectionTypeMapper',
+                'ezcReflectionTypeFactory',
+                'ezcReflectionTypeFactoryImpl',
+                'ezcReflectionAbstractType',
+                'ezcReflectionPrimitiveType',
+                'ezcReflectionArrayType',
+                'ezcReflectionParameter',
+                'ezcReflectionFunction',
+                'ezcReflectionMethod',
+                'iscCodeAnalyzer',
+            );
+            $includes = '';
+            foreach ($requiredClasses as $requiredClassName) {
+                $requiredClass = new ezcReflectionClass($requiredClassName);
+                if ($requiredClass->isUserDefined()) {
+                    //echo $requiredClassName, "\n";
+                    $requiredFile = addslashes($requiredClass->getFileName());
+                    $includes .= "require_once '$requiredFile';\n";
                 }
-                if (!class_exists(\'ezcBase\')) {
-                    @include_once \'ezc/Base/base.php\';
-                }
-                
-                function __autoload( $className ) { ezcBase::autoload( $className ); }
-                require_once "'.addslashes(__FILE__).'";
+            }
 
-                ob_start();
-                $out = serialize(iscCodeAnalyzer::summarizeFile(\''.addslashes($filename).'\'));
-                ob_end_clean();
-                echo \'#-#-#-#-#\';
-                echo $out;
-                echo \'#-#-#-#-#\';
-                echo chr(4); //necessary to avoid deadlook
-                flush();
-                exit();
-            ?>';
+            // include a file with an __autoload function provided by the user
+            if (!empty($autoloadFile) and is_file($autoloadFile) and is_readable($autoloadFile)) {
+                $includes .= "require_once '$autoloadFile';\n";
+            }
+
+            $include_path = addslashes(get_include_path());
+            $fileToInspect = addslashes($filename);
+
+            // generate PHP code for the sandbox
+            $phpCommands = <<<SANDBOXCODE
+<?php
+//file_put_contents("autoload.log", "$fileToInspect,\\n", FILE_APPEND);
+
+set_include_path("$include_path");
+
+// these explicit includes allow scanning files which define an own __autoload function
+$includes
+
+// the ezc autoloader is only needed when analyzing eZ Components based applications, e.g. InstantSVC or phpCallGraph
+if (!function_exists('__autoload')) {
+    // try to find an SVN, Release or PEAR version of base.php
+    foreach (array('Base/src/base.php', 'Base/base.php', 'ezc/Base/base.php') as \$ezcBaseFileToInclude) {
+        if (!in_array('ezcBase', get_declared_classes())) {
+            @include_once \$ezcBaseFileToInclude;
+        } else {
+            break;
+        }
+    }
+    // remove the global variable used in the foreach loop
+    unset(\$ezcBaseFileToInclude);
+
+    // define an __autoload function which is automatically called in case a class
+    // is used which hasn't been declared
+    function __autoload( \$className ) {
+        //file_put_contents("autoload.log", "'\$className',\\n", FILE_APPEND);
+        ezcBase::autoload( \$className );
+    }
+}
+
+ob_start();
+\$iscCodeAnalyzerOutput = serialize(iscCodeAnalyzer::summarizeFile("$fileToInspect"));
+ob_end_clean();
+echo '#-#-#-#-#';
+echo \$iscCodeAnalyzerOutput;
+echo '#-#-#-#-#';
+echo chr(4); // necessary to avoid deadlook
+flush();
+exit();
+?>
+SANDBOXCODE;
+            //file_put_contents('sandboxes.php', $phpCommands, FILE_APPEND);
+            // for testing use: php -c php.ini.for-code-analyzer-sandbox sandboxes.php
 
             //pipe commands to new process and close pipe to start processing by php
             fwrite($pipes[0], $phpCommands);
@@ -366,10 +485,15 @@ class iscCodeAnalyzer {
                     break;
                 }
 
-                //another time fatal errors will bring us to hang
-                if (strpos($read, "##ERR##\nFatal error: ") !== false) {
+                // print errors in debug mode
+                if ( $debug and strpos($read, "##ERR##\n") !== false ) {
                     //TODO: provide error message in the output data structure
-                    //echo 'Error in code analyzer sandbox: ', $read, "\n";
+                    echo 'Error in code analyzer sandbox: ', $read, "\n";
+                }
+                
+
+                //another time fatal errors will bring us to hang
+                if (strpos($read, "##ERR##\nFatal error: ") !== false or strpos($read, "##ERR##\nParse error: ") !== false) {
                     break;
                 }
             }
@@ -389,10 +513,13 @@ class iscCodeAnalyzer {
                 unlink($newIniFile);
             }
 
-            /*
-            echo '$filename = ', var_export($filename, true), ";\n";
-            echo '$result   = ', var_export($result, true), ";\n";
-            //*/
+            if ($result == "Could not startup.\n") {
+                throw new Exception('The PHP commandline interpreter could not be started. It failed with the message \'Could not startup\'. Try removing extensions like PHP-Gtk from the php.ini used by your PHP CLI.');
+            }
+
+            //echo '$filename = ', var_export($filename, true), ";\n";
+            //echo '$result   = ', var_export($result, true), ";\n";
+
             $arr = split('#-#-#-#-#', $result);
 
             if (isset($arr[1])) {
