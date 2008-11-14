@@ -30,15 +30,14 @@
 set_include_path(
     realpath(dirname(__FILE__) . '/../src') . PATH_SEPARATOR
     . realpath(dirname(__FILE__) . '/../lib/ezcomponents-instantsvc/components') . PATH_SEPARATOR
-    . ini_get( "include_path" ) . PATH_SEPARATOR
+    . get_include_path() . PATH_SEPARATOR
     . realpath(dirname(__FILE__) . '/../lib/pear')
 );
 
 // configure eZ Components autoloader
 // required because of PHPCallGraphCli using eczConsoleTools
 // and PHPCallGraph leveraging InstantSVC CodeAnalyzer and Extended Reflection API
-require_once 'Base/src/base.php';
-function __autoload( $className ) { ezcBase::autoload( $className ); }
+require_once 'autoload-ezcomponents.php';
 
 // run command line interface
 require_once 'PHPCallGraphCli.php';
