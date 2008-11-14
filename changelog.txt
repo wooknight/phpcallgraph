@@ -1,3 +1,35 @@
+0.7.0 - 14 November 2008
+========================
+- Fixed recursion into sub directories
+- Fixed cluster assignment in GraphVizDriver
+- Added option -a / --autoload which allows to define a PHP file with an
+  autoload function which will be included into the sandbox of the
+  CodeAnalyzer
+- Added option -g / --debug which enables printing of debug information in
+  the CodeAnalyzer (helpful if you get no output at all, since it shows errors
+  during code analysis)
+- Added white-list-based filtering of function calls in the sandbox of the
+  InstantSVN CodeAnalyzer
+- Added the possibility to define a PHP file with an autoload function,
+  which will be included into the sandbox
+- Added generation of include statements for the sandbox
+- Added exception for start-up errors of the sandbox, which may be caused
+  by extensions like PHP-GTK, when started inside a web server
+- Cleanup of sandbox code
+- Short open tags enabled in the php.ini for the CodeAnalyzer sandbox
+- New font and node color in GraphVizDriver
+- Rounded node style when not using colors
+- Added an __autoload function using ezcBase to load eZ Components classes
+- Added code to automatically find an SVN, Release or PEAR version of the
+  ezcBase class
+- Integrated the autoloader for eZ Components into the start script of
+  the phpCallGraph command line front-end
+- Start script for Windows improved (file names with spaces are supported now)
+- Ignore list introduced
+- Added the autoloader to the eZ Components example
+- Added debug option to example shell script
+- Command line help, readme file and source code documentation improved
+
 0.6.4 - 29 December 2007
 ========================
 - Analysis for functions implemented
