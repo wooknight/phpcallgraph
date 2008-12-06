@@ -435,10 +435,15 @@ class PHPCallGraph {
                                     ) {
                                         // there is only one class having a method with this name
                                         $calleeClass  = $this->methodLookupTable[$calleeName][0];
-                                        $calleeParams =  $this->generateParametersForSignature(
-                                            $this->codeSummary['classes'][$calleeClass]['methods'][$calleeName]['params']
+                                        if (isset($this->codeSummary['classes'][$calleeClass])) {
+                                            $calleeParams =  $this->generateParametersForSignature(
+                                                $this->codeSummary['classes'][$calleeClass]['methods'][$calleeName]['params']
                                             );
-                                        $calleeFile   = $this->codeSummary['classes'][$calleeClass]['file'];
+                                            $calleeFile   = $this->codeSummary['classes'][$calleeClass]['file'];
+                                        } else {
+                                            $calleeParams = null;
+                                            $calleeFile   = null;
+                                        }
                                     } else {
                                         $calleeClass  = '';
                                         $calleeParams = '()';
