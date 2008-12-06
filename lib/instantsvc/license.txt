@@ -1,0 +1,2 @@
+The components Reflection and CodeAnalyzer are part of InstantSVC and subject
+to the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt).
