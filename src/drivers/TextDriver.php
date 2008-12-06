@@ -92,4 +92,11 @@ class TextDriver implements CallgraphDriver {
         return $this->text;
     }
 
+    /**
+     * @return void
+     */
+    public function reset() {
+        $this->text = '';
+    }
+
 }
