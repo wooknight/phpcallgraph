@@ -66,14 +66,12 @@ class ArrayDriver implements CallgraphDriver {
         $this->stack[$name] = array();
         $this->func         = $name;
 
-        // $this->text.= $name;
         if ($this->verbose) {
             $this->stack[$name]['verbose'] = array(
                 "file" => $file,
                 "line" => $line
             );
         }
-        // $this->text.= "\n";
     }
 
     /**
@@ -89,9 +87,9 @@ class ArrayDriver implements CallgraphDriver {
         array_push($this->stack[$this->func]['call'], $name);
 
         if ($this->verbose) {
+            // FIXME: verbose for calls
             // $this->text.= " -- called on line $line and defined in $file";
         }
-        // $this->text.= "\n";
     }
 
     /**
