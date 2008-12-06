@@ -21,46 +21,62 @@
  *
  * @package    PHPCallGraph
  * @author     Falko Menge <fakko at users dot sourceforge dot net>
+ * @author     Till Klampaeckel <till at php dot net>
  * @copyright  2007 Falko Menge
  * @license    http://www.gnu.org/licenses/gpl.txt GNU General Public License
  */
 
+/**
+ * CallGraphDriver
+ */
 require_once 'CallgraphDriver.php';
 
 /**
  * implementation of a call graph generation strategy wich output the calls as text
  */
-
 class ArrayDriver implements CallgraphDriver {
 
     /**
-     * @var string
+     * @var string The current function/method.
+     * @see self::startFunction()
      */
     protected $func = '';
 
     /**
-     * @var boolean
+     * @var boolean More info, yes/no.
      */
     protected $verbose;
 
     /**
-     * @var array
+     * @var array Collects info on the current code.
      */
     protected $stack = array();
 
     /**
+     * CTR
+     *
      * @param boolean $verbose
+     *
      * @return CallgraphDriver
+     * @uses   self::$verbose
      */
     public function __construct($verbose = false) {
-        $this->verbose = $verbose;
+        if (is_bool($verbose)) {
+            $this->verbose = $verbose;
+        }
     }
 
     /**
+     * Called when a new function is discovered. Sets {@link self::$func}.
+     *
      * @param integer $line Line.
      * @param string  $file File name.
      * @param string  $name Name of the function/method.
+     *
      * @return void
+     * @uses   self::$stack
+     * @uses   self::$func
+     * @uses   self::$verbose
      */
     public function startFunction($line, $file, $name) {
         $this->stack[$name] = array();
@@ -75,10 +91,17 @@ class ArrayDriver implements CallgraphDriver {
     }
 
     /**
+     * Adds a call from within the current {@link self::$func}.
+     *
      * @param integer $line Line.
      * @param string  $file File name.
      * @param string  $name Name of the call.
+     *
      * @return void
+     * @uses   self::$stack
+     * @uses   self::$func
+     * @uses   self::$verbose
+     * @todo   Implement verbose.
      */
     public function addCall($line, $file, $name) {
         if (!isset($this->stack[$this->func]['call'])) {
@@ -99,13 +122,29 @@ class ArrayDriver implements CallgraphDriver {
     }
 
     /**
+     * Returns {@link self::$stack} as a string, serialized.
+     *
      * @return string
+     * @uses   self::$stack
+     * @uses   serialize()
      */
     public function __toString() {
         return serialize($this->stack);
     }
 
     /**
+     * Return the stack
+     *
+     * @return array
+     * @uses   self::$stack
+     */
+    public function getArray() {
+        return $this->stack;
+    }
+
+    /**
+     * Resets all
+     *
      * @return void
      */
     public function reset() {
