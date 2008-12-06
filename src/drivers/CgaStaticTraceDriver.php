@@ -35,7 +35,7 @@ class CgaStaticTraceDriver implements CallgraphDriver {
     /**
      * @var string
      */
-    protected $xml;
+    protected $xml = '';
 
     /**
      * @return CallgraphDriver
@@ -82,5 +82,13 @@ class CgaStaticTraceDriver implements CallgraphDriver {
     public function endFunction() {
         $this->xml .= "\t</fn>\n";
     }
+
+    /**
+     * @return void
+     */
+    public function reset() {
+        $this->xml = '';
+    }
+
 }
 ?>

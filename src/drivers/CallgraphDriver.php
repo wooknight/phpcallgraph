@@ -56,5 +56,9 @@ interface CallgraphDriver {
      */
     public function __toString();
 
+    /**
+     * @return void
+     */
+    public function reset();
+
 }
-?>
