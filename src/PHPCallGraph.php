@@ -441,6 +441,9 @@ class PHPCallGraph {
                                             );
                                             $calleeFile   = $this->codeSummary['classes'][$calleeClass]['file'];
                                         } else {
+
+                                            // echo "DEBUG: $calleeClass \n";
+
                                             $calleeParams = null;
                                             $calleeFile   = null;
                                         }
