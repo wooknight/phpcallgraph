@@ -1,4 +1,4 @@
-PHPCallGraph
+phpCallGraph
 
     A tool to generate static call graphs for PHP source code.
     The graphs can be leveraged to gain a better understanding of
@@ -66,7 +66,7 @@ Analysis of code in the global scope:
     Code in the global scope (outside any functions or methods) can be analyzed
     with the help of a little workaround: Such code can be manually wrapped in
     a dummy function called dummyFunctionForFile_filename_php() which will then
-    be recognized by PHPCallGraph. Of course this is not very elegant but
+    be recognized by phpCallGraph. Of course this is not very elegant but
     currently the only feasible way due to some conceptual restrictions
     resulting from the utilization of the InstantSVC CodeAnalyzer.
 
