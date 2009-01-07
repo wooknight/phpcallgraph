@@ -29,22 +29,30 @@ Usage:
      the Graphviz toolkit which can be downloaded at
      http://www.graphviz.org/ is required.
 
-     bin/phpcallgraph [-f <string>] [-o <string>] [-r] [-d <string>] [-n] [-p] [-v] [-h] [--] <string:sources> [<string:sources> ...]
+     bin/phpcallgraph [-f <string>] [-o <string>] [-r] [-d <string>] [-n] [-p] [-a <string>] [-v] [-g] [-h] [--] <string:sources> [<string:sources> ...]
 
 Arguments:
-    <string:sources>        files and/or directories to analyze
+    <string:sources>        Files and/or directories to analyze
 
 Options:
-    -f / --format           set output format; can be 'txt', 'cga' or one of the
-                            formats supported by dot
-    -o / --outputfile       output file
-    -r / --recursive        analyze directories recursive
-    -d / --dotcommand       set dot command
-    -n / --noexternalcalls  do not show calls to methods or functions which are
+    -f / --format           Set output format. Can be 'txt', 'array', 'cga' or
+                            one of the formats supported by dot, e.g. png, svg,
+                            pdf, ps, ...
+                            (see http://graphviz.org/doc/info/output.html)
+    -o / --outputfile       Output file
+    -r / --recursive        Analyze directories recursive
+    -d / --dotcommand       Set dot command
+    -n / --noexternalcalls  Do not show calls to methods or functions which are
                             external to a class
-    -p / --phpfunctions     show calls to internal PHP functions
-    -v / --verbose          verbose mode for text output format
-    -h / --help             display help
+    -p / --phpfunctions     Show calls to internal PHP functions
+    -a / --autoload         Sets a PHP file with an autoload function which will
+                            be included into the sandbox of the InstantSVC
+                            CodeAnalyzer
+    -v / --verbose          Verbose mode for text output format
+    -g / --debug            Print debug information
+                            (helpful if you get no output at all, since it
+                            shows errors during code analysis)
+    -h / --help             Display help
 
 3D Graph Exploration:
     You can use the CGA framework available at http://cgs.hpi.uni-potsdam.de/trac/cga/
