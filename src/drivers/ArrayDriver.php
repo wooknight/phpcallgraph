@@ -1,10 +1,11 @@
 <?php
 /**
- * Implementation of a call graph generation strategy wich output the calls as text.
+ * Implementation of a call graph generation strategy wich outputs the calls as
+ * an associative array.
  *
  * PHP version 5
  *
- * This file is part of PHPCallGraph.
+ * This file is part of phpCallGraph.
  *
  * PHPCallGraph is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +23,7 @@
  * @package    PHPCallGraph
  * @author     Falko Menge <fakko at users dot sourceforge dot net>
  * @author     Till Klampaeckel <till at php dot net>
- * @copyright  2007 Falko Menge
+ * @copyright  2007-2009 Falko Menge
  * @license    http://www.gnu.org/licenses/gpl.txt GNU General Public License
  */
 
@@ -32,7 +33,8 @@
 require_once 'CallgraphDriver.php';
 
 /**
- * implementation of a call graph generation strategy wich output the calls as text
+ * Implementation of a call graph generation strategy wich outputs the calls as
+ * an associative array.
  */
 class ArrayDriver implements CallgraphDriver {
 
