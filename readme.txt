@@ -77,6 +77,7 @@ Examples:
     bin/phpcallgraph -r -f png -o phpcallgraph.png src/ lib/
     bin/phpcallgraph -r -p test/testfiles/
     bin/phpcallgraph -p -- test/testfiles/Foo.php test/testfiles/Bar.php
+    bin/phpcallgraph -r -f array test/testfiles/ | php -r '$a = unserialize(file_get_contents("php://stdin")); var_export($a);'
 
 Author:
     Falko Menge <fakko at users dot sourceforge dot net>
