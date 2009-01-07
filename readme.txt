@@ -35,9 +35,9 @@ Arguments:
     <string:sources>        Files and/or directories to analyze
 
 Options:
-    -f / --format           Set output format. Can be 'txt', 'array', 'cga' or
-                            one of the formats supported by dot, e.g. png, svg,
-                            pdf, ps, ...
+    -f / --format           Set output format. Can be 'txt', 'array',
+                            'deadcode', 'cga' or one of the formats supported
+                            by dot, e.g. png, svg, pdf, ps, ...
                             (see http://graphviz.org/doc/info/output.html)
     -o / --outputfile       Output file
     -r / --recursive        Analyze directories recursive
@@ -70,6 +70,12 @@ Analysis of code in the global scope:
     currently the only feasible way due to some conceptual restrictions
     resulting from the utilization of the InstantSVC CodeAnalyzer.
 
+Dead Code Detection
+    You can get a list of methods and functions which are never called by using
+    the output format 'deadcode', e.g.
+
+        bin/phpcallgraph -r -f deadcode test/testfiles/
+
 Examples:
     bin/phpcallgraph -n -f png -o PHPCallGraph.png src/PHPCallGraph.php
     bin/phpcallgraph -f png -o phpcallgraph-library.png src/drivers/ src/PHPCallGraph.php
@@ -78,6 +84,7 @@ Examples:
     bin/phpcallgraph -r -p test/testfiles/
     bin/phpcallgraph -p -- test/testfiles/Foo.php test/testfiles/Bar.php
     bin/phpcallgraph -r -f array test/testfiles/ | php -r '$a = unserialize(file_get_contents("php://stdin")); var_export($a);'
+    bin/phpcallgraph -r -f deadcode test/testfiles/
 
 Author:
     Falko Menge <fakko at users dot sourceforge dot net>

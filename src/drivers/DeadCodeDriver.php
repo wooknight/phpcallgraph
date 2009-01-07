@@ -1,7 +1,7 @@
 <?php
 /**
- * Implementation of a call graph generation strategy wich outputs the calls as
- * plain text.
+ * Implementation of a call graph generation strategy wich outputs methods and
+ * functions that are never called as plain text.
  *
  * PHP version 5
  *
@@ -29,16 +29,16 @@
 require_once 'CallgraphDriver.php';
 
 /**
- * Implementation of a call graph generation strategy wich outputs the calls as
- * plain text.
+ * Implementation of a call graph generation strategy wich outputs methods and
+ * functions that are never called as plain text.
  */
 
-class TextDriver implements CallgraphDriver {
+class DeadCodeDriver implements CallgraphDriver {
 
     /**
-     * @var string
+     * @var array<string,string> List of functions
      */
-    protected $text = '';
+    protected $functions = array();
 
     /**
      * @var boolean
@@ -60,11 +60,7 @@ class TextDriver implements CallgraphDriver {
      * @return void
      */
     public function startFunction($line, $file, $name) {
-        $this->text.= $name;
-        if ($this->verbose) {
-            $this->text.= " defined in $file on line $line";
-        }
-        $this->text.= "\n";
+        $this->functions[$name] = "defined in $file on line $line";
     }
 
     /**
@@ -74,11 +70,7 @@ class TextDriver implements CallgraphDriver {
      * @return void
      */
     public function addCall($line, $file, $name) {
-        $this->text.= "\t$name";
-        if ($this->verbose) {
-            $this->text.= " -- called on line $line and defined in $file";
-        }
-        $this->text.= "\n";
+        unset($this->functions[$name]);
     }
 
     /**
@@ -91,14 +83,22 @@ class TextDriver implements CallgraphDriver {
      * @return string
      */
     public function __toString() {
-        return $this->text;
+        $output = '';
+        foreach ($this->functions as $function => $description) {
+            $output .= $function;
+            if ($this->verbose) {
+                $output .= ' ' . $description;
+            }
+            $output .= "\n";
+        }
+        return $output;
     }
 
     /**
      * @return void
      */
     public function reset() {
-        $this->text = '';
+        $this->functions = array();
     }
 
 }
