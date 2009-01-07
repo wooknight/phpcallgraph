@@ -55,7 +55,7 @@ class PHPCallGraphCli {
                 ezcConsoleInput::TYPE_STRING
             )
         );
-        $formatOption->shorthelp = "Set output format. Can be 'txt', 'cga' or one of the formats supported by dot, e.g. png, svg, pdf, ps, ... (see http://graphviz.org/doc/info/output.html)";
+        $formatOption->shorthelp = "Set output format. Can be 'txt', 'array', 'cga' or one of the formats supported by dot, e.g. png, svg, pdf, ps, ... (see http://graphviz.org/doc/info/output.html)";
 
         $outputfileOption = $input->registerOption(
             new ezcConsoleOption( 
@@ -172,6 +172,10 @@ class PHPCallGraphCli {
                 case 'cga':
                     require_once 'drivers/CgaStaticTraceDriver.php';
                     $driver = new CgaStaticTraceDriver();
+                    break;
+                case 'array':
+                    require_once 'drivers/ArrayDriver.php';
+                    $driver = new ArrayDriver($verboseOption->value);
                     break;
                 case false:
                 case 'txt':
