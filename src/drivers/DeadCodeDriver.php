@@ -27,6 +27,7 @@
  */
 
 require_once 'CallgraphDriver.php';
+require_once 'lib/static-reflection/function.php';
 
 /**
  * Implementation of a call graph generation strategy wich outputs methods and
@@ -36,9 +37,14 @@ require_once 'CallgraphDriver.php';
 class DeadCodeDriver implements CallgraphDriver {
 
     /**
-     * @var array<string,string> List of functions
+     * @var staticReflectionFunction[] List of defined functions
      */
-    protected $functions = array();
+    protected $definedFunctions = array();
+
+    /**
+     * @var staticReflectionFunction[] List of called functions
+     */
+    protected $calledFunctions = array();
 
     /**
      * @var boolean
@@ -60,7 +66,9 @@ class DeadCodeDriver implements CallgraphDriver {
      * @return void
      */
     public function startFunction($line, $file, $name) {
-        $this->functions[$name] = "defined in $file on line $line";
+        $function = new staticReflectionFunction($name, $file);
+        $function->startLine = $line;
+        $this->definedFunctions[] = $function;
     }
 
     /**
@@ -70,7 +78,8 @@ class DeadCodeDriver implements CallgraphDriver {
      * @return void
      */
     public function addCall($line, $file, $name) {
-        unset($this->functions[$name]);
+        $function = new staticReflectionFunction($name, $file);
+        $this->calledFunctions[] = $function;
     }
 
     /**
@@ -84,10 +93,11 @@ class DeadCodeDriver implements CallgraphDriver {
      */
     public function __toString() {
         $output = '';
-        foreach ($this->functions as $function => $description) {
-            $output .= $function;
+        $unusedFunctions = array_diff($this->definedFunctions, $this->calledFunctions);
+        foreach ($unusedFunctions as $function) {
+            $output .= $function->getName();
             if ($this->verbose) {
-                $output .= ' ' . $description;
+                $output .= " defined in {$function->fileName} on line {$function->startLine}";
             }
             $output .= "\n";
         }
