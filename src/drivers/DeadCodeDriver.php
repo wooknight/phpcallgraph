@@ -27,7 +27,7 @@
  */
 
 require_once 'CallgraphDriver.php';
-require_once 'lib/static-reflection/function.php';
+require_once 'static-reflection/function.php';
 
 /**
  * Implementation of a call graph generation strategy wich outputs methods and
