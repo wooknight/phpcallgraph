@@ -74,6 +74,7 @@ class GraphVizDriver implements CallgraphDriver {
                 'fontname'  => 'Verdana',
                 'fontsize'  => 12.0,
                 //'fontcolor' => 'gray5',
+                'rankdir' => 'LR', // left-to-right
             )
         );
         $this->graph->dotCommand = $this->dotCommand;
