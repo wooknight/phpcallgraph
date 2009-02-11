@@ -59,6 +59,9 @@ class CgaStaticTraceDriver implements CallgraphDriver {
      * @return void
      */
     public function startFunction($line, $file, $name) {
+        $line = (integer) $line;
+        $file = htmlspecialchars($file);
+        $name = htmlspecialchars($name);
         $this->xml .= "\t<fn>\n"
             . "\t\t<src line=\"$line\" file=\"$file\" name=\"$name\" />\n";
     }
@@ -70,6 +73,9 @@ class CgaStaticTraceDriver implements CallgraphDriver {
      * @return void
      */
     public function addCall($line, $file, $name) {
+        $line = (integer) $line;
+        $file = htmlspecialchars($file);
+        $name = htmlspecialchars($name);
         // the line of a call is no longer part of the language specification
         $this->xml .= "\t\t<call>\n"
             . "\t\t\t<src file=\"$file\" name=\"$name\" />\n"
