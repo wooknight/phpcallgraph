@@ -38,14 +38,52 @@ class PHPCallGraph {
 
     const VERSION = '0.7.0-pl1';
 
+    /**
+     * @var string[]
+     */
     protected $internalFunctions;
+
+    /**
+     * List of PHP keywords which could be followed by opening parenthis
+     * taken from PHP Manual
+     * @see http://www.php.net/reserved_keywords
+     * @var string[]
+     */
     protected $internalKeywords;
+
+    /**
+     * @var string[]
+     */
     protected $constants;
+
+    /**
+     * @var boolean
+     */
     protected $showExternalCalls = true;
+
+    /**
+     * @var boolean
+     */
     protected $showInternalFunctions = false;
+
+    /**
+     * @var CallgraphDriver
+     */
     protected $driver;
+
+    /**
+     * @var array
+     */
     protected $codeSummary;
+
+    /**
+     * @var array
+     */
     protected $methodLookupTable;
+
+    /**
+     * @var array
+     */
     protected $propertyLookupTable;
 
     /**
@@ -80,7 +118,8 @@ class PHPCallGraph {
         }
         $functions = get_defined_functions();
         $this->internalFunctions = $functions['internal'];
-        // PHP Keywords from manual
+        // List of PHP keywords which could be followed by an opening parenthis
+        // taken from PHP Manual (http://www.php.net/reserved_keywords)
         $this->internalKeywords = array(
             'array', 'declare', 'die', 'echo', 'elseif', 'empty', 'eval',
             'exit', 'for', 'foreach', 'global', 'if', 'include', 'include_once',
