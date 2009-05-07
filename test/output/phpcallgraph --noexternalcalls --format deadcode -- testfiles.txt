@@ -1,0 +1,5 @@
+Bar::sayHello()
+Bar::arraySum($array)
+Bar::getFoo()
+Bar::duplicateFoo($inputFoo)
+Test::__construct()

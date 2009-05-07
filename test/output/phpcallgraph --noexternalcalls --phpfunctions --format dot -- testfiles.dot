@@ -1,0 +1,60 @@
+digraph G {
+	graph [fontname=Verdana, fontsize=12, rankdir=LR];
+	node [label="\N"];
+	graph [bb="0,0,554,636"];
+	subgraph cluster_Bar {
+		graph [label=Bar,
+			color=gray20,
+			lp="265,448",
+			bb="194,168,336,460"];
+		"Bar::sayHello()" [label=sayHello, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,410", width="1.28", height="0.50"];
+		"Bar::add($x, $y)" [label=add, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,356", width="0.75", height="0.50"];
+		"Bar::arraySum($array)" [label=arraySum, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,302", width="1.36", height="0.50"];
+		"Bar::getFoo()" [label=getFoo, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,248", width="1.08", height="0.50"];
+		"Bar::duplicateFoo($inputFoo)" [label=duplicateFoo, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,194", width="1.75", height="0.50"];
+	}
+	subgraph "cluster_internal PHP functions" {
+		graph [label="internal PHP functions",
+			color=gray20,
+			lp="468,448",
+			bb="391,276,544,460"];
+		"is_array()" [label=is_array, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="467,356", width="1.19", height="0.50"];
+		"array_sum()" [label=array_sum, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="467,302", width="1.47", height="0.50"];
+		"time()" [label=time, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="467,410", width="0.81", height="0.50"];
+	}
+	subgraph cluster_Foo {
+		graph [label=Foo,
+			color=gray20,
+			lp="467,220",
+			bb="388,84,546,232"];
+		"Foo::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="467,182", width="1.61", height="0.50"];
+		"Foo::getInputString()" [label=getInputString, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="467,110", width="1.94", height="0.50"];
+		"Foo::getInputString()" -> "Foo::getInputString()" [pos="e,502,126 432,126 423,136 435,146 467,146 488,146 500,142 504,136"];
+	}
+	subgraph cluster_Test {
+		graph [label=Test,
+			color=gray20,
+			lp="155,616",
+			bb="8,552,301,628"];
+		"Test::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="75,578", width="1.61", height="0.50"];
+		"Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=test, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,578", width="0.75", height="0.50"];
+		"Test::__construct()" -> "Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [pos="e,237,578 134,578 164,578 200,578 227,578"];
+	}
+	subgraph cluster_stdClass {
+		graph [label=stdClass,
+			color=gray20,
+			lp="265,80",
+			bb="198,16,332,92"];
+		"stdClass::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,42", width="1.61", height="0.50"];
+	}
+	"userDefinedFunction($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=userDefinedFunction, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,524", width="2.61", height="0.50"];
+	"Bar::arraySum($array)" -> "is_array()" [pos="e,430,346 305,313 339,321 386,334 420,343"];
+	"Bar::arraySum($array)" -> "array_sum()" [pos="e,413,302 314,302 341,302 375,302 403,302"];
+	"Bar::getFoo()" -> "Foo::__construct()" [pos="e,431,196 299,239 318,234 340,228 360,221 381,215 403,207 422,200"];
+	"Test::__construct()" -> "Foo::__construct()" [pos="e,419,172 76,560 82,486 107,215 170,164 205,135 333,155 409,170"];
+	"Test::__construct()" -> "stdClass::__construct()" [pos="e,226,56 77,560 84,482 115,174 170,96 182,80 199,68 217,60"];
+	"Test::__construct()" -> "Foo::getInputString()" [pos="e,396,110 76,560 82,485 108,205 170,147 202,119 309,112 386,110"];
+	"Test::__construct()" -> "Bar::add($x, $y)" [pos="e,238,358 79,560 88,521 114,431 170,383 186,369 209,363 228,360"];
+	"Test::__construct()" -> "userDefinedFunction($nix, $ar, &$ref, $std, $na, $opt, $def)" [pos="e,208,538 116,565 133,560 152,553 170,548 179,546 189,543 198,540"];
+	"Test::__construct()" -> "time()" [pos="e,446,423 89,560 106,540 137,508 170,492 248,456 279,490 360,464 388,455 417,441 437,428"];
+}

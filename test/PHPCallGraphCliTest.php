@@ -6,6 +6,7 @@ set_include_path(
     realpath(dirname(__FILE__) . '/../src') . PATH_SEPARATOR
     . realpath(dirname(__FILE__) . '/../lib/ezcomponents-instantsvc/components') . PATH_SEPARATOR
     //. realpath(dirname(__FILE__) . '/../lib/ezcomponents') . PATH_SEPARATOR
+    . realpath(dirname(__FILE__) . '/../lib') . PATH_SEPARATOR
     . get_include_path() . PATH_SEPARATOR
     . realpath(dirname(__FILE__) . '/../lib/pear')
 );
@@ -56,18 +57,26 @@ class PHPCallGraphCliTest extends PHPUnit_Framework_TestCase
         );
         $optionSets = array(
             '',
-            '-p',
-            '-n',
-            '-d',
+            '--noexternalcalls',
+            '--phpfunctions',
+            '--noexternalcalls --phpfunctions',
         );
-        // TODO: test different output drivers
         $argumentSets = array(
             'testfiles',
+        );
+        $outputFormats = array(
+            'txt',
+            'array',
+            'deadcode',
+            //'cga', cannot be tested like this, since it contains absolute paths
+            'dot',
         );
 
         foreach ($optionSets as $optionSet) {
             foreach ($argumentSets as $argumentSet) {
-                $commandLines[] = array($optionSet, $argumentSet);
+                foreach ($outputFormats as $outputFormat) {
+                    $commandLines[] = array($optionSet, $argumentSet, $outputFormat);
+                }
             }
         }
         return $commandLines;
@@ -76,14 +85,31 @@ class PHPCallGraphCliTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getCommandLines
      */
-    public function testRun($options, $arguments) {
+    public function testRun($options, $arguments, $outputFormat) {
         $outputDir = dirname(__FILE__) . '/output';
         if (!file_exists($outputDir)) {
             mkdir($outputDir, 0766, true);
         }
-        $outputFileName = "phpcallgraph $options -- " . preg_replace('/[^-.+A-Za-z0-9]/', '_', $arguments) . '.txt';
+        switch ($outputFormat) {
+            case 'dot':
+                $extension = '.dot';
+                break;
+            case 'cga':
+                $extension = '.xml';
+                break;
+            default:
+                $extension = '.txt';
+        }
+        $outputFileName = 'phpcallgraph ';
+        if (!empty($options)) {
+            $outputFileName .= $options . ' ';
+        }
+        $outputFileName .= "--format $outputFormat -- "
+            . preg_replace('/[^-.+A-Za-z0-9]/', '_', $arguments) . $extension;
         $outputFile = $outputDir . '/' . $outputFileName;
         $_SERVER["argv"] = explode(' ', $options);
+        $_SERVER["argv"][] = '-f';
+        $_SERVER["argv"][] = $outputFormat;
         $_SERVER["argv"][] = '-o';
         $_SERVER["argv"][] = $outputFile;
         $_SERVER["argv"][] = '--';
