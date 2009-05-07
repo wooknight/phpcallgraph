@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 require_once 'PHPUnit/Framework.php';
 
@@ -88,7 +87,7 @@ class PHPCallGraphCliTest extends PHPUnit_Framework_TestCase
         $_SERVER["argv"][] = '-o';
         $_SERVER["argv"][] = $outputFile;
         $_SERVER["argv"][] = '--';
-        $_SERVER["argv"] = array_merge($_SERVER["argv"], explode(' ', $arguments));
+        $_SERVER["argv"] = array_merge($_SERVER["argv"], explode(' ' . dirname(__FILE__) . '/' , dirname(__FILE__) . '/' . $arguments));
         //var_dump($_SERVER["argv"]);
         $this->object->run();
         $actual = file_get_contents($outputFile);
