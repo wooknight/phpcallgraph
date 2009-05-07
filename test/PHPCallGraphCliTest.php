@@ -86,10 +86,13 @@ class PHPCallGraphCliTest extends PHPUnit_Framework_TestCase
      * @dataProvider getCommandLines
      */
     public function testRun($options, $arguments, $outputFormat) {
+        // create output folder
         $outputDir = dirname(__FILE__) . '/output';
         if (!file_exists($outputDir)) {
             mkdir($outputDir, 0766, true);
         }
+
+        // create output file name
         switch ($outputFormat) {
             case 'dot':
                 $extension = '.dot';
@@ -105,21 +108,31 @@ class PHPCallGraphCliTest extends PHPUnit_Framework_TestCase
             $outputFileName .= $options . ' ';
         }
         $outputFileName .= "--format $outputFormat -- "
-            . preg_replace('/[^-.+A-Za-z0-9]/', '_', $arguments) . $extension;
+            . preg_replace('/[^-.+A-Za-z0-9]/', '-', $arguments) . $extension;
+        $outputFileName = str_replace(' ', '_', $outputFileName);
         $outputFile = $outputDir . '/' . $outputFileName;
-        $_SERVER["argv"] = explode(' ', $options);
-        $_SERVER["argv"][] = '-f';
+
+        // set commandline arguments
+        $_SERVER["argv"] = array('phpcallgraph');
+        if (!empty($options)) {
+            $_SERVER["argv"] = array_merge($_SERVER["argv"], explode(' ', $options));
+        }
+        $_SERVER["argv"][] = '--format';
         $_SERVER["argv"][] = $outputFormat;
-        $_SERVER["argv"][] = '-o';
+        $_SERVER["argv"][] = '--outputfile';
         $_SERVER["argv"][] = $outputFile;
         $_SERVER["argv"][] = '--';
         $_SERVER["argv"] = array_merge($_SERVER["argv"], explode(' ' . dirname(__FILE__) . '/' , dirname(__FILE__) . '/' . $arguments));
         //var_dump($_SERVER["argv"]);
+
+        // start phpCallGraph
         $this->object->run();
+
+        // compare actual output with Subversion's text base
         $actual = file_get_contents($outputFile);
         $expectedFile = "$outputDir/.svn/text-base/$outputFileName.svn-base";
         $expected = file_get_contents($expectedFile);
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expected, $actual, implode(' ', $_SERVER["argv"]));
     }
 }
 ?>

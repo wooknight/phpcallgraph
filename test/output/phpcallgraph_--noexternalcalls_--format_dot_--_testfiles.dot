@@ -1,0 +1,34 @@
+digraph G {
+	graph [fontname=Verdana, fontsize=12, rankdir=LR];
+	node [label="\N"];
+	graph [bb="0,0,298,540"];
+	subgraph cluster_Bar {
+		graph [label=Bar,
+			color=gray20,
+			lp="95,334",
+			bb="24,54,166,346"];
+		"Bar::sayHello()" [label=sayHello, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,296", width="1.28", height="0.50"];
+		"Bar::add($x, $y)" [label=add, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,242", width="0.75", height="0.50"];
+		"Bar::arraySum($array)" [label=arraySum, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,188", width="1.36", height="0.50"];
+		"Bar::getFoo()" [label=getFoo, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,134", width="1.08", height="0.50"];
+		"Bar::duplicateFoo($inputFoo)" [label=duplicateFoo, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,80", width="1.75", height="0.50"];
+	}
+	subgraph cluster_Foo {
+		graph [label=Foo,
+			color=gray20,
+			lp="95,436",
+			bb="16,354,174,448"];
+		"Foo::getInputString()" [label=getInputString, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,380", width="1.94", height="0.50"];
+		"Foo::getInputString()" -> "Foo::getInputString()" [pos="e,122,397 68,397 61,407 71,416 95,416 110,416 120,412 123,407"];
+	}
+	subgraph cluster_Test {
+		graph [label=Test,
+			color=gray20,
+			lp="159,520",
+			bb="28,456,290,532"];
+		"Test::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,482", width="1.61", height="0.50"];
+		"Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=test, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="254,482", width="0.75", height="0.50"];
+		"Test::__construct()" -> "Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [pos="e,226,482 154,482 175,482 197,482 216,482"];
+	}
+	"userDefinedFunction($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=userDefinedFunction, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,26", width="2.61", height="0.50"];
+}

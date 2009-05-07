@@ -1,4 +1,6 @@
+userDefinedFunction($nix, $ar, &$ref, $std, $na, $opt, $def)
 Bar::sayHello()
+Bar::add($x, $y)
 Bar::arraySum($array)
 Bar::getFoo()
 Bar::duplicateFoo($inputFoo)
