@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="phpCallGraph" default="build" basedir=".">
+  <target name="build" depends="php-documentor,php-codesniffer,phpunit"/>
+  <target name="checkout">
+    <exec executable="svn" dir="${basedir}" failonerror="on">
+      <arg line="up"/>
+    </exec>
+  </target>
+  <target name="php-documentor">
+    <exec executable="phpdoc" dir="${basedir}" logerror="on">
+      <arg line="--title '${ant.project.name}' -ue on -t ${basedir}/docs/api -d src -tb '/home/falko/tools/phpUnderControl-svn/data/phpdoc' -o HTML:Phpuc:phpuc"/>
+    </exec>
+  </target>
+  <target name="php-codesniffer">
+    <mkdir dir="${basedir}/build/logs"/>
+    <exec executable="phpcs" dir="${basedir}" output="${basedir}/build/logs/checkstyle.xml" error="/tmp/checkstyle.error.log">
+      <arg line="--report=checkstyle --standard=PEAR src"/>
+    </exec>
+  </target>
+  <target name="phpunit">
+    <exec executable="phpunit" dir="${basedir}" failonerror="on">
+      <arg line=" --log-xml ${basedir}/build/logs/phpunit.xml --log-pmd ${basedir}/build/logs/phpunit.pmd.xml --coverage-xml ${basedir}/build/logs/phpunit.coverage.xml --coverage-html ${basedir}/docs/coverage PHPCallGraphCliTest test/PHPCallGraphCliTest.php"/>
+    </exec>
+  </target>
+</project>
