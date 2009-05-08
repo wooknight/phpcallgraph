@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is a configuration file for phpUnderControl respectively Cruise Control. -->
+<cruisecontrol>
+  <project name="phpCallGraph" buildafterfailed="false">
+    <listeners>
+      <currentbuildstatuslistener file="logs/${project.name}/status.txt"/>
+    </listeners>
+    <modificationset>
+      <svn localWorkingCopy="projects/phpCallGraph"/>
+    </modificationset>
+    <bootstrappers>
+      <svnbootstrapper localWorkingCopy="projects/phpCallGraph"/>
+    </bootstrappers>
+    <schedule interval="120">
+      <ant anthome="apache-ant-1.7.0" buildfile="projects/${project.name}/build.xml"/>
+    </schedule>
+    <log dir="logs/${project.name}">
+      <merge dir="projects/${project.name}/build/logs/"/>
+    </log>
+    <publishers>
+      <currentbuildstatuspublisher file="logs/${project.name}/buildstatus.txt"/>
+      <artifactspublisher dir="projects/${project.name}/docs/api" dest="artifacts/${project.name}" subdirectory="api"/>
+      <artifactspublisher dir="projects/${project.name}/docs/coverage" dest="artifacts/${project.name}" subdirectory="coverage"/>
+      <execute command="phpuc graph logs/${project.name} artifacts/${project.name}"/>
+    </publishers>
+  </project>
+</cruisecontrol>
