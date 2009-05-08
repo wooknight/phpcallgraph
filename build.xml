@@ -22,4 +22,8 @@
       <arg line=" --log-xml ${basedir}/build/logs/phpunit.xml --log-pmd ${basedir}/build/logs/phpunit.pmd.xml --coverage-xml ${basedir}/build/logs/phpunit.coverage.xml --coverage-html ${basedir}/docs/coverage PHPCallGraphCliTest test/PHPCallGraphCliTest.php"/>
     </exec>
   </target>
+  <target name="clean">
+    <delete dir="${basedir}/build"/>
+    <delete dir="${basedir}/docs"/>
+  </target>
 </project>
