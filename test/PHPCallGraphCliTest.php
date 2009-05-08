@@ -1,6 +1,10 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
+PHPUnit_Util_Filter::addDirectoryToWhitelist(
+    realpath(dirname(__FILE__) . '/../src'), '.php'
+);
+
 // set up include path
 set_include_path(
     realpath(dirname(__FILE__) . '/../src') . PATH_SEPARATOR
