@@ -181,6 +181,10 @@ class PHPCallGraphCli {
                     require_once 'drivers/DeadCodeDriver.php';
                     $driver = new DeadCodeDriver($verboseOption->value);
                     break;
+                case 'umlgraph':
+	            require_once 'drivers/UmlGraphSequenceDiagramDriver.php';
+   		    $driver = new UmlGraphSequenceDiagramDriver();
+        	    break;
                 case false:
                 case 'txt':
                     require_once 'drivers/TextDriver.php';
