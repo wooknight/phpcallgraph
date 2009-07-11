@@ -33,6 +33,8 @@ require_once 'CallgraphDriver.php';
 /**
  * implementation of a call graph generation strategy which renders output as a UML Graph Sequence Diagram input file
  * a later evolution may output as the graphic, for now we do the input file.
+ *
+ * A good variant for someone to build would be an XMI sequence diagram.
  */
 class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
 
@@ -64,6 +66,8 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
     }
 
     public function __destruct() {
+    	  $this->closeObjects();
+
     	   print "===========Finishing: \n\n";
 //	   print $this->graphInput;
     }
@@ -145,7 +149,14 @@ maxpsht  =11;   #Maximum height of picture
     }
 
     protected function objForCaller ($caller) {
+       $this->commentToGraph("Calling from $caller");
        $caller = $this->removeAnyParameters($caller);
+       $this->commentToGraph("Calling from $caller");
+
+       $caller = $this->removeAnyMethod($caller);
+
+
+       $this->commentToGraph("Calling from $caller");       
        return $this->objForClass($caller);
 //        $classAndMethod = $this->getClassAndMethod($caller);
 //        $class = $classAndMethod['class'];
@@ -164,13 +175,28 @@ maxpsht  =11;   #Maximum height of picture
 //    print "removeAnyMETHOD $string\n";
       $methodStart = strpos($string, '::');
       if ($methodStart) {
-         $string = substr($string, 0, $paramsStart);
+         $string = substr($string, 0, $methodStart);
       }
 //      print "ANS=$string\n";
       return $string;
     }
 
+
+    protected function classForObj ($object) {
+    
+    	if (strpos($object,'Obj') === false) {
+	   die("Object nameshould have contained Obj (was $object)\n");
+	} else {
+	   return substr($object, strlen('Obj'));
+	}
+    }
+
     protected function objForClass ($class) {
+       if ($class == '') {
+         die ("Class should not be empty! '$class'");
+       }
+
+
     	$class = $this->removeAnyMethod($class);
      	$class = $this->removeAnyParameters($class);
 	$obj = $class;
@@ -180,7 +206,7 @@ maxpsht  =11;   #Maximum height of picture
 	   print "Adding Obj to $class\n";
 	   $obj = 'Obj'.$class;
 	} else {
-	   print "$obj already contained Obj\n";
+	   exit("$obj already contained Obj\n");
 	}
 
     	return $obj;
@@ -214,8 +240,9 @@ maxpsht  =11;   #Maximum height of picture
 
 		$this->registerObjectIfNew($fromObj);
 		$this->registerObjectIfNew($destObj);
-#		$this->addToMessageSequences('create_message('.$fromObj.','.$destObj.',"eh");'); 
-		$this->addToMessageSequences('message('.$fromObj.','.$destObj.',"'.$this->sequenceNumber." ".$method.'");'); // can use $name instead of $method
+#		$this->addToMessageSequences('create_message('.$fromObj.','.$destObj.','.$name.');'); 
+		$this->addToMessageSequences('message('.$destObj.','.$fromObj.',"'.$this->sequenceNumber." ".$method.'");'); // can use $name instead of $method
+#		$this->addToMessageSequences('message('.$fromObj.','.$destObj.',"'.$this->sequenceNumber." ".$method.'");'); // can use $name instead of $method
 		$this->addToMessageSequences('step();');
 		$this->sequenceNumber++;
         } else {
@@ -232,6 +259,7 @@ maxpsht  =11;   #Maximum height of picture
 	$this->commentToGraph("endFunction");
 //    	$this->addToMessageSequences("return_message();");
 	$this->addToMessageSequences("\n");
+
 	$this->closeObjects();
     }
 
@@ -244,7 +272,7 @@ maxpsht  =11;   #Maximum height of picture
 	    $this->addToClosedown("inactive(".$object.");");
 	    $this->addToClosedown("complete(".$object.");");
 	}
-	$this->objects = array();
+#	$this->objects = array();
     } 
 
     protected function getClassAndMethod($name) {
@@ -284,18 +312,18 @@ maxpsht  =11;   #Maximum height of picture
 
     protected function registerObjectIfNew($object) {
         
-        if ($object == '') {
+        if ($object == 'ObjClassUnknown') {
 	   return;
 	}
     	print "REGISTERING $object\n";
     	if (! $this->objects[$object]) {
 	   $this->objects[$object] = 1;
 
-	   $this->registerObject($object);
+	   $this->_registerObject($object);
 	}
     }   
 
-    protected function registerObject ($object) {
+    protected function _registerObject ($object) {
     
 	if (	
 	   ($object == '') || (strpos($object, 'Obj') === false)
@@ -303,11 +331,11 @@ maxpsht  =11;   #Maximum height of picture
 	   print "Trying to register non-object :".$object;
 	   exit ("DIE");
 	}
-
+	$class = $this->classForObj($object);
 	$this->addToObjectDefinitions('object('
                    . $object.''
                    . ','
-                   . '":'.$object.'"'
+                   . '":'.$class.'"'
                    . ');'
 		 );
         $this->addToObjectDefinitions('step();');
