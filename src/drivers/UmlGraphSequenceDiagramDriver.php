@@ -53,12 +53,16 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
     protected $currentCaller = '';
     protected $internalFunctions;
 
+    protected $graphInit;
+    protected $graphDefinitions;
+    protected $graphSequence;
+    protected $graphClosedown;
+
     /**
      * @return CallgraphDriver
      */
     public function __construct($outputFormat = 'txt', $sequenceLibrary = '/usr/local/lib/sequence.pic') {
     	print "\n\n\n\n===================================\n";
-        $this->initializeNewGraph();
         $this->setSequenceLibrary($sequenceLibrary);
         $this->setOutputFormat($outputFormat);
         $functions = get_defined_functions();
@@ -83,6 +87,11 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
      * @return void
      */
     protected function initializeNewGraph() {
+     $this->graphInit = '';
+     $this->graphDefinitions = '';
+     $this->graphSequence = '';
+     $this->graphClosedown = '';
+
      $sequenceNumber = 1;
     	      $this->addToInit( ".PS\n" .
 			     'copy "/usr/local/lib/sequence.pic";');
@@ -95,8 +104,8 @@ awid     =1.0; # Active lifeline width
 spacing  =0.25;  #Spacing between messages
 movewid  =0.75; #Spacing between objects
 dashwid  =0.05; #Interval for dashed lines
-maxpswid =11;   #Maximum width of picture
-maxpsht  =11;   #Maximum height of picture
+maxpswid =50;   #Maximum width of picture
+maxpsht  =50;   #Maximum height of picture
 	 ");
 
     }
@@ -138,14 +147,21 @@ maxpsht  =11;   #Maximum height of picture
      * @return void
      */
     public function startFunction($line, $file, $name) {
+        $this->currentCaller = $name;
+        $this->initializeNewGraph();
+
         print "startFunction:  $file:$line = $name\n";
 	$this->commentToGraph("startFunction:  $file:$line = $name");
 	$classAndMethod = $this->getClassAndMethod($name);
         $class = $classAndMethod['class'];
         $method = $classAndMethod['method'];
 
-        $this->addNode($class);
-        $this->currentCaller = $name;
+	$obj = $this->objForClass($class);	
+	$this->registerObjectIfNew($obj);
+
+	$this->addToInit('pobject(Incoming,"External Messages")');
+	$this->addToMessageSequences('message(Incoming,'.$obj.',"'.$method	.'")');
+
     }
 
     protected function objForCaller ($caller) {
@@ -261,6 +277,31 @@ maxpsht  =11;   #Maximum height of picture
 	$this->addToMessageSequences("\n");
 
 	$this->closeObjects();
+
+	$filename = $this->filenameForFunctionSequenceGraph($this->currentCaller);
+	file_put_contents(
+		$filename,
+		 $this->__toString()
+		 );
+	$this->convertSequenceGraphFileToSequenceGraph($filename);
+
+    }
+
+    protected $pic2plot = 'pic2plot';
+    protected function convertSequenceGraphFileToSequenceGraph($filename) {
+        $outfile = $filename.'.png';
+    	$cmd = implode(' ',array($this->pic2plot,$filename,'-Tpng','>',$outfile));
+	print "CMD:". $cmd. "\n";
+	exec($cmd);
+    }
+
+    protected function filenameForFunctionSequenceGraph($function) {
+    	 $filename = $function;
+	 $filename = str_replace('::', '..', $filename);
+	 $filename = $this->removeAnyParameters($filename);
+	 $filename = $filename . '.umlgraphSeq';
+    	 print "SAVING FOR $function as $filename:\n";
+	 return 'output/'.$filename;
     }
 
     /** 
@@ -272,7 +313,7 @@ maxpsht  =11;   #Maximum height of picture
 	    $this->addToClosedown("inactive(".$object.");");
 	    $this->addToClosedown("complete(".$object.");");
 	}
-#	$this->objects = array();
+	$this->objects = array();
     } 
 
     protected function getClassAndMethod($name) {
@@ -298,17 +339,7 @@ maxpsht  =11;   #Maximum height of picture
                 $class = 'internal PHP functions';
             }
         }
-}		
-
-    /**
-     * @return boolean whether it was a valid add
-     */
-
-    protected function addNode($class) {
-
-	$obj = $this->objForClass($class);	
-	return $this->registerObjectIfNew($obj);
-    }
+    }		
 
     protected function registerObjectIfNew($object) {
         
