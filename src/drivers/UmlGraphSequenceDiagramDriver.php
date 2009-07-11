@@ -37,9 +37,13 @@ require_once 'CallgraphDriver.php';
 class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
 
     /** 
-      classes already seen
+      objects already seen
     */
-    protected $classes = array();
+    protected $objects = array();
+    /**
+    sequence number of the last message
+    */
+    protected $sequenceNumber = 0;
     protected $outputFormat;
     protected $useColor = true;
     protected $graphInput = '';
@@ -75,8 +79,22 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
      * @return void
      */
     protected function initializeNewGraph() {
-    	      $this->addToGraph( ".PS\n" .
+     $sequenceNumber = 1;
+    	      $this->addToInit( ".PS\n" .
 			     'copy "/usr/local/lib/sequence.pic";');
+	$this->addToInit("
+# These are all the defaults 
+#Variable Name  Default Value   Operation
+boxht    =0.3; #       Object box height
+boxwid   =0.75; #       Object box width
+awid     =1.0; # Active lifeline width
+spacing  =0.25;  #Spacing between messages
+movewid  =0.75; #Spacing between objects
+dashwid  =0.05; #Interval for dashed lines
+maxpswid =11;   #Maximum width of picture
+maxpsht  =11;   #Maximum height of picture
+	 ");
+
     }
 
     /**
@@ -168,18 +186,6 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
     	return $obj;
     } 
 
-    protected function registerClassIfNew($class) {
-        
-        if ($class == '') {
-	   return;
-	}
-    	print "REGISTERING $class\n";
-    	if (! $this->classes[$class]) {
-	   $this->classes[$class] = 1;
-
-	   $this->registerClass($class);
-	}
-    }   
 
     /**
      * @param integer $line
@@ -206,10 +212,12 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
 		print "                    class=$destClass; method=$method obj=$destObj\n";
 		print "$fromObj->$destObj\n";
 
-		$this->registerClassIfNew($fromObj);
-		$this->registerClassIfNew($destClass);
-		$this->addToGraph('message('.$fromObj.','.$destObj.',"'.$method.'");'); // can use $name instead of $method
-		$this->addToGraph('step();');
+		$this->registerObjectIfNew($fromObj);
+		$this->registerObjectIfNew($destObj);
+#		$this->addToMessageSequences('create_message('.$fromObj.','.$destObj.',"eh");'); 
+		$this->addToMessageSequences('message('.$fromObj.','.$destObj.',"'.$this->sequenceNumber." ".$method.'");'); // can use $name instead of $method
+		$this->addToMessageSequences('step();');
+		$this->sequenceNumber++;
         } else {
 //		print "                   SKIPPED caller=$caller; class=$destClass; method=$method obj=$destObj\n";
 	}
@@ -221,22 +229,22 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
      * @return void
      */
     public function endFunction() {
-    	print "endFunction\n\n";
-//    	$this->addToGraph("return_message();");
-	$this->addToGraph("\n");
+	$this->commentToGraph("endFunction");
+//    	$this->addToMessageSequences("return_message();");
+	$this->addToMessageSequences("\n");
 	$this->closeObjects();
     }
 
     /** 
-    * Close the classes currently held open
-    * Likely that this should be called close Objects, and that the class list should be an object list
+    * Close the objects currently held open
     */
     protected function closeObjects() {
-    	foreach ($this->classes as $class => $dummy) { // smell dummy should be objects in the class.
-	    print "Closing $class\n";
-	    $this->addToGraph("complete(".$this->objForClass($class).")");
+    	foreach ($this->objects as $object => $dummy) {
+	    print "Closing $object\n";
+	    $this->addToClosedown("inactive(".$object.");");
+	    $this->addToClosedown("complete(".$object.");");
 	}
-	$this->classes = array();
+	$this->objects = array();
     } 
 
     protected function getClassAndMethod($name) {
@@ -268,51 +276,88 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
      * @return boolean whether it was a valid add
      */
 
-    protected function addNode($name) {
+    protected function addNode($class) {
 
-        print "addNode: $name\n";
-	$classAndMethod = $this->getClassAndMethod($name);
-	$class = $classAndMethod['class'];
-	$method = $classAndMethod['method'];
-	$this->registerClass($class);
+	$obj = $this->objForClass($class);	
+	return $this->registerObjectIfNew($obj);
     }
 
-    protected function registerClass ($class) {
-    
-	if ($class == 'ClassUnknown' || $class == '') {
-	   return false;
+    protected function registerObjectIfNew($object) {
+        
+        if ($object == '') {
+	   return;
 	}
-	$obj = $this->objForClass($class);
-	$this->addToGraph('object('
-                   . $obj.''
+    	print "REGISTERING $object\n";
+    	if (! $this->objects[$object]) {
+	   $this->objects[$object] = 1;
+
+	   $this->registerObject($object);
+	}
+    }   
+
+    protected function registerObject ($object) {
+    
+	if (	
+	   ($object == '') || (strpos($object, 'Obj') === false)
+	   ) {
+	   print "Trying to register non-object :".$object;
+	   exit ("DIE");
+	}
+
+	$this->addToObjectDefinitions('object('
+                   . $object.''
                    . ','
-                   . '":'.$class.'"'
+                   . '":'.$object.'"'
                    . ');'
 		 );
-	$this->addToGraph('active('.$obj.');');
-        $this->addToGraph('step();');
+        $this->addToObjectDefinitions('step();');
+	$this->addToObjectDefinitions('active('.$object.');');
+        $this->addToObjectDefinitions('step();');
         return true;
     }
 
-    protected function addToGraph($string) {
-        $this->graphInput .= $string."\n";
-	print "|| \n";
-	print "||    ".$string."\n";
-	print "|| \n";
+    protected function debug($section, $string) {
+        print "|$section | ".$string."\n";
+    }
+
+    protected function addToInit($string) {
+        $this->graphInit .= $string."\n";
+	$this->debug('init', $string );
+    }
+    
+
+    protected function addToObjectDefinitions($string) {
+        $this->graphDefinitions .= $string."\n";
+	$this->debug('def', $string );
+    }
+   
+
+    protected function addToMessageSequences($string) {
+        $this->graphSequence .= $string."\n";
+	$this->debug('seq', $string );
+    }
+    
+
+    protected function addToClosedown($string) {
+        $this->graphClosedown .= $string."\n";
+	$this->debug('closedown', $string );
     }
     
 
     protected function commentToGraph($string) {
-        $this->graphInput .= '# '.$string."\n";
+        $this->addToMessageSequences('# '.$string);
     }   
 
     /**
      * @return string
      */
     public function __toString() {
-	$this->addToGraph("\n.PE");
+	$this->addToClosedown("\n.PE"); // SMELL: move
 
-        return $this->graphInput;
+        return $this->graphInit . 
+	       $this->graphDefinitions .
+	       $this->graphSequence .
+	       $this->graphClosedown;
     }
 
 }
