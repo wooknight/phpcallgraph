@@ -99,8 +99,8 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
 # These are all the defaults 
 #Variable Name  Default Value   Operation
 boxht    =0.3; #       Object box height
-boxwid   =0.75; #       Object box width
-awid     =1.0; # Active lifeline width
+boxwid   =1.25; #       Object box width
+awid     =0.25; # Active lifeline width
 spacing  =0.25;  #Spacing between messages
 movewid  =0.75; #Spacing between objects
 dashwid  =0.05; #Interval for dashed lines
@@ -160,8 +160,7 @@ maxpsht  =50;   #Maximum height of picture
 	$this->registerObjectIfNew($obj);
 
 	$this->addToInit('pobject(Incoming,"External Messages")');
-	$this->addToMessageSequences('message(Incoming,'.$obj.',"'.$method	.'")');
-
+	$this->addToMessageSequences('message(Incoming,'.$obj.',"'.$method.'");');
     }
 
     protected function objForCaller ($caller) {
@@ -174,9 +173,6 @@ maxpsht  =50;   #Maximum height of picture
 
        $this->commentToGraph("Calling from $caller");       
        return $this->objForClass($caller);
-//        $classAndMethod = $this->getClassAndMethod($caller);
-//        $class = $classAndMethod['class'];
-//	return $this->objForClass($class);
     }
 
     protected function removeAnyParameters ($string) {
@@ -237,19 +233,20 @@ maxpsht  =50;   #Maximum height of picture
      */
     public function addCall($line, $file, $name) {
 	$caller = $this->currentCaller;
-//         print "addCall from $caller:$line to $file = $class, $method\n";
-
-
 	$classAndMethod = $this->getClassAndMethod($name);
 	$destClass = $classAndMethod['class'];
 	$method = $classAndMethod['method'];
-	$method = $this->removeAnyParameters($method);
+
+        $this->commentToGraph("addCall from $caller:$line to $file = $destClass, $method\n"); # TODO: comment
+
+
+//	$method = $this->removeAnyParameters($method);
 
 	$fromObj = $this->objForCaller($caller);
 	$destObj = $this->objForClass($destClass);
 
 
-        if ($destClass != 'ClassUnknown') {
+//        if ($destClass != 'ClassUnknown') {
 		print "                   from caller=$caller:line to $file;\n";
 		print "                    class=$destClass; method=$method obj=$destObj\n";
 		print "$fromObj->$destObj\n";
@@ -257,13 +254,13 @@ maxpsht  =50;   #Maximum height of picture
 		$this->registerObjectIfNew($fromObj);
 		$this->registerObjectIfNew($destObj);
 #		$this->addToMessageSequences('create_message('.$fromObj.','.$destObj.','.$name.');'); 
-		$this->addToMessageSequences('message('.$destObj.','.$fromObj.',"'.$this->sequenceNumber." ".$method.'");'); // can use $name instead of $method
-#		$this->addToMessageSequences('message('.$fromObj.','.$destObj.',"'.$this->sequenceNumber." ".$method.'");'); // can use $name instead of $method
+#		$this->addToMessageSequences('message('.$destObj.','.$fromObj.',"'.$this->sequenceNumber." ".$method.'");'); // can use $name instead of $method
+		$this->addToMessageSequences('message('.$fromObj.','.$destObj.',"'.$this->sequenceNumber." ".$method.'");'); // can use $name instead of $method
 		$this->addToMessageSequences('step();');
 		$this->sequenceNumber++;
-        } else {
+//        } else {
 //		print "                   SKIPPED caller=$caller; class=$destClass; method=$method obj=$destObj\n";
-	}
+//	}
 
 
     }
@@ -275,8 +272,30 @@ maxpsht  =50;   #Maximum height of picture
 	$this->commentToGraph("endFunction");
 //    	$this->addToMessageSequences("return_message();");
 	$this->addToMessageSequences("\n");
+	$this->addToMessageSequences("\n");
 
 	$this->closeObjects();
+
+	$this->addToMessageSequences("step();");
+	$this->addToMessageSequences("step();");
+	$this->addToMessageSequences("step();");
+
+	$obj = $this->objForCaller($this->currentCaller); 
+        $this->addToObjectDefinitions('pobject(Filler1);');	
+
+        $classAndMethod = $this->getClassAndMethod($this->currentCaller);
+	$class = $classAndMethod['class'];
+        $method = $classAndMethod['method'];
+
+	if ($class != 'ClassUnknown') { // SMELL - why would we get this?
+	  $method = $this->removeAnyParameters($method);
+	  $codeForFunction = $this->getCodeForClassAndMethod($class, $method);
+	} else {
+	  $codeForFunction = 'ClassUnknown';
+	}	
+	// $comment = reformatForComment($codeForFunction);
+	$comment='"'.$codeForFunction.'"';
+//	$this->addToMessageSequences('comment('.$obj.',C, right, wid 2 ht 1 '.$comment.' );');
 
 	$filename = $this->filenameForFunctionSequenceGraph($this->currentCaller);
 	file_put_contents(
@@ -285,6 +304,13 @@ maxpsht  =50;   #Maximum height of picture
 		 );
 	$this->convertSequenceGraphFileToSequenceGraph($filename);
 
+    }
+
+    protected function getCodeForClassAndMethod($class, $method) {
+    	print "CODE FOR $class $method";
+        //$methodObj = new ezcReflectionMethod($class, $method); TODO: why is this broken?
+	//return $methodObj->getCode();
+	return 'Hello World';
     }
 
     protected $pic2plot = 'pic2plot';
@@ -330,22 +356,13 @@ maxpsht  =50;   #Maximum height of picture
             $method = $nameParts[1];
         }
 	return array('class' => $class, 'method' => $method);
-
     }
-
-    protected function notUsed() {
-        if (count($nameParts) == 1) { // function call
-            if (in_array($label, $this->internalFunctions)) { // call to internal function
-                $class = 'internal PHP functions';
-            }
-        }
-    }		
 
     protected function registerObjectIfNew($object) {
         
-        if ($object == 'ObjClassUnknown') {
-	   return;
-	}
+//        if ($object == 'ObjClassUnknown') {
+//	   return;
+//	}
     	print "REGISTERING $object\n";
     	if (! $this->objects[$object]) {
 	   $this->objects[$object] = 1;
@@ -372,6 +389,8 @@ maxpsht  =50;   #Maximum height of picture
         $this->addToObjectDefinitions('step();');
 	$this->addToObjectDefinitions('active('.$object.');');
         $this->addToObjectDefinitions('step();');
+
+        $this->addToObjectDefinitions('pobject(FillerO);');
         return true;
     }
 
