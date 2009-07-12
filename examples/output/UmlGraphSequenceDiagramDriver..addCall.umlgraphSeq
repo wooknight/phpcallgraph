@@ -1,0 +1,67 @@
+.PS
+copy "/usr/local/lib/sequence.pic";
+
+# These are all the defaults 
+#Variable Name  Default Value   Operation
+boxht    =0.3; #       Object box height
+boxwid   =1.25; #       Object box width
+awid     =0.25; # Active lifeline width
+spacing  =0.25;  #Spacing between messages
+movewid  =0.75; #Spacing between objects
+dashwid  =0.05; #Interval for dashed lines
+maxpswid =50;   #Maximum width of picture
+maxpsht  =50;   #Maximum height of picture
+	 
+pobject(Incoming,"External Messages")
+object(ObjUmlGraphSequenceDiagramDriver,":UmlGraphSequenceDiagramDriver");
+step();
+active(ObjUmlGraphSequenceDiagramDriver);
+step();
+pobject(FillerO);
+pobject(Filler1);
+# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:227 = UmlGraphSequenceDiagramDriver::addCall($line, $file, $name)
+message(Incoming,ObjUmlGraphSequenceDiagramDriver,"addCall($line, $file, $name)");
+# addCall from UmlGraphSequenceDiagramDriver::addCall($line, $file, $name):230 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, getClassAndMethod($name)
+
+message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"101 getClassAndMethod($name)");
+step();
+# addCall from UmlGraphSequenceDiagramDriver::addCall($line, $file, $name):234 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, commentToGraph($string)
+
+message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"102 commentToGraph($string)");
+step();
+# addCall from UmlGraphSequenceDiagramDriver::addCall($line, $file, $name):239 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, objForCaller($caller)
+
+message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"103 objForCaller($caller)");
+step();
+# addCall from UmlGraphSequenceDiagramDriver::addCall($line, $file, $name):240 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, objForClass($class)
+
+message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"104 objForClass($class)");
+step();
+# addCall from UmlGraphSequenceDiagramDriver::addCall($line, $file, $name):248 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, registerObjectIfNew($object)
+
+message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"105 registerObjectIfNew($object)");
+step();
+# addCall from UmlGraphSequenceDiagramDriver::addCall($line, $file, $name):249 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, registerObjectIfNew($object)
+
+message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"106 registerObjectIfNew($object)");
+step();
+# addCall from UmlGraphSequenceDiagramDriver::addCall($line, $file, $name):252 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, addToMessageSequences($string)
+
+message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"107 addToMessageSequences($string)");
+step();
+# addCall from UmlGraphSequenceDiagramDriver::addCall($line, $file, $name):253 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, addToMessageSequences($string)
+
+message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"108 addToMessageSequences($string)");
+step();
+# endFunction
+
+
+
+
+step();
+step();
+step();
+inactive(ObjUmlGraphSequenceDiagramDriver);
+complete(ObjUmlGraphSequenceDiagramDriver);
+
+.PE
