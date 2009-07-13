@@ -35,6 +35,10 @@ require_once 'CallgraphDriver.php';
  * a later evolution may output as the graphic, for now we do the input file.
  *
  * A good variant for someone to build would be an XMI sequence diagram.
+ *
+ * TODO: add routines specific for messsage types, so instead of this:
+ *        $this->addToMessageSequences('message(Incoming,'.$obj.',"'.$method.'");');
+ *        $this->addToMessageSequencesMessage('Incoming',$obj,$method);
  */
 class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
 
@@ -46,17 +50,28 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
     sequence number of the last message
     */
     protected $sequenceNumber = 0;
-    protected $outputFormat;
     protected $useColor = true;
     protected $graphInput = '';
     protected $graph;
     protected $currentCaller = '';
     protected $internalFunctions;
 
+    /**
+	if true, then add a text box onto the page with the code from the current function in it.
+    */
+    protected $showMethodCodeInDiagram = false;
+
+    protected $saveMethodCodeIntoStandaloneFile = true;
+
     protected $graphInit;
     protected $graphDefinitions;
     protected $graphSequence;
     protected $graphClosedown;
+
+    /**
+	Output format
+    */
+    protected $outputFormat = 'png';
 
     /**
      * @return CallgraphDriver
@@ -96,7 +111,7 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
     	      $this->addToInit( ".PS\n" .
 			     'copy "/usr/local/lib/sequence.pic";');
 	$this->addToInit("
-# These are all the defaults 
+# Measured in virtual inches
 #Variable Name  Default Value   Operation
 boxht    =0.3; #       Object box height
 boxwid   =1.25; #       Object box width
@@ -104,8 +119,8 @@ awid     =0.25; # Active lifeline width
 spacing  =0.25;  #Spacing between messages
 movewid  =0.75; #Spacing between objects
 dashwid  =0.05; #Interval for dashed lines
-maxpswid =50;   #Maximum width of picture
-maxpsht  =50;   #Maximum height of picture
+maxpswid =18;   #Maximum width of picture
+maxpsht  =18;   #Maximum height of picture
 	 ");
 
     }
@@ -128,7 +143,9 @@ maxpsht  =50;   #Maximum height of picture
     	if ($outputFormat != 'txt') {
 	   print "WARNING: $outputFormat not yet supported\n";
 	}
-        $this->outputFormat = $outputFormat;
+//        $this->outputFormat = $outputFormat;
+
+	print "WARNING: outputFormat setting ignored (needs reconciling with driver)";
     }
 
     /**
@@ -138,6 +155,23 @@ maxpsht  =50;   #Maximum height of picture
      */
     public function setUseColor($boolean = true) {
         $this->useColor = $boolean;
+    }
+
+
+    /**
+	Gets the source code for the current member being examined.
+	Presently implemented through a hack global var.
+	@global $memberCode Source code wanted
+    */
+    protected function getSourceCodeForClassMethod() {
+    	    // Need to know the details about how to pick up the code - will we be passed them
+	    // or can we pick up via an interface on the parent CallgraphDriver?
+    	    
+            // obtain source code
+            //$memberCode = implode('', array_slice(file($file), $offset, $length));
+
+	    global $memberCode;
+	    return $memberCode;
     }
 
     /**
@@ -164,14 +198,8 @@ maxpsht  =50;   #Maximum height of picture
     }
 
     protected function objForCaller ($caller) {
-       $this->commentToGraph("Calling from $caller");
        $caller = $this->removeAnyParameters($caller);
-       $this->commentToGraph("Calling from $caller");
-
        $caller = $this->removeAnyMethod($caller);
-
-
-       $this->commentToGraph("Calling from $caller");       
        return $this->objForClass($caller);
     }
 
@@ -283,40 +311,89 @@ maxpsht  =50;   #Maximum height of picture
 	$obj = $this->objForCaller($this->currentCaller); 
         $this->addToObjectDefinitions('pobject(Filler1);');	
 
-        $classAndMethod = $this->getClassAndMethod($this->currentCaller);
-	$class = $classAndMethod['class'];
-        $method = $classAndMethod['method'];
-
-	if ($class != 'ClassUnknown') { // SMELL - why would we get this?
-	  $method = $this->removeAnyParameters($method);
-	  $codeForFunction = $this->getCodeForClassAndMethod($class, $method);
-	} else {
-	  $codeForFunction = 'ClassUnknown';
-	}	
-	// $comment = reformatForComment($codeForFunction);
-	$comment='"'.$codeForFunction.'"';
-//	$this->addToMessageSequences('comment('.$obj.',C, right, wid 2 ht 1 '.$comment.' );');
+	$code = $this->getCodeForCurrentClassAndMethod();
 
 	$filename = $this->filenameForFunctionSequenceGraph($this->currentCaller);
+
+	if ($this->showMethodCodeInDiagram) {
+	   $this->addCommentWithCodeIntoDiagram($code);
+	}
+
+	/* Save the UML Sequence Diagram */
 	file_put_contents(
 		$filename,
 		 $this->__toString()
 		 );
+
+	if ($this->saveMethodCodeIntoStandaloneFile) {
+	   $formattedCode=htmlspecialchars($code);
+		file_put_contents(
+		$filename.'.html',
+		 $formattedCode
+		 );
+	}
+
+
 	$this->convertSequenceGraphFileToSequenceGraph($filename);
 
     }
 
-    protected function getCodeForClassAndMethod($class, $method) {
-    	print "CODE FOR $class $method";
-        //$methodObj = new ezcReflectionMethod($class, $method); TODO: why is this broken?
-	//return $methodObj->getCode();
-	return 'Hello World';
+
+    protected function addCommentWithCodeIntoDiagram($codeForFunction) {
+	
+	$commentAndLineCount = $this->reformatForComment($codeForFunction);
+	$boxHeight = $commentAndLineCount['lineCount'] / 6 + 0.25;
+	
+// theoretically ljust would left justify rather than center. Oh well.
+// also could use a native box rather than a comment with it's folded comment.
+	$this->addToMessageSequences('comment('.$obj.',C, right down, wid 3 height '.$boxHeight.' '.$commentAndLineCount['code'].' );');
     }
 
+
+   protected function getCodeForCurrentClassAndMethod() {
+
+        $classAndMethod = $this->getClassAndMethod($this->currentCaller);
+	$class = $classAndMethod['class'];
+        $method = $classAndMethod['method'];
+    	print "CODE FOR $class $method";
+
+	if ($class != 'ClassUnknown') { // SMELL - why would we get this?
+	  $method = $this->removeAnyParameters($method);
+	  $codeForFunction = $this->getSourceCodeForClassMethod();
+	} else {
+	  $codeForFunction = 'ClassUnknown';
+	}	
+	return $codeForFunction;
+    }
+
+
+    /**
+	plot4pic wants double quotes around each line, retardedly
+	Do any escaping needed
+    */
+
+    protected function reformatForComment($input) {
+        $input = explode("\n", $input);
+	$output = '';
+//	$output = '"';
+	foreach ($input as $line_num => $line) {
+	// Escape all double quotes, as pic2plot interprets them as start of escape sequence.
+            $line = str_replace('"','\"', $line); 
+	    $output .= '"'. "#{$line_num}: " . $line . '"';
+//	    $output .= "#{$line_num}: " . $line . '\CR';
+	}
+//	$output .= '"';
+	print "$line_num lines\n";
+	return array(code=>$output, lineCount=>$line_num);
+   }
+
+
     protected $pic2plot = 'pic2plot';
+
+
     protected function convertSequenceGraphFileToSequenceGraph($filename) {
-        $outfile = $filename.'.png';
-    	$cmd = implode(' ',array($this->pic2plot,$filename,'-Tpng','>',$outfile));
+        $outfile = $filename.'.'.$this->outputFormat;
+    	$cmd = implode(' ',array($this->pic2plot,$filename,'-T'.$this->outputFormat,'>',$outfile));
 	print "CMD:". $cmd. "\n";
 	exec($cmd);
     }
