@@ -1,7 +1,7 @@
 .PS
 copy "/usr/local/lib/sequence.pic";
 
-# These are all the defaults 
+# Measured in virtual inches
 #Variable Name  Default Value   Operation
 boxht    =0.3; #       Object box height
 boxwid   =1.25; #       Object box width
@@ -9,8 +9,8 @@ awid     =0.25; # Active lifeline width
 spacing  =0.25;  #Spacing between messages
 movewid  =0.75; #Spacing between objects
 dashwid  =0.05; #Interval for dashed lines
-maxpswid =50;   #Maximum width of picture
-maxpsht  =50;   #Maximum height of picture
+maxpswid =18;   #Maximum width of picture
+maxpsht  =18;   #Maximum height of picture
 	 
 pobject(Incoming,"External Messages")
 object(ObjPHPCallGraph,":PHPCallGraph");
@@ -28,27 +28,27 @@ pobject(Filler1);
 message(Incoming,ObjPHPCallGraph,"collectFileNames($filesOrDirs, $recursive)");
 # addCall from PHPCallGraph::collectFileNames($filesOrDirs, $recursive):176 to  = ClassUnknown, is_file()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"6 is_file()");
+message(ObjPHPCallGraph,ObjClassUnknown,"1 is_file()");
 step();
 # addCall from PHPCallGraph::collectFileNames($filesOrDirs, $recursive):178 to  = ClassUnknown, is_dir()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"7 is_dir()");
+message(ObjPHPCallGraph,ObjClassUnknown,"2 is_dir()");
 step();
 # addCall from PHPCallGraph::collectFileNames($filesOrDirs, $recursive):179 to  = ClassUnknown, glob()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"8 glob()");
+message(ObjPHPCallGraph,ObjClassUnknown,"3 glob()");
 step();
 # addCall from PHPCallGraph::collectFileNames($filesOrDirs, $recursive):181 to  = ClassUnknown, array_merge()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"9 array_merge()");
+message(ObjPHPCallGraph,ObjClassUnknown,"4 array_merge()");
 step();
 # addCall from PHPCallGraph::collectFileNames($filesOrDirs, $recursive):181 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, collectFileNames($filesOrDirs, $recursive)
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"10 collectFileNames($filesOrDirs, $recursive)");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"5 collectFileNames($filesOrDirs, $recursive)");
 step();
 # addCall from PHPCallGraph::collectFileNames($filesOrDirs, $recursive):184 to  = ClassUnknown, is_file()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"11 is_file()");
+message(ObjPHPCallGraph,ObjClassUnknown,"6 is_file()");
 step();
 # endFunction
 

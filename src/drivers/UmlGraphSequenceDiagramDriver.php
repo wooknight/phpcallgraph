@@ -42,6 +42,8 @@ require_once 'CallgraphDriver.php';
  */
 class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
 
+    protected $debug = true;
+
     /** 
       objects already seen
     */
@@ -108,7 +110,9 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
      $this->graphSequence = '';
      $this->graphClosedown = '';
 
-     $sequenceNumber = 1;
+     $this->debug("", "\n\n\n");
+
+     $this->sequenceNumber = 1;
     	      $this->addToInit( ".PS\n" .
 			     'copy "/usr/local/lib/sequence.pic";');
 	$this->addToInit("
@@ -169,8 +173,7 @@ maxpsht  =18;   #Maximum height of picture
         $this->currentCaller = $name;
 	$this->sourceCodeOfCurrentlyAnalysedMethod = $memberCode;
         $this->initializeNewGraph();
-
-        print "startFunction:  $file:$line = $name\n";
+        $this->debug("startFunction", "$file:$line = $name");
 	$this->commentToGraph("startFunction:  $file:$line = $name");
 	$classAndMethod = $this->getClassAndMethod($name);
         $class = $classAndMethod['class'];
@@ -198,12 +201,10 @@ maxpsht  =18;   #Maximum height of picture
     }
 
     protected function removeAnyMethod($string) {
-//    print "removeAnyMETHOD $string\n";
       $methodStart = strpos($string, '::');
       if ($methodStart) {
          $string = substr($string, 0, $methodStart);
       }
-//      print "ANS=$string\n";
       return $string;
     }
 
@@ -229,7 +230,7 @@ maxpsht  =18;   #Maximum height of picture
 
 	// This is a hack, sadly, to eliminate stray 'Obj' prefixes.
     	if (strpos($class,'Obj') === false) {
-	   print "Adding Obj to $class\n";
+//	   print "Adding Obj to $class\n";
 	   $obj = 'Obj'.$class;
 	} else {
 	   exit("$obj already contained Obj\n");
@@ -259,11 +260,19 @@ maxpsht  =18;   #Maximum height of picture
 	$fromObj = $this->objForCaller($caller);
 	$destObj = $this->objForClass($destClass);
 
+	/** 
+	    In theory we should be able to skip any calls to unknown classes, as it would simply be those excluded
+	    from the scope of the analysis.
 
-//        if ($destClass != 'ClassUnknown') {
-		print "                   from caller=$caller:line to $file;\n";
-		print "                    class=$destClass; method=$method obj=$destObj\n";
-		print "$fromObj->$destObj\n";
+	    However (and see http://sourceforge.net/mailarchive/forum.php?thread_name=4A5D8D34.4010605%40falko-menge.de&forum_name=phpcallgraph-general) there is a bug where the class of the called method is sometimes left unset
+
+	    So we have to show them all.
+	*/
+
+//        if ($destClass != 'ClassUnknown') { /* temporarily commented out */
+		$this->debug( 'addCall', "                   from caller=$caller:line to $file;\n".
+			      "                    class=$destClass; method=$method obj=$destObj\n".
+			      "$fromObj->$destObj");
 
 		$this->registerObjectIfNew($fromObj);
 		$this->registerObjectIfNew($destObj);
@@ -273,7 +282,7 @@ maxpsht  =18;   #Maximum height of picture
 		$this->addToMessageSequences('step();');
 		$this->sequenceNumber++;
 //        } else {
-//		print "                   SKIPPED caller=$caller; class=$destClass; method=$method obj=$destObj\n";
+//		$this->debug('addCall', "                   SKIPPED caller=$caller; class=$destClass; method=$method obj=$destObj");
 //	}
 
 
@@ -305,21 +314,22 @@ maxpsht  =18;   #Maximum height of picture
 	   $this->addCommentWithCodeIntoDiagram($code);
 	}
 
-	/* Save the UML Sequence Diagram */
+	/* Save the UML Sequence Diagram source*/
 	file_put_contents(
 		$filename,
 		 $this->__toString()
 		 );
 
+	/* Save the source code */
 	if ($this->saveMethodCodeIntoStandaloneFile) {
 //	   $formattedCode=htmlspecialchars($code);
 		file_put_contents(
-		$filename.'.txt',
+		$filename.'.php.txt',
 		 $code
 		 );
 	}
 
-
+	/* Convert to PNG or SVG or whatever */
 	$this->convertSequenceGraphFileToSequenceGraph($filename);
 
     }
@@ -337,7 +347,7 @@ maxpsht  =18;   #Maximum height of picture
         $classAndMethod = $this->getClassAndMethod($this->currentCaller);
 	$class = $classAndMethod['class'];
         $method = $classAndMethod['method'];
-    	print "CODE FOR $class $method";
+    	$this->debug("CODE FOR", "$class $method");
 
 	if ($class != 'ClassUnknown') { // SMELL - why would we get this?
 	  $method = $this->removeAnyParameters($method);
@@ -367,7 +377,6 @@ maxpsht  =18;   #Maximum height of picture
             $line = str_replace('"','\"', $line); 
 	    $output .= '"'. "#{$line_num}: " . $line . '"';
 	}
-	print "$line_num lines\n";
 	return array(code=>$output, lineCount=>$line_num);
    }
 
@@ -378,16 +387,20 @@ maxpsht  =18;   #Maximum height of picture
     protected function convertSequenceGraphFileToSequenceGraph($filename) {
         $outfile = $filename.'.'.$this->outputFormat;
     	$cmd = implode(' ',array($this->pic2plot,$filename,'-T'.$this->outputFormat,'>',$outfile));
-	print "CMD:". $cmd. "\n";
+	$this->debug("CMD:", $cmd);
 	exec($cmd);
     }
 
+    /**
+      * @TODO: remove assumption that the files will be put into directory ./output
+      * (make it parameterisable, perhaps create directory)
+    */
     protected function filenameForFunctionSequenceGraph($function) {
     	 $filename = $function;
 	 $filename = str_replace('::', '..', $filename);
 	 $filename = $this->removeAnyParameters($filename);
 	 $filename = $filename . '.umlgraphSeq';
-    	 print "SAVING FOR $function as $filename:\n";
+    	 $this->debug('filenameForFunctionSequenceGraph', "SAVING FOR $function as $filename");
 	 return 'output/'.$filename;
     }
 
@@ -396,7 +409,7 @@ maxpsht  =18;   #Maximum height of picture
     */
     protected function closeObjects() {
     	foreach ($this->objects as $object => $dummy) {
-	    print "Closing $object\n";
+	    $this->debug("Closing", $object);
 	    $this->addToClosedown("inactive(".$object.");");
 	    $this->addToClosedown("complete(".$object.");");
 	}
@@ -424,7 +437,7 @@ maxpsht  =18;   #Maximum height of picture
 //        if ($object == 'ObjClassUnknown') {
 //	   return;
 //	}
-    	print "REGISTERING $object\n";
+	$this->debug("REGISTERING", $object);
     	if (! $this->objects[$object]) {
 	   $this->objects[$object] = 1;
 
@@ -456,7 +469,9 @@ maxpsht  =18;   #Maximum height of picture
     }
 
     protected function debug($section, $string) {
-        print "|$section | ".$string."\n";
+        if ($this->debug) {
+	  print "|$section | ".$string."\n";
+	}
     }
 
     protected function addToInit($string) {

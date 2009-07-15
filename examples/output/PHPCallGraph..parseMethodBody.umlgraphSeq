@@ -1,7 +1,7 @@
 .PS
 copy "/usr/local/lib/sequence.pic";
 
-# These are all the defaults 
+# Measured in virtual inches
 #Variable Name  Default Value   Operation
 boxht    =0.3; #       Object box height
 boxwid   =1.25; #       Object box width
@@ -9,8 +9,8 @@ awid     =0.25; # Active lifeline width
 spacing  =0.25;  #Spacing between messages
 movewid  =0.75; #Spacing between objects
 dashwid  =0.05; #Interval for dashed lines
-maxpswid =50;   #Maximum width of picture
-maxpsht  =50;   #Maximum height of picture
+maxpswid =18;   #Maximum width of picture
+maxpsht  =18;   #Maximum height of picture
 	 
 pobject(Incoming,"External Messages")
 object(ObjPHPCallGraph,":PHPCallGraph");
@@ -29,131 +29,131 @@ active(ObjUmlGraphSequenceDiagramDriver);
 step();
 pobject(FillerO);
 pobject(Filler1);
-# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php:327 = PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine)
+# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php:301 = PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine)
 message(Incoming,ObjPHPCallGraph,"parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine)");
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):338 to  = ClassUnknown, substr()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):312 to  = ClassUnknown, substr()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"39 substr()");
+message(ObjPHPCallGraph,ObjClassUnknown,"1 substr()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):338 to  = ClassUnknown, strlen()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):312 to  = ClassUnknown, strlen()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"40 strlen()");
+message(ObjPHPCallGraph,ObjClassUnknown,"2 strlen()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):340 to  = ClassUnknown, str_replace()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):314 to  = ClassUnknown, str_replace()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"41 str_replace()");
+message(ObjPHPCallGraph,ObjClassUnknown,"3 str_replace()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):340 to  = ClassUnknown, substr()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):314 to  = ClassUnknown, substr()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"42 substr()");
+message(ObjPHPCallGraph,ObjClassUnknown,"4 substr()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):340 to  = ClassUnknown, strlen()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):314 to  = ClassUnknown, strlen()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"43 strlen()");
+message(ObjPHPCallGraph,ObjClassUnknown,"5 strlen()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):342 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):316 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"44 generateParametersForSignature($parameters)");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"6 generateParametersForSignature($parameters)");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):346 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):320 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"45 generateParametersForSignature($parameters)");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"7 generateParametersForSignature($parameters)");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):349 to  = ClassUnknown, substr()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):323 to  = ClassUnknown, substr()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"46 substr()");
+message(ObjPHPCallGraph,ObjClassUnknown,"8 substr()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):349 to  = ClassUnknown, strpos()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):323 to  = ClassUnknown, strpos()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"47 strpos()");
+message(ObjPHPCallGraph,ObjClassUnknown,"9 strpos()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):351 to  = ClassUnknown, in_array()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):325 to  = ClassUnknown, in_array()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"48 in_array()");
+message(ObjPHPCallGraph,ObjClassUnknown,"10 in_array()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):360 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, startFunction($line, $file, $name)
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):333 to  = ClassUnknown, implode()
 
-message(ObjPHPCallGraph,ObjUmlGraphSequenceDiagramDriver,"49 startFunction($line, $file, $name)");
+message(ObjPHPCallGraph,ObjClassUnknown,"11 implode()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):363 to  = ClassUnknown, implode()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):333 to  = ClassUnknown, array_slice()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"50 implode()");
+message(ObjPHPCallGraph,ObjClassUnknown,"12 array_slice()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):363 to  = ClassUnknown, array_slice()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):333 to  = ClassUnknown, file()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"51 array_slice()");
+message(ObjPHPCallGraph,ObjClassUnknown,"13 file()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):363 to  = ClassUnknown, file()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):338 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, startFunction($line, $file, $name, $memberCode)
 
-message(ObjPHPCallGraph,ObjClassUnknown,"52 file()");
+message(ObjPHPCallGraph,ObjUmlGraphSequenceDiagramDriver,"14 startFunction($line, $file, $name, $memberCode)");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):371 to  = ClassUnknown, token_get_all()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):344 to  = ClassUnknown, token_get_all()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"53 token_get_all()");
+message(ObjPHPCallGraph,ObjClassUnknown,"15 token_get_all()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):381 to  = ClassUnknown, is_array()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):354 to  = ClassUnknown, is_array()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"54 is_array()");
+message(ObjPHPCallGraph,ObjClassUnknown,"16 is_array()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):382 to  = ClassUnknown, substr_count()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):355 to  = ClassUnknown, substr_count()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"55 substr_count()");
+message(ObjPHPCallGraph,ObjClassUnknown,"17 substr_count()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):413 to  = ClassUnknown, in_array()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):386 to  = ClassUnknown, in_array()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"56 in_array()");
+message(ObjPHPCallGraph,ObjClassUnknown,"18 in_array()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):414 to  = ClassUnknown, in_array()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):387 to  = ClassUnknown, in_array()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"57 in_array()");
+message(ObjPHPCallGraph,ObjClassUnknown,"19 in_array()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):460 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):433 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"58 generateParametersForSignature($parameters)");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"20 generateParametersForSignature($parameters)");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):463 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):436 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"59 generateParametersForSignature($parameters)");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"21 generateParametersForSignature($parameters)");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):478 to  = ClassUnknown, in_array()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):451 to  = ClassUnknown, in_array()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"60 in_array()");
+message(ObjPHPCallGraph,ObjClassUnknown,"22 in_array()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):484 to  = ClassUnknown, in_array()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):457 to  = ClassUnknown, in_array()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"61 in_array()");
+message(ObjPHPCallGraph,ObjClassUnknown,"23 in_array()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):488 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):461 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"62 generateParametersForSignature($parameters)");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"24 generateParametersForSignature($parameters)");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):500 to  = ClassUnknown, count()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):473 to  = ClassUnknown, count()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"63 count()");
+message(ObjPHPCallGraph,ObjClassUnknown,"25 count()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):505 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):478 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"64 generateParametersForSignature($parameters)");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"26 generateParametersForSignature($parameters)");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):546 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):519 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"65 generateParametersForSignature($parameters)");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"27 generateParametersForSignature($parameters)");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):557 to  = ClassUnknown, in_array()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):530 to  = ClassUnknown, in_array()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"66 in_array()");
+message(ObjPHPCallGraph,ObjClassUnknown,"28 in_array()");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):568 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):541 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, generateParametersForSignature($parameters)
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"67 generateParametersForSignature($parameters)");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"29 generateParametersForSignature($parameters)");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):575 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, addCall($line, $file, $name)
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):548 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, addCall($line, $file, $name)
 
-message(ObjPHPCallGraph,ObjUmlGraphSequenceDiagramDriver,"68 addCall($line, $file, $name)");
+message(ObjPHPCallGraph,ObjUmlGraphSequenceDiagramDriver,"30 addCall($line, $file, $name)");
 step();
-# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):582 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, endFunction()
+# addCall from PHPCallGraph::parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine):555 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, endFunction()
 
-message(ObjPHPCallGraph,ObjUmlGraphSequenceDiagramDriver,"69 endFunction()");
+message(ObjPHPCallGraph,ObjUmlGraphSequenceDiagramDriver,"31 endFunction()");
 step();
 # endFunction
 

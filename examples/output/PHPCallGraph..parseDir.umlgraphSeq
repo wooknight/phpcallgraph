@@ -1,7 +1,7 @@
 .PS
 copy "/usr/local/lib/sequence.pic";
 
-# These are all the defaults 
+# Measured in virtual inches
 #Variable Name  Default Value   Operation
 boxht    =0.3; #       Object box height
 boxwid   =1.25; #       Object box width
@@ -9,8 +9,8 @@ awid     =0.25; # Active lifeline width
 spacing  =0.25;  #Spacing between messages
 movewid  =0.75; #Spacing between objects
 dashwid  =0.05; #Interval for dashed lines
-maxpswid =50;   #Maximum width of picture
-maxpsht  =50;   #Maximum height of picture
+maxpswid =18;   #Maximum width of picture
+maxpsht  =18;   #Maximum height of picture
 	 
 pobject(Incoming,"External Messages")
 object(ObjPHPCallGraph,":PHPCallGraph");
@@ -29,31 +29,31 @@ active(ObjClassUnknown);
 step();
 pobject(FillerO);
 pobject(Filler1);
-# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php:213 = PHPCallGraph::parseDir($dir)
+# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php:212 = PHPCallGraph::parseDir($dir)
 message(Incoming,ObjPHPCallGraph,"parseDir($dir)");
-# addCall from PHPCallGraph::parseDir($dir):215 to  = iscCodeAnalyzer, __construct()
+# addCall from PHPCallGraph::parseDir($dir):214 to  = iscCodeAnalyzer, __construct()
 
-message(ObjPHPCallGraph,ObjiscCodeAnalyzer,"25 __construct()");
+message(ObjPHPCallGraph,ObjiscCodeAnalyzer,"1 __construct()");
 step();
-# addCall from PHPCallGraph::parseDir($dir):216 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, setDebug($enabled)
+# addCall from PHPCallGraph::parseDir($dir):215 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, setDebug($enabled)
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"26 setDebug($enabled)");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"2 setDebug($enabled)");
 step();
-# addCall from PHPCallGraph::parseDir($dir):217 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, setAutoloadFile($filename)
+# addCall from PHPCallGraph::parseDir($dir):216 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, setAutoloadFile($filename)
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"27 setAutoloadFile($filename)");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"3 setAutoloadFile($filename)");
 step();
-# addCall from PHPCallGraph::parseDir($dir):218 to  = ClassUnknown, collect()
+# addCall from PHPCallGraph::parseDir($dir):217 to  = ClassUnknown, collect()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"28 collect()");
+message(ObjPHPCallGraph,ObjClassUnknown,"4 collect()");
 step();
-# addCall from PHPCallGraph::parseDir($dir):219 to  = ClassUnknown, getCodeSummary()
+# addCall from PHPCallGraph::parseDir($dir):218 to  = ClassUnknown, getCodeSummary()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"29 getCodeSummary()");
+message(ObjPHPCallGraph,ObjClassUnknown,"5 getCodeSummary()");
 step();
-# addCall from PHPCallGraph::parseDir($dir):220 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, analyseCodeSummary($specificClass, $specificMethod)
+# addCall from PHPCallGraph::parseDir($dir):219 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, analyseCodeSummary()
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"30 analyseCodeSummary($specificClass, $specificMethod)");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"6 analyseCodeSummary()");
 step();
 # endFunction
 

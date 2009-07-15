@@ -1,7 +1,7 @@
 .PS
 copy "/usr/local/lib/sequence.pic";
 
-# These are all the defaults 
+# Measured in virtual inches
 #Variable Name  Default Value   Operation
 boxht    =0.3; #       Object box height
 boxwid   =1.25; #       Object box width
@@ -9,8 +9,8 @@ awid     =0.25; # Active lifeline width
 spacing  =0.25;  #Spacing between messages
 movewid  =0.75; #Spacing between objects
 dashwid  =0.05; #Interval for dashed lines
-maxpswid =50;   #Maximum width of picture
-maxpsht  =50;   #Maximum height of picture
+maxpswid =18;   #Maximum width of picture
+maxpsht  =18;   #Maximum height of picture
 	 
 pobject(Incoming,"External Messages")
 object(ObjPHPCallGraph,":PHPCallGraph");
@@ -28,11 +28,11 @@ pobject(Filler1);
 message(Incoming,ObjPHPCallGraph,"setAutoloadFile($filename)");
 # addCall from PHPCallGraph::setAutoloadFile($filename):156 to  = ClassUnknown, is_file()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"4 is_file()");
+message(ObjPHPCallGraph,ObjClassUnknown,"1 is_file()");
 step();
 # addCall from PHPCallGraph::setAutoloadFile($filename):156 to  = ClassUnknown, is_readable()
 
-message(ObjPHPCallGraph,ObjClassUnknown,"5 is_readable()");
+message(ObjPHPCallGraph,ObjClassUnknown,"2 is_readable()");
 step();
 # endFunction
 

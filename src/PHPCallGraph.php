@@ -329,13 +329,13 @@ class PHPCallGraph {
             $offset = $startLine - 1;
             $length = $endLine - $startLine + 1;
 
-            //echo "\n$callerName defined in $file on line $offset\n";
-            $this->driver->startFunction($offset, $file, $callerName, $memberCode);
-
             // obtain source code
             $memberCode = implode('', array_slice(file($file), $offset, $length));
             $memberCode = "<?php\nclass $className {\n" . $memberCode . "}\n?>\n";
             //echo $memberCode;
+
+            //echo "\n$callerName defined in $file on line $offset\n";
+            $this->driver->startFunction($offset, $file, $callerName, $memberCode);
 
             $insideDoubleQuotedString = false;
             $lineNumber = $offset - 1;
