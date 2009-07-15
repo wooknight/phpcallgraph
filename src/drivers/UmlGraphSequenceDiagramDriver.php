@@ -54,7 +54,7 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
     protected $graphInput = '';
     protected $graph;
     protected $currentCaller = '';
-    protected $internalFunctions;
+    protected $internalFunctions = false;
 
     /**
 	if true, then add a text box onto the page with the code from the current function in it.
@@ -171,6 +171,10 @@ maxpsht  =18;   #Maximum height of picture
             //$memberCode = implode('', array_slice(file($file), $offset, $length));
 
 	    global $memberCode;
+
+	    if ($memberCode == '') {
+	       die ("Couldn't get sourcecode!");
+	    }
 	    return $memberCode;
     }
 
@@ -326,10 +330,10 @@ maxpsht  =18;   #Maximum height of picture
 		 );
 
 	if ($this->saveMethodCodeIntoStandaloneFile) {
-	   $formattedCode=htmlspecialchars($code);
+//	   $formattedCode=htmlspecialchars($code);
 		file_put_contents(
-		$filename.'.html',
-		 $formattedCode
+		$filename.'.txt',
+		 $code
 		 );
 	}
 
@@ -342,11 +346,7 @@ maxpsht  =18;   #Maximum height of picture
     protected function addCommentWithCodeIntoDiagram($codeForFunction) {
 	
 	$commentAndLineCount = $this->reformatForComment($codeForFunction);
-	$boxHeight = $commentAndLineCount['lineCount'] / 6 + 0.25;
-	
-// theoretically ljust would left justify rather than center. Oh well.
-// also could use a native box rather than a comment with it's folded comment.
-	$this->addToMessageSequences('comment('.$obj.',C, right down, wid 3 height '.$boxHeight.' '.$commentAndLineCount['code'].' );');
+	$this->addToMessageSequences( $commentAndLineCount['code'].' ljust;');
     }
 
 
@@ -375,14 +375,11 @@ maxpsht  =18;   #Maximum height of picture
     protected function reformatForComment($input) {
         $input = explode("\n", $input);
 	$output = '';
-//	$output = '"';
 	foreach ($input as $line_num => $line) {
 	// Escape all double quotes, as pic2plot interprets them as start of escape sequence.
             $line = str_replace('"','\"', $line); 
 	    $output .= '"'. "#{$line_num}: " . $line . '"';
-//	    $output .= "#{$line_num}: " . $line . '\CR';
 	}
-//	$output .= '"';
 	print "$line_num lines\n";
 	return array(code=>$output, lineCount=>$line_num);
    }
