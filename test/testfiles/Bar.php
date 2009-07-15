@@ -13,6 +13,10 @@ class Bar {
         return 'Hello World!';
     }
 
+    public function ambiguous() {
+
+    }   
+
     /**
      * @webmethod
      * @param int $x

@@ -12,18 +12,19 @@ TEST2=umlgraph
 umlgraphLIBS="../src/PHPCallGraph.php ../src/drivers/UmlGraphSequenceDiagramDriver.php"
 
 TESTS="$TEST1 $TEST2"
+DEBUG=-g
 
 for TEST in $TESTS; do
     LIBSVAR=${TEST}LIBS
 #    LIBS=${${LIBSVAR}}
     LIBS=$umlgraphLIBS
     UMLSEQFILE=$TEST.$DRIVER
-    ../bin/phpcallgraph -g -f $DRIVER -o $UMLSEQFILE $LIBS
+    ../bin/phpcallgraph $DEBUG -f $DRIVER -o $UMLSEQFILE $LIBS
     for FORMAT in $FORMATS; do 
 	OUTPUTFILE=$UMLSEQFILE.$FORMAT
 	pic2plot $UMLSEQFILE -T$FORMAT > $OUTPUTFILE
     done
-    ../bin/phpcallgraph -g -f png -o $TEST.png $LIBSUMLG
+#    ../bin/phpcallgraph $DEBUG -f png -o $TEST.png $LIBSUMLG
 done
 
 
