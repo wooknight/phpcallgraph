@@ -42,7 +42,8 @@ require_once 'CallgraphDriver.php';
  */
 class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
 
-    protected $debug = true;
+    protected $debug = false;
+    protected $warnings = false; // SMELL: what debug/warning class to use?
 
     /** 
       objects already seen
@@ -303,7 +304,6 @@ maxpsht  =18;   #Maximum height of picture
 	$this->addToMessageSequences("step();");
 	$this->addToMessageSequences("step();");
 
-	$obj = $this->objForCaller($this->currentCaller); 
         $this->addToObjectDefinitions('pobject(Filler1);');	
 
 	$code = $this->getCodeForCurrentClassAndMethod();
@@ -349,12 +349,11 @@ maxpsht  =18;   #Maximum height of picture
         $method = $classAndMethod['method'];
     	$this->debug("CODE FOR", "$class $method");
 
-	if ($class != 'ClassUnknown') { // SMELL - why would we get this?
-	  $method = $this->removeAnyParameters($method);
-	  $codeForFunction = $this->sourceCodeOfCurrentlyAnalysedMethod;
-	} else {
-	  $codeForFunction = 'ClassUnknown';
-	}	
+	$codeForFunction = $this->sourceCodeOfCurrentlyAnalysedMethod;
+
+	if ($class == 'ClassUnknown') { // SMELL - why would we get this?
+	   $this->warning("UNABLE TO GET CLASS FOR $class::$method, YET WE HAVE SOURCECODE"); 
+	} 
 
 	if ($codeForFunction == '') {
 	   die ("Couldn't get sourcecode for $class::$method");
@@ -466,6 +465,12 @@ maxpsht  =18;   #Maximum height of picture
 
         $this->addToObjectDefinitions('pobject(FillerO);');
         return true;
+    }
+
+    protected function warning($section, $string) {
+        if ($this->warnings) {
+	  print "|$section | ".$string."\n";
+	}
     }
 
     protected function debug($section, $string) {
