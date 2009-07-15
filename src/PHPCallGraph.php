@@ -98,6 +98,10 @@ class PHPCallGraph {
      */
     protected $debug = false;
 
+    protected $showWarnings = true;
+    protected $showInfo = false;
+
+
     /**
      * PHP file with an autoload function which will be included into the
      * sandbox of the InstantSVC CodeAnalyzer
@@ -144,6 +148,25 @@ class PHPCallGraph {
     public function setDebug($enabled = true) {
         $this->debug = $enabled;
     }
+
+    protected function debug($string) {
+    	 if ($this->debug) {
+	    print "||PHPCallGraph| ".$string."\n";
+	 }
+    }
+
+    protected function info($string) {
+    	 if ($this->showInfo) {
+	    print "||PHPCallGraph| ".$string."\n";
+	 }
+    }
+
+    protected function warning($string) {
+         if ($this->showWarnings) {
+            print "||PHPCallGraph* *WARNING* ".$string."\n";
+         }
+    }
+
 
     /**
      * Sets a PHP file with an autoload function which will be included into
@@ -323,9 +346,8 @@ class PHPCallGraph {
         $callerNameWithoutParameterList = substr($callerName, 0, strpos($callerName, '('));
         
         if (!in_array($callerNameWithoutParameterList, $this->ignoreList)) {
-            if ($this->debug) {
-                echo 'phpCallGraph: analyzing ', $callerName, "\n";
-            }
+            $this->debug('phpCallGraph: analyzing ', $callerName);
+
             $offset = $startLine - 1;
             $length = $endLine - $startLine + 1;
 
@@ -334,7 +356,8 @@ class PHPCallGraph {
             $memberCode = "<?php\nclass $className {\n" . $memberCode . "}\n?>\n";
             //echo $memberCode;
 
-            //echo "\n$callerName defined in $file on line $offset\n";
+            $this->debug("= Analyzing $callerName =");
+	    $this->info(" defined in $file on line $offset");
             $this->driver->startFunction($offset, $file, $callerName, $memberCode);
 
             $insideDoubleQuotedString = false;
@@ -394,7 +417,15 @@ class PHPCallGraph {
                             $peviousToken                 = $tokens[ $i - 1 ];
                             $nextToken                    = $tokens[ $i + 1 ];
                             $tokenAfterNext               = $tokens[ $i + 2 ];
-
+/*
+			    $this->debug(
+			    "previousPreviousPreviousToken= $peviousPreviousPreviousToken[0]\n".
+                            "\t\tpreviousPreviousToken= $peviousPreviousToken[0]\n".
+                            "\t\tpreviousToken= $peviousToken[0]\n".
+                            "\t\tnextToken= $nextToken[0]\n".
+                            "\t\ttokenAfterNext = $tokenAfterNext[0]"
+			    );
+*/
                             if ($nextToken[0] == T_DOUBLE_COLON) {
                                 // beginning of a call to a static method
                                 //nop
@@ -421,7 +452,7 @@ class PHPCallGraph {
                                 // catch block
                                 continue;
                             } elseif ($peviousPreviousToken[0] == T_NEW){
-                                // object creation
+                                $this->debug('Found contructor');
                                 if (!$this->showExternalCalls) {
                                     continue;
                                 }
@@ -457,20 +488,21 @@ class PHPCallGraph {
                                     and in_array($token[1], $methodNames)
                                 )
                             ){
-                                // internal method call ($this-> and self:: and $className::)
+                                $this->info('internal method call ($this-> and self:: and $className::)');
                                 $calleeName = "$className::{$token[1]}" . $this->generateParametersForSignature($this->codeSummary['classes'][$className]['methods'][$token[1]]['params']);
                                 $calleeFile = $file;
                             } elseif ($peviousToken[0] == T_OBJECT_OPERATOR) {
-                                // external method call or property access
+			        $this->debug('External method call or property access'); 
                                 //TODO: what if a object holds another instance of its class
                                 if (!$this->showExternalCalls) {
                                     continue;
                                 }
                                 if ($nextToken == '(' or ($nextToken[0] == T_WHITESPACE and $tokenAfterNext == '(')) {
                                     $calleeName = $token[1];
+				    $this->debug("Calling for $calleeName");
                                     if (
                                         isset($this->methodLookupTable[$calleeName])
-                                        and count($this->methodLookupTable[$calleeName]) == 1
+					and count($this->methodLookupTable[$calleeName]) == 1
                                     ) {
                                         // there is only one class having a method with this name
                                         $calleeClass  = $this->methodLookupTable[$calleeName][0];
@@ -480,24 +512,23 @@ class PHPCallGraph {
                                             );
                                             $calleeFile   = $this->codeSummary['classes'][$calleeClass]['file'];
                                         } else {
-
-                                            // echo "DEBUG: $calleeClass \n";
-
+                                            $this-warning("calleeClass is unset");
                                             $calleeParams = null;
                                             $calleeFile   = null;
                                         }
                                     } else {
+				        $this->warning("method $calleeName was called, but I have no record for that");
                                         $calleeClass  = '';
                                         $calleeParams = '()';
                                         $calleeFile   = '';
                                     }
                                     $calleeName = "$calleeClass::$calleeName$calleeParams";
                                 } else {
-                                    // property access
+				    $this->info("Property access");
                                     continue;
                                 }
                             } elseif ($peviousToken[0] == T_DOUBLE_COLON){
-                                // static external method call
+                                $this->debug("static external method call");
                                 if (!$this->showExternalCalls) {
                                     continue;
                                 }
@@ -522,11 +553,13 @@ class PHPCallGraph {
                                 $calleeName = "$calleeClass::$calleeMethod$calleeParams";
                                 //TODO: handle self::myMethod(); $className::myMethod(); here => abolish internal method call case
                             } else {
-                                // function call
+
                                 $calledFunction = $token[1];
                                 $calleeFile = '';
                                 $calleeParams = '()';
                                 
+				$this->info("Function call: ".$calledFunction);
+
                                 if (in_array($calledFunction, $this->internalFunctions)) {
                                     if (!$this->showInternalFunctions) {
                                         continue;
@@ -544,14 +577,17 @@ class PHPCallGraph {
                                 }
                                 $calleeName = $calledFunction . $calleeParams;
                             }
-                            //echo "\t", $calleeName, " called on line $lineNumber and defined in $calleeFile\n";
+                            $this->debug("---> $calleeName called from line $lineNumber");
+			    $this->info("  defined in $calleeFile");
                             $this->driver->addCall($lineNumber, $calleeFile, $calleeName);
                         }
                     }
                 } else {
-                    //TODO: parse calls indside double quoted strings
+                    //TODO: parse calls inside double quoted strings
+		    $this->info('    ignoring code inside ""');
                 }
             }
+	    $this->debug('== endFunction ==');
             $this->driver->endFunction();
         }
     }
