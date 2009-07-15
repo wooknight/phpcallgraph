@@ -54,6 +54,7 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
     protected $graphInput = '';
     protected $graph;
     protected $currentCaller = '';
+    protected $sourceCodeOfCurrentlyAnalysedMethod = '';
     protected $internalFunctions = false;
 
     /**
@@ -157,35 +158,16 @@ maxpsht  =18;   #Maximum height of picture
         $this->useColor = $boolean;
     }
 
-
-    /**
-	Gets the source code for the current member being examined.
-	Presently implemented through a hack global var.
-	@global $memberCode Source code wanted
-    */
-    protected function getSourceCodeForClassMethod() {
-    	    // Need to know the details about how to pick up the code - will we be passed them
-	    // or can we pick up via an interface on the parent CallgraphDriver?
-    	    
-            // obtain source code
-            //$memberCode = implode('', array_slice(file($file), $offset, $length));
-
-	    global $memberCode;
-
-	    if ($memberCode == '') {
-	       die ("Couldn't get sourcecode!");
-	    }
-	    return $memberCode;
-    }
-
     /**
      * @param integer $line
      * @param string $file
      * @param string $name
+     * @param string $memberCode
      * @return void
      */
-    public function startFunction($line, $file, $name) {
+    public function startFunction($line, $file, $name, $memberCode) {
         $this->currentCaller = $name;
+	$this->sourceCodeOfCurrentlyAnalysedMethod = $memberCode;
         $this->initializeNewGraph();
 
         print "startFunction:  $file:$line = $name\n";
@@ -359,10 +341,15 @@ maxpsht  =18;   #Maximum height of picture
 
 	if ($class != 'ClassUnknown') { // SMELL - why would we get this?
 	  $method = $this->removeAnyParameters($method);
-	  $codeForFunction = $this->getSourceCodeForClassMethod();
+	  $codeForFunction = $this->sourceCodeOfCurrentlyAnalysedMethod;
 	} else {
 	  $codeForFunction = 'ClassUnknown';
 	}	
+
+	if ($codeForFunction == '') {
+	   die ("Couldn't get sourcecode for $class::$method");
+	}
+
 	return $codeForFunction;
     }
 
