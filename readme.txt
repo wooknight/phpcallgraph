@@ -29,13 +29,15 @@ Usage:
      the Graphviz toolkit which can be downloaded at
      http://www.graphviz.org/ is required.
 
+     For Umlgraph output you need plotutil's pic2plot and the sequence.pic file from UmlGraph
+
      bin/phpcallgraph [-f <string>] [-o <string>] [-r] [-d <string>] [-n] [-p] [-a <string>] [-v] [-g] [-h] [--] <string:sources> [<string:sources> ...]
 
 Arguments:
     <string:sources>        Files and/or directories to analyze
 
 Options:
-    -f / --format           Set output format. Can be 'txt', 'array',
+    -f / --format           Set output format. Can be 'txt', 'array', 'umlgraph'
                             'deadcode', 'cga' or one of the formats supported
                             by dot, e.g. png, svg, pdf, ps, ...
                             (see http://graphviz.org/doc/info/output.html)
@@ -88,3 +90,4 @@ Examples:
 
 Author:
     Falko Menge <fakko at users dot sourceforge dot net>
+    Martin Cleaver <mrjc at users dot sourceforge dot net> (UmlGraphSequenceDiagramDriver)
