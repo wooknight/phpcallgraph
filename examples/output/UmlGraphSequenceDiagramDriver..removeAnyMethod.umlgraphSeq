@@ -18,22 +18,9 @@ step();
 active(ObjUmlGraphSequenceDiagramDriver);
 step();
 pobject(FillerO);
-object(ObjClassUnknown,":ClassUnknown");
-step();
-active(ObjClassUnknown);
-step();
-pobject(FillerO);
 pobject(Filler1);
-# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:202 = UmlGraphSequenceDiagramDriver::removeAnyMethod($string)
+# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:203 = UmlGraphSequenceDiagramDriver::removeAnyMethod($string)
 message(Incoming,ObjUmlGraphSequenceDiagramDriver,"removeAnyMethod($string)");
-# addCall from UmlGraphSequenceDiagramDriver::removeAnyMethod($string):204 to  = ClassUnknown, strpos()
-
-message(ObjUmlGraphSequenceDiagramDriver,ObjClassUnknown,"1 strpos()");
-step();
-# addCall from UmlGraphSequenceDiagramDriver::removeAnyMethod($string):206 to  = ClassUnknown, substr()
-
-message(ObjUmlGraphSequenceDiagramDriver,ObjClassUnknown,"2 substr()");
-step();
 # endFunction
 
 
@@ -44,7 +31,5 @@ step();
 step();
 inactive(ObjUmlGraphSequenceDiagramDriver);
 complete(ObjUmlGraphSequenceDiagramDriver);
-inactive(ObjClassUnknown);
-complete(ObjClassUnknown);
 
 .PE

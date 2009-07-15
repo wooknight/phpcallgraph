@@ -19,9 +19,9 @@ active(ObjUmlGraphSequenceDiagramDriver);
 step();
 pobject(FillerO);
 pobject(Filler1);
-# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:89 = UmlGraphSequenceDiagramDriver::__destruct()
+# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:90 = UmlGraphSequenceDiagramDriver::__destruct()
 message(Incoming,ObjUmlGraphSequenceDiagramDriver,"__destruct()");
-# addCall from UmlGraphSequenceDiagramDriver::__destruct():91 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, closeObjects()
+# addCall from UmlGraphSequenceDiagramDriver::__destruct():92 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, closeObjects()
 
 message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"1 closeObjects()");
 step();

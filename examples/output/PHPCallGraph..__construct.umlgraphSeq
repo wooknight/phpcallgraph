@@ -23,29 +23,12 @@ step();
 active(ObjTextDriver);
 step();
 pobject(FillerO);
-object(ObjClassUnknown,":ClassUnknown");
-step();
-active(ObjClassUnknown);
-step();
-pobject(FillerO);
 pobject(Filler1);
 # startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php:112 = PHPCallGraph::__construct($driver)
 message(Incoming,ObjPHPCallGraph,"__construct($driver)");
 # addCall from PHPCallGraph::__construct($driver):117 to  = TextDriver, __construct()
 
 message(ObjPHPCallGraph,ObjTextDriver,"1 __construct()");
-step();
-# addCall from PHPCallGraph::__construct($driver):119 to  = ClassUnknown, get_defined_functions()
-
-message(ObjPHPCallGraph,ObjClassUnknown,"2 get_defined_functions()");
-step();
-# addCall from PHPCallGraph::__construct($driver):128 to  = ClassUnknown, array_keys()
-
-message(ObjPHPCallGraph,ObjClassUnknown,"3 array_keys()");
-step();
-# addCall from PHPCallGraph::__construct($driver):128 to  = ClassUnknown, get_defined_constants()
-
-message(ObjPHPCallGraph,ObjClassUnknown,"4 get_defined_constants()");
 step();
 # endFunction
 
@@ -59,7 +42,5 @@ inactive(ObjPHPCallGraph);
 complete(ObjPHPCallGraph);
 inactive(ObjTextDriver);
 complete(ObjTextDriver);
-inactive(ObjClassUnknown);
-complete(ObjClassUnknown);
 
 .PE

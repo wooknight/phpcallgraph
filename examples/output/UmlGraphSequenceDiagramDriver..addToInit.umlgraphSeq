@@ -19,7 +19,7 @@ active(ObjUmlGraphSequenceDiagramDriver);
 step();
 pobject(FillerO);
 pobject(Filler1);
-# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:476 = UmlGraphSequenceDiagramDriver::addToInit($string)
+# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:482 = UmlGraphSequenceDiagramDriver::addToInit($string)
 message(Incoming,ObjUmlGraphSequenceDiagramDriver,"addToInit($string)");
 # endFunction
 

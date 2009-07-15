@@ -18,11 +18,6 @@ step();
 active(ObjPHPCallGraph);
 step();
 pobject(FillerO);
-object(ObjClassUnknown,":ClassUnknown");
-step();
-active(ObjClassUnknown);
-step();
-pobject(FillerO);
 pobject(Filler1);
 # startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php:221 = PHPCallGraph::analyseCodeSummary()
 message(Incoming,ObjPHPCallGraph,"analyseCodeSummary()");
@@ -34,17 +29,9 @@ step();
 
 message(ObjPHPCallGraph,ObjPHPCallGraph,"2 parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine)");
 step();
-# addCall from PHPCallGraph::analyseCodeSummary():253 to  = ClassUnknown, array_keys()
-
-message(ObjPHPCallGraph,ObjClassUnknown,"3 array_keys()");
-step();
-# addCall from PHPCallGraph::analyseCodeSummary():254 to  = ClassUnknown, array_keys()
-
-message(ObjPHPCallGraph,ObjClassUnknown,"4 array_keys()");
-step();
 # addCall from PHPCallGraph::analyseCodeSummary():258 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine)
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"5 parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine)");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"3 parseMethodBody($className, $methodName, $propertyNames, $methodNames, $file, $startLine, $endLine)");
 step();
 # endFunction
 
@@ -56,7 +43,5 @@ step();
 step();
 inactive(ObjPHPCallGraph);
 complete(ObjPHPCallGraph);
-inactive(ObjClassUnknown);
-complete(ObjClassUnknown);
 
 .PE

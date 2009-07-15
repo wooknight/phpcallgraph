@@ -18,25 +18,16 @@ step();
 active(ObjUmlGraphSequenceDiagramDriver);
 step();
 pobject(FillerO);
-object(ObjClassUnknown,":ClassUnknown");
-step();
-active(ObjClassUnknown);
-step();
-pobject(FillerO);
 pobject(Filler1);
-# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:220 = UmlGraphSequenceDiagramDriver::objForClass($class)
+# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:221 = UmlGraphSequenceDiagramDriver::objForClass($class)
 message(Incoming,ObjUmlGraphSequenceDiagramDriver,"objForClass($class)");
-# addCall from UmlGraphSequenceDiagramDriver::objForClass($class):227 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, removeAnyMethod($string)
+# addCall from UmlGraphSequenceDiagramDriver::objForClass($class):228 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, removeAnyMethod($string)
 
 message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"1 removeAnyMethod($string)");
 step();
-# addCall from UmlGraphSequenceDiagramDriver::objForClass($class):228 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, removeAnyParameters($string)
+# addCall from UmlGraphSequenceDiagramDriver::objForClass($class):229 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, removeAnyParameters($string)
 
 message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"2 removeAnyParameters($string)");
-step();
-# addCall from UmlGraphSequenceDiagramDriver::objForClass($class):232 to  = ClassUnknown, strpos()
-
-message(ObjUmlGraphSequenceDiagramDriver,ObjClassUnknown,"3 strpos()");
 step();
 # endFunction
 
@@ -48,7 +39,5 @@ step();
 step();
 inactive(ObjUmlGraphSequenceDiagramDriver);
 complete(ObjUmlGraphSequenceDiagramDriver);
-inactive(ObjClassUnknown);
-complete(ObjClassUnknown);
 
 .PE

@@ -18,7 +18,7 @@ for TEST in $TESTS; do
 #    LIBS=${${LIBSVAR}}
     LIBS=$umlgraphLIBS
     UMLSEQFILE=$TEST.$DRIVER
-    ../bin/phpcallgraph -g -p -f $DRIVER -o $UMLSEQFILE $LIBS
+    ../bin/phpcallgraph -g -f $DRIVER -o $UMLSEQFILE $LIBS
     for FORMAT in $FORMATS; do 
 	OUTPUTFILE=$UMLSEQFILE.$FORMAT
 	pic2plot $UMLSEQFILE -T$FORMAT > $OUTPUTFILE

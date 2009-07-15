@@ -18,22 +18,9 @@ step();
 active(ObjUmlGraphSequenceDiagramDriver);
 step();
 pobject(FillerO);
-object(ObjClassUnknown,":ClassUnknown");
-step();
-active(ObjClassUnknown);
-step();
-pobject(FillerO);
 pobject(Filler1);
 # startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:386 = UmlGraphSequenceDiagramDriver::convertSequenceGraphFileToSequenceGraph($filename)
 message(Incoming,ObjUmlGraphSequenceDiagramDriver,"convertSequenceGraphFileToSequenceGraph($filename)");
-# addCall from UmlGraphSequenceDiagramDriver::convertSequenceGraphFileToSequenceGraph($filename):389 to  = ClassUnknown, implode()
-
-message(ObjUmlGraphSequenceDiagramDriver,ObjClassUnknown,"1 implode()");
-step();
-# addCall from UmlGraphSequenceDiagramDriver::convertSequenceGraphFileToSequenceGraph($filename):391 to  = ClassUnknown, exec()
-
-message(ObjUmlGraphSequenceDiagramDriver,ObjClassUnknown,"2 exec()");
-step();
 # endFunction
 
 
@@ -44,7 +31,5 @@ step();
 step();
 inactive(ObjUmlGraphSequenceDiagramDriver);
 complete(ObjUmlGraphSequenceDiagramDriver);
-inactive(ObjClassUnknown);
-complete(ObjClassUnknown);
 
 .PE

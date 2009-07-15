@@ -18,25 +18,16 @@ step();
 active(ObjUmlGraphSequenceDiagramDriver);
 step();
 pobject(FillerO);
-object(ObjClassUnknown,":ClassUnknown");
-step();
-active(ObjClassUnknown);
-step();
-pobject(FillerO);
 pobject(Filler1);
-# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:81 = UmlGraphSequenceDiagramDriver::__construct($outputFormat, $sequenceLibrary)
+# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:82 = UmlGraphSequenceDiagramDriver::__construct($outputFormat, $sequenceLibrary)
 message(Incoming,ObjUmlGraphSequenceDiagramDriver,"__construct($outputFormat, $sequenceLibrary)");
-# addCall from UmlGraphSequenceDiagramDriver::__construct($outputFormat, $sequenceLibrary):84 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, setSequenceLibrary($sequenceLibrary)
+# addCall from UmlGraphSequenceDiagramDriver::__construct($outputFormat, $sequenceLibrary):85 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, setSequenceLibrary($sequenceLibrary)
 
 message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"1 setSequenceLibrary($sequenceLibrary)");
 step();
-# addCall from UmlGraphSequenceDiagramDriver::__construct($outputFormat, $sequenceLibrary):85 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, setOutputFormat($outputFormat)
+# addCall from UmlGraphSequenceDiagramDriver::__construct($outputFormat, $sequenceLibrary):86 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, setOutputFormat($outputFormat)
 
 message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"2 setOutputFormat($outputFormat)");
-step();
-# addCall from UmlGraphSequenceDiagramDriver::__construct($outputFormat, $sequenceLibrary):86 to  = ClassUnknown, get_defined_functions()
-
-message(ObjUmlGraphSequenceDiagramDriver,ObjClassUnknown,"3 get_defined_functions()");
 step();
 # endFunction
 
@@ -48,7 +39,5 @@ step();
 step();
 inactive(ObjUmlGraphSequenceDiagramDriver);
 complete(ObjUmlGraphSequenceDiagramDriver);
-inactive(ObjClassUnknown);
-complete(ObjClassUnknown);
 
 .PE

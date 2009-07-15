@@ -19,13 +19,13 @@ active(ObjUmlGraphSequenceDiagramDriver);
 step();
 pobject(FillerO);
 pobject(Filler1);
-# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:106 = UmlGraphSequenceDiagramDriver::initializeNewGraph()
+# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php:107 = UmlGraphSequenceDiagramDriver::initializeNewGraph()
 message(Incoming,ObjUmlGraphSequenceDiagramDriver,"initializeNewGraph()");
-# addCall from UmlGraphSequenceDiagramDriver::initializeNewGraph():116 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, addToInit($string)
+# addCall from UmlGraphSequenceDiagramDriver::initializeNewGraph():117 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, addToInit($string)
 
 message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"1 addToInit($string)");
 step();
-# addCall from UmlGraphSequenceDiagramDriver::initializeNewGraph():118 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, addToInit($string)
+# addCall from UmlGraphSequenceDiagramDriver::initializeNewGraph():119 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/drivers/UmlGraphSequenceDiagramDriver.php = UmlGraphSequenceDiagramDriver, addToInit($string)
 
 message(ObjUmlGraphSequenceDiagramDriver,ObjUmlGraphSequenceDiagramDriver,"2 addToInit($string)");
 step();

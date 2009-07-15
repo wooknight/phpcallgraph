@@ -18,22 +18,9 @@ step();
 active(ObjPHPCallGraph);
 step();
 pobject(FillerO);
-object(ObjClassUnknown,":ClassUnknown");
-step();
-active(ObjClassUnknown);
-step();
-pobject(FillerO);
 pobject(Filler1);
 # startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php:153 = PHPCallGraph::setAutoloadFile($filename)
 message(Incoming,ObjPHPCallGraph,"setAutoloadFile($filename)");
-# addCall from PHPCallGraph::setAutoloadFile($filename):156 to  = ClassUnknown, is_file()
-
-message(ObjPHPCallGraph,ObjClassUnknown,"1 is_file()");
-step();
-# addCall from PHPCallGraph::setAutoloadFile($filename):156 to  = ClassUnknown, is_readable()
-
-message(ObjPHPCallGraph,ObjClassUnknown,"2 is_readable()");
-step();
 # endFunction
 
 
@@ -44,7 +31,5 @@ step();
 step();
 inactive(ObjPHPCallGraph);
 complete(ObjPHPCallGraph);
-inactive(ObjClassUnknown);
-complete(ObjClassUnknown);
 
 .PE

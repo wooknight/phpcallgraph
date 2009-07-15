@@ -18,18 +18,9 @@ step();
 active(ObjPHPCallGraph);
 step();
 pobject(FillerO);
-object(ObjClassUnknown,":ClassUnknown");
-step();
-active(ObjClassUnknown);
-step();
-pobject(FillerO);
 pobject(Filler1);
 # startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php:558 = PHPCallGraph::generateParametersForSignature($parameters)
 message(Incoming,ObjPHPCallGraph,"generateParametersForSignature($parameters)");
-# addCall from PHPCallGraph::generateParametersForSignature($parameters):568 to  = ClassUnknown, substr()
-
-message(ObjPHPCallGraph,ObjClassUnknown,"1 substr()");
-step();
 # endFunction
 
 
@@ -40,7 +31,5 @@ step();
 step();
 inactive(ObjPHPCallGraph);
 complete(ObjPHPCallGraph);
-inactive(ObjClassUnknown);
-complete(ObjClassUnknown);
 
 .PE

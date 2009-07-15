@@ -18,21 +18,12 @@ step();
 active(ObjPHPCallGraph);
 step();
 pobject(FillerO);
-object(ObjClassUnknown,":ClassUnknown");
-step();
-active(ObjClassUnknown);
-step();
-pobject(FillerO);
 pobject(Filler1);
 # startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php:577 = PHPCallGraph::save($file)
 message(Incoming,ObjPHPCallGraph,"save($file)");
-# addCall from PHPCallGraph::save($file):579 to  = ClassUnknown, file_put_contents()
-
-message(ObjPHPCallGraph,ObjClassUnknown,"1 file_put_contents()");
-step();
 # addCall from PHPCallGraph::save($file):579 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/src/PHPCallGraph.php = PHPCallGraph, __toString()
 
-message(ObjPHPCallGraph,ObjPHPCallGraph,"2 __toString()");
+message(ObjPHPCallGraph,ObjPHPCallGraph,"1 __toString()");
 step();
 # endFunction
 
@@ -44,7 +35,5 @@ step();
 step();
 inactive(ObjPHPCallGraph);
 complete(ObjPHPCallGraph);
-inactive(ObjClassUnknown);
-complete(ObjClassUnknown);
 
 .PE
