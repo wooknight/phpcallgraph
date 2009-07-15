@@ -151,7 +151,7 @@ maxpsht  =18;   #Maximum height of picture
 	}
 //        $this->outputFormat = $outputFormat;
 
-	print "WARNING: outputFormat setting ignored (needs reconciling with driver)";
+	$this->warning("setOutputFormat", "setting ignored (needs reconciling with driver)");
     }
 
     /**
@@ -308,7 +308,7 @@ maxpsht  =18;   #Maximum height of picture
 
 	$code = $this->getCodeForCurrentClassAndMethod();
 
-	$filename = $this->filenameForFunctionSequenceGraph($this->currentCaller);
+	$filename = $this->filenameForFunctionSequenceGraph($this->currentCaller).'.txt';
 
 	if ($this->showMethodCodeInDiagram) {
 	   $this->addCommentWithCodeIntoDiagram($code);
@@ -352,7 +352,7 @@ maxpsht  =18;   #Maximum height of picture
 	$codeForFunction = $this->sourceCodeOfCurrentlyAnalysedMethod;
 
 	if ($class == 'ClassUnknown') { // SMELL - why would we get this?
-	   $this->warning("UNABLE TO GET CLASS FOR $class::$method, YET WE HAVE SOURCECODE"); 
+	   $this->warning('getCodeForCurrentClassAndMethod', "UNABLE TO GET CLASS FOR $class::$method, YET WE HAVE SOURCECODE"); 
 	} 
 
 	if ($codeForFunction == '') {

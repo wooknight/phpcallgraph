@@ -452,7 +452,7 @@ class PHPCallGraph {
                                 // catch block
                                 continue;
                             } elseif ($peviousPreviousToken[0] == T_NEW){
-                                $this->debug('Found contructor');
+                                $this->debug('Found constructor');
                                 if (!$this->showExternalCalls) {
                                     continue;
                                 }
