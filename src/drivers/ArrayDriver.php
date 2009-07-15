@@ -80,7 +80,7 @@ class ArrayDriver implements CallgraphDriver {
      * @uses   self::$func
      * @uses   self::$verbose
      */
-    public function startFunction($line, $file, $name) {
+    public function startFunction($line, $file, $name, $memberCode) {
         $this->stack[$name] = array();
         $this->func         = $name;
 

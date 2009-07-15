@@ -114,7 +114,7 @@ class GraphVizDriver implements CallgraphDriver {
      * @param string $name
      * @return void
      */
-    public function startFunction($line, $file, $name) {
+    public function startFunction($line, $file, $name, $memberCode) {
         $this->addNode($name);
         $this->currentCaller = $name;
     }

@@ -59,7 +59,7 @@ class TextDriver implements CallgraphDriver {
      * @param string $name
      * @return void
      */
-    public function startFunction($line, $file, $name) {
+    public function startFunction($line, $file, $name, $memberCode) {
         $this->text.= $name;
         if ($this->verbose) {
             $this->text.= " defined in $file on line $line";

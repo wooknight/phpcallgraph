@@ -31,14 +31,19 @@
 interface CallgraphDriver {
 
     /**
-     * @param integer $line
-     * @param string $file
-     * @param string $name
+     * Signifies that a method or function in a particular file is about to be analysed.
+     *
+     * @param integer $line - the line in the $file on which the current member starts 
+     * @param string $file - the file being analysed
+     * @param string $name - the name of the function under analysis
+     * @param string $memberCode - the source code for just the method or function being analysed.
      * @return void
      */
-    public function startFunction($line, $file, $name);
+    public function startFunction($line, $file, $name, $memberCode);
 
     /**
+     * A call is being made from the currently analyzed startFunction to the $name
+     *
      * @param integer $line
      * @param string $file
      * @param string $name
@@ -52,11 +57,14 @@ interface CallgraphDriver {
     public function endFunction();
 
     /**
+     * 
      * @return string
      */
     public function __toString();
 
     /**
+     * NOT USED?
+     *
      * @return void
      */
     public function reset();

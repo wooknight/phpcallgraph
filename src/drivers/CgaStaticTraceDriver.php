@@ -58,7 +58,7 @@ class CgaStaticTraceDriver implements CallgraphDriver {
      * @param string $name
      * @return void
      */
-    public function startFunction($line, $file, $name) {
+    public function startFunction($line, $file, $name, $memberCode) {
         $line = (integer) $line;
         $file = htmlspecialchars($file);
         $name = htmlspecialchars($name);

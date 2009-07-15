@@ -65,7 +65,7 @@ class DeadCodeDriver implements CallgraphDriver {
      * @param string $name
      * @return void
      */
-    public function startFunction($line, $file, $name) {
+    public function startFunction($line, $file, $name, $memberCode) {
         $function = new staticReflectionFunction($name, $file);
         $function->startLine = $line;
         $this->definedFunctions[] = $function;

@@ -330,7 +330,7 @@ class PHPCallGraph {
             $length = $endLine - $startLine + 1;
 
             //echo "\n$callerName defined in $file on line $offset\n";
-            $this->driver->startFunction($offset, $file, $callerName);
+            $this->driver->startFunction($offset, $file, $callerName, $memberCode);
 
             // obtain source code
             $memberCode = implode('', array_slice(file($file), $offset, $length));
