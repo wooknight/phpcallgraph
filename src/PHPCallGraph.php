@@ -99,7 +99,7 @@ class PHPCallGraph {
     protected $debug = false;
 
     protected $showWarnings = true;
-    protected $showInfo = false;
+    protected $showInfo = true;
 
 
     /**
@@ -640,15 +640,34 @@ class PHPCallGraph {
 
 			    
    protected function getTokenValues($tokens, $i) {
-     ob_start();
-     $span = 10;
-     for ($j = -$span; $j <= $span; $j++) {
+     $pad = ' ';
+     $out = "\n";
+     $start = -5;
+     $end = 4;
+     for ($j = $start; $j <= $end; $j++) {
        $n = ($i + $j);
-       print "==== i=$i j= $j n=$n =====\n";
-       var_dump($tokens[$n]);
+       $currentToken = $tokens[$n];
+       if (is_array($currentToken)) {
+         $mainValue = $currentToken[1];
+	 $mainValue = str_replace("\n", '\n', $mainValue);
+	 $mainValue = str_replace("\t", '\t', $mainValue);
+	 if ($mainVlaue = '') {
+	   $mainValue = 'nil';
+         } 
+         $cell = $mainValue;
+       } else {
+         $cell = '"'.$currentToken.'"';
+       }
+       $cell = $cell;
+       $cell =  str_pad($cell, 10, $pad);
+       $headerCell = '['.$j.']';
+       $headerCell =  str_pad($headerCell, 10, $pad);
+
+       $row .= $cell.' ';
+       $headers .= $headerCell.' ';
      }
-     $out = ob_get_contents();
-     ob_end_clean();
+     $out .= $headers."\n";
+     $out .= $row."\n";
      return $out;
  }
 
