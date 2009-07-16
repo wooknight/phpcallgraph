@@ -601,7 +601,6 @@ class PHPCallGraph {
                                 $calleeName = $calledFunction . $calleeParams;
                             }
                             $this->debug("---> $calleeName called from line $lineNumber");
-			    $this->info("  defined in $calleeFile");
                             $this->driver->addCall($lineNumber, $calleeFile, $calleeName);
                         }
                     }
