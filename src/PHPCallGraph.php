@@ -412,9 +412,9 @@ class PHPCallGraph {
                             and $token[1] != 'false'
                             and $token[1] != 'null'
                         ) {
-                            $peviousPreviousPreviousToken = $tokens[ $i - 3 ];
-                            $peviousPreviousToken         = $tokens[ $i - 2 ];
-                            $peviousToken                 = $tokens[ $i - 1 ];
+                            $previousPreviousPreviousToken = $tokens[ $i - 3 ];
+                            $previousPreviousToken         = $tokens[ $i - 2 ];
+                            $previousToken                 = $tokens[ $i - 1 ];
                             $nextToken                    = $tokens[ $i + 1 ];
                             $tokenAfterNext               = $tokens[ $i + 2 ];
 
@@ -428,25 +428,25 @@ class PHPCallGraph {
                             } elseif (
                                 (
                                     $tokens[ $i - 4][0]                  == T_CATCH
-                                    and $peviousPreviousPreviousToken[0] == T_WHITESPACE
-                                    and $peviousPreviousToken            == '('
-                                    and $peviousToken[0]                 == T_WHITESPACE
+                                    and $previousPreviousPreviousToken[0] == T_WHITESPACE
+                                    and $previousPreviousToken            == '('
+                                    and $previousToken[0]                 == T_WHITESPACE
                                 )
                                 or
                                 (
-                                    $peviousPreviousPreviousToken[0] == T_CATCH
-                                    and $peviousPreviousToken[0]     == T_WHITESPACE
-                                    and $peviousToken                == '('
+                                    $previousPreviousPreviousToken[0] == T_CATCH
+                                    and $previousPreviousToken[0]     == T_WHITESPACE
+                                    and $previousToken                == '('
                                 )
                                 or
                                 (
-                                    $peviousPreviousToken[0] == T_CATCH
-                                    and $peviousToken        == '('
+                                    $previousPreviousToken[0] == T_CATCH
+                                    and $previousToken        == '('
                                 )
                             ){
                                 // catch block
                                 continue;
-                            } elseif ($peviousPreviousToken[0] == T_NEW){
+                            } elseif ($previousPreviousToken[0] == T_NEW){
                                 $this->debug('Found constructor');
                                 if (!$this->showExternalCalls) {
                                     continue;
@@ -475,21 +475,21 @@ class PHPCallGraph {
 				$this->recordVariableAsType($calleeClass, $tokens[$i-6][1]);
                             } elseif (
                                 (
-                                    isset($peviousPreviousToken[1]) and $peviousPreviousToken[1] == '$this'
-                                    and $peviousToken[0]     == T_OBJECT_OPERATOR
+                                    isset($previousPreviousToken[1]) and $previousPreviousToken[1] == '$this'
+                                    and $previousToken[0]     == T_OBJECT_OPERATOR
                                     and in_array($token[1], $methodNames)
                                 )
                                 or
                                 (
-                                    isset($peviousPreviousToken[1]) and $peviousPreviousToken[1] == 'self'
-                                    and $peviousToken[0]     == T_DOUBLE_COLON
+                                    isset($previousPreviousToken[1]) and $previousPreviousToken[1] == 'self'
+                                    and $previousToken[0]     == T_DOUBLE_COLON
                                     and in_array($token[1], $methodNames)
                                 )
                             ){
                                 $this->info('internal method call ($this-> and self:: and $className::)');
                                 $calleeName = "$className::{$token[1]}" . $this->generateParametersForSignature($this->codeSummary['classes'][$className]['methods'][$token[1]]['params']);
                                 $calleeFile = $file;
-                            } elseif ($peviousToken[0] == T_OBJECT_OPERATOR) {
+                            } elseif ($previousToken[0] == T_OBJECT_OPERATOR) {
 			        $this->debug('External method call or property access'); 
                                 //TODO: what if a object holds another instance of its class
                                 if (!$this->showExternalCalls) {
@@ -522,7 +522,7 @@ class PHPCallGraph {
                                             );
                                             $calleeFile   = $this->codeSummary['classes'][$calleeClass]['file'];
 
-					    print "RECORDING CLASS OF $peviousToken[1] VARIABLE to be $calleeClass\n";
+					    print "RECORDING CLASS OF $previousToken[1] VARIABLE to be $calleeClass\n";
                                         } else {
                                             $this-warning("calleeClass is unset");
                                             $calleeParams = null;
@@ -550,7 +550,7 @@ class PHPCallGraph {
 				    $this->info("Property access");
                                     continue;
                                 }
-                            } elseif ($peviousToken[0] == T_DOUBLE_COLON){
+                            } elseif ($previousToken[0] == T_DOUBLE_COLON){
                                 $this->debug("static external method call");
                                 if (!$this->showExternalCalls) {
                                     continue;
@@ -559,7 +559,7 @@ class PHPCallGraph {
                                     // constant access
                                     continue;
                                 }
-                                $calleeClass  = $peviousPreviousToken[1];
+                                $calleeClass  = $previousPreviousToken[1];
                                 $calleeMethod = $token[1];
                                 $calleeFile = '';
                                 $calleeParams = '()';
