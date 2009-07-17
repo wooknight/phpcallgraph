@@ -99,7 +99,7 @@ class PHPCallGraph {
     protected $debug = false;
 
     protected $showWarnings = true;
-    protected $showInfo = true;
+    protected $showInfo = false;
 
 
     /**
@@ -639,6 +639,7 @@ class PHPCallGraph {
 
 			    
    protected function getTokenValues($tokens, $i) {
+     $width = 10;
      $pad = ' ';
      $out = "\n";
      $start = -5;
@@ -646,6 +647,9 @@ class PHPCallGraph {
      for ($j = $start; $j <= $end; $j++) {
        $n = ($i + $j);
        $currentToken = $tokens[$n];
+       $tokenType = '';
+       $cell = '';
+       $header = '';
        if (is_array($currentToken)) {
          $mainValue = $currentToken[1];
 	 $mainValue = str_replace("\n", '\n', $mainValue);
@@ -654,19 +658,23 @@ class PHPCallGraph {
 	   $mainValue = 'nil';
          } 
          $cell = $mainValue;
+	 $tokenType = token_name($currentToken[0]);
        } else {
          $cell = '"'.$currentToken.'"';
        }
        $cell = $cell;
-       $cell =  str_pad($cell, 10, $pad);
-       $headerCell = '['.$j.']';
-       $headerCell =  str_pad($headerCell, 10, $pad);
+       $cell =  str_pad($cell, $width, $pad);
+       $tokenType = str_pad(substr($tokenType,0,$width), $width, $pad);
+       $header = '['.$j.']';
+       $header =  str_pad($header, $width, $pad);
 
-       $row .= $cell.' ';
-       $headers .= $headerCell.' ';
+       $headerLine .= $header.' ';
+       $rowLine .= $cell.' ';
+       $tokenLine .= $tokenType.' ';
      }
-     $out .= $headers."\n";
-     $out .= $row."\n";
+     $out .= $headerLine."\n";
+     $out .= $rowLine."\n";
+     $out .= $tokenLine."\n";
      return $out;
  }
 
