@@ -515,6 +515,8 @@ class PHPCallGraph {
 					and count($this->methodLookupTable[$calleeName]) == 1
                                       ) {
                                         // there is only one class having a method with this name
+					// SMELL: but if the user only registers part of a system the only one hit 
+					// is not necessarily valid.
                                         $calleeClass  = $this->methodLookupTable[$calleeName][0];
                                         if (isset($this->codeSummary['classes'][$calleeClass])) {
                                             $calleeParams =  $this->generateParametersForSignature(
@@ -522,7 +524,9 @@ class PHPCallGraph {
                                             );
                                             $calleeFile   = $this->codeSummary['classes'][$calleeClass]['file'];
 
-					    print "RECORDING CLASS OF $previousToken[1] VARIABLE to be $calleeClass\n";
+					    print "RECORDING CLASS OF $previousPreviousToken[1] VARIABLE to be $calleeClass\n";
+					    print $this->getTokenValues($tokens, $i);
+					    
                                         } else {
                                             $this-warning("calleeClass is unset");
                                             $calleeParams = null;
@@ -536,8 +540,6 @@ class PHPCallGraph {
 					   $this->warning("I have $numEntries for $calleeName!");
 					}
 
-					var_dump($this->methodLookupTable[$calleeName]);
-					
 					$this->info($this->getTokenValues($tokens, $i));
 
                                         $calleeClass  = '';
