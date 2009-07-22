@@ -1,13 +1,14 @@
 digraph G {
 	graph [fontname=Verdana, fontsize=12, rankdir=LR];
 	node [label="\N"];
-	graph [bb="0,0,379,540"];
+	graph [bb="0,0,527,594"];
 	subgraph cluster_Bar {
 		graph [label=Bar,
 			color=gray20,
-			lp="95,418",
-			bb="24,138,166,430"];
-		"Bar::sayHello()" [label=sayHello, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,380", width="1.28", height="0.50"];
+			lp="95,472",
+			bb="24,138,166,484"];
+		"Bar::sayHello()" [label=sayHello, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,434", width="1.28", height="0.50"];
+		"Bar::ambiguous()" [label=ambiguous, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,380", width="1.53", height="0.50"];
 		"Bar::add($x, $y)" [label=add, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,326", width="0.75", height="0.50"];
 		"Bar::arraySum($array)" [label=arraySum, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,272", width="1.36", height="0.50"];
 		"Bar::getFoo()" [label=getFoo, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,218", width="1.08", height="0.50"];
@@ -25,19 +26,21 @@ digraph G {
 	subgraph cluster_Foo {
 		graph [label=Foo,
 			color=gray20,
-			lp="95,520",
-			bb="16,438,174,532"];
-		"Foo::getInputString()" [label=getInputString, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,464", width="1.94", height="0.50"];
-		"Foo::getInputString()" -> "Foo::getInputString()" [pos="e,129,480 61,480 52,490 64,500 95,500 115,500 128,496 131,490"];
+			lp="95,574",
+			bb="16,492,174,586"];
+		"Foo::getInputString()" [label=getInputString, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,518", width="1.94", height="0.50"];
+		"Foo::getInputString()" -> "Foo::getInputString()" [pos="e,129,534 61,534 52,544 64,554 95,554 115,554 128,550 131,544"];
 	}
 	subgraph cluster_Test {
 		graph [label=Test,
 			color=gray20,
-			lp="179,118",
-			bb="28,54,330,130"];
+			lp="274,118",
+			bb="28,54,519,130"];
 		"Test::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,80", width="1.61", height="0.50"];
 		"Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=test, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="294,80", width="0.75", height="0.50"];
+		"Test::ambiguous()" [label=ambiguous, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="455,80", width="1.53", height="0.50"];
 		"Test::__construct()" -> "Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [pos="e,266,80 154,80 187,80 227,80 256,80"];
+		"Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" -> "Test::ambiguous()" [pos="e,399,80 322,80 340,80 365,80 389,80"];
 	}
 	"userDefinedFunction($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=userDefinedFunction, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,26", width="2.61", height="0.50"];
 	"Bar::arraySum($array)" -> "is_array()" [pos="e,250,272 144,272 174,272 210,272 240,272"];
