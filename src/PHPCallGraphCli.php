@@ -55,7 +55,7 @@ class PHPCallGraphCli {
                 ezcConsoleInput::TYPE_STRING
             )
         );
-        $formatOption->shorthelp = "Set output format. Can be 'txt', 'array', 'deadcode', 'cga' or one of the formats supported by dot, e.g. png, svg, pdf, ps, ... (see http://graphviz.org/doc/info/output.html)";
+        $formatOption->shorthelp = "Set output format. Can be 'txt', 'array', 'deadcode', 'umlgraph', 'cga' or one of the formats supported by dot, e.g. png, svg, pdf, ps, ... (see http://graphviz.org/doc/info/output.html)";
 
         $outputfileOption = $input->registerOption(
             new ezcConsoleOption( 
@@ -182,9 +182,9 @@ class PHPCallGraphCli {
                     $driver = new DeadCodeDriver($verboseOption->value);
                     break;
                 case 'umlgraph':
-	            require_once 'drivers/UmlGraphSequenceDiagramDriver.php';
-   		    $driver = new UmlGraphSequenceDiagramDriver();
-        	    break;
+                    require_once 'drivers/UmlGraphSequenceDiagramDriver.php';
+                    $driver = new UmlGraphSequenceDiagramDriver();
+                    break;
                 case false:
                 case 'txt':
                     require_once 'drivers/TextDriver.php';
