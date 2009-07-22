@@ -357,7 +357,7 @@ class PHPCallGraph {
             //echo $memberCode;
 
             $this->debug("= Analyzing $callerName =");
-	    $this->info(" defined in $file on line $offset");
+            $this->info(" defined in $file on line $offset");
             $this->driver->startFunction($offset, $file, $callerName, $memberCode);
 
             $insideDoubleQuotedString = false;
@@ -418,7 +418,7 @@ class PHPCallGraph {
                             $nextToken                    = $tokens[ $i + 1 ];
                             $tokenAfterNext               = $tokens[ $i + 2 ];
 
-			    $this->info($this->getTokenValues($tokens, $i));
+                            $this->info($this->getTokenValues($tokens, $i));
 
 
                             if ($nextToken[0] == T_DOUBLE_COLON) {
@@ -471,8 +471,8 @@ class PHPCallGraph {
                                     $calleeFile = '';
                                 }
 
-				$this->info($this->getTokenValues($tokens, $i));
-				$this->recordVariableAsType($calleeClass, $tokens[$i-6][1]);
+                                $this->info($this->getTokenValues($tokens, $i));
+                                $this->recordVariableAsType($calleeClass, $tokens[$i-6][1]);
                             } elseif (
                                 (
                                     isset($previousPreviousToken[1]) and $previousPreviousToken[1] == '$this'
@@ -490,66 +490,65 @@ class PHPCallGraph {
                                 $calleeName = "$className::{$token[1]}" . $this->generateParametersForSignature($this->codeSummary['classes'][$className]['methods'][$token[1]]['params']);
                                 $calleeFile = $file;
                             } elseif ($previousToken[0] == T_OBJECT_OPERATOR) {
-			        $this->debug('External method call or property access'); 
+                                $this->debug('External method call or property access'); 
                                 //TODO: what if a object holds another instance of its class
                                 if (!$this->showExternalCalls) {
                                     continue;
                                 }
                                 if ($nextToken == '(' or ($nextToken[0] == T_WHITESPACE and $tokenAfterNext == '(')) {
                                     $calleeName = $token[1];
-				    $this->debug("Calling for $calleeName");
+                                    $this->debug("Calling for $calleeName");
 
-				    $variable = $tokens[$i-2][1];
-				    $this->debug("Variable = $variable");
-				    $calleeClass=$this->variableTypes[$variable];
-				    $this->debug('found as '.$calleeClass);
-				    if ($calleeClass) {
+                                    $variable = $tokens[$i-2][1];
+                                    $this->debug("Variable = $variable");
+                                    $calleeClass=$this->variableTypes[$variable];
+                                    $this->debug('found as '.$calleeClass);
+                                    if ($calleeClass) {
                                             $calleeParams =  $this->generateParametersForSignature(
                                                 $this->codeSummary['classes'][$calleeClass]['methods'][$calleeName]['params']
                                             );
                                             $calleeFile   = $this->codeSummary['classes'][$calleeClass]['file'];
-				    } else {
+                                    } else {
+                                        if (
+                                                isset($this->methodLookupTable[$calleeName])
+                                                and count($this->methodLookupTable[$calleeName]) == 1
+                                        ) {
+                                            // there is only one class having a method with this name
+                                            // SMELL: but if the user only registers part of a system the only one hit 
+                                            // is not necessarily valid.
+                                            $calleeClass  = $this->methodLookupTable[$calleeName][0];
+                                            if (isset($this->codeSummary['classes'][$calleeClass])) {
+                                                $calleeParams =  $this->generateParametersForSignature(
+                                                        $this->codeSummary['classes'][$calleeClass]['methods'][$calleeName]['params']
+                                                        );
+                                                $calleeFile   = $this->codeSummary['classes'][$calleeClass]['file'];
 
-                                      if (
-                                        isset($this->methodLookupTable[$calleeName])
-					and count($this->methodLookupTable[$calleeName]) == 1
-                                      ) {
-                                        // there is only one class having a method with this name
-					// SMELL: but if the user only registers part of a system the only one hit 
-					// is not necessarily valid.
-                                        $calleeClass  = $this->methodLookupTable[$calleeName][0];
-                                        if (isset($this->codeSummary['classes'][$calleeClass])) {
-                                            $calleeParams =  $this->generateParametersForSignature(
-                                                $this->codeSummary['classes'][$calleeClass]['methods'][$calleeName]['params']
-                                            );
-                                            $calleeFile   = $this->codeSummary['classes'][$calleeClass]['file'];
+                                                print "RECORDING CLASS OF $previousPreviousToken[1] VARIABLE to be $calleeClass\n";
+                                                print $this->getTokenValues($tokens, $i);
 
-					    print "RECORDING CLASS OF $previousPreviousToken[1] VARIABLE to be $calleeClass\n";
-					    print $this->getTokenValues($tokens, $i);
-					    
+                                            } else {
+                                                $this-warning("calleeClass is unset");
+                                                $calleeParams = null;
+                                                $calleeFile   = null;
+                                            }
                                         } else {
-                                            $this-warning("calleeClass is unset");
-                                            $calleeParams = null;
-                                            $calleeFile   = null;
+                                            $numEntries = count($this->methodLookupTable[$calleeName]);
+                                            if ($numEntries == 0) {
+                                                $this->warning("method $calleeName was called, but I have no record for that");
+                                            } else {
+                                                $this->warning("I have $numEntries for $calleeName!");
+                                            }
+
+                                            $this->info($this->getTokenValues($tokens, $i));
+
+                                            $calleeClass  = '';
+                                            $calleeParams = '()';
+                                            $calleeFile   = '';
                                         }
-                                      } else {
-				        $numEntries = count($this->methodLookupTable[$calleeName]);
-				        if ($numEntries == 0) {
-				           $this->warning("method $calleeName was called, but I have no record for that");
-					} else {
-					   $this->warning("I have $numEntries for $calleeName!");
-					}
-
-					$this->info($this->getTokenValues($tokens, $i));
-
-                                        $calleeClass  = '';
-                                        $calleeParams = '()';
-                                        $calleeFile   = '';
                                     }
-                                  }
-                                  $calleeName = "$calleeClass::$calleeName$calleeParams";
+                                    $calleeName = "$calleeClass::$calleeName$calleeParams";
                                 } else {
-				    $this->info("Property access");
+                                    $this->info("Property access");
                                     continue;
                                 }
                             } elseif ($previousToken[0] == T_DOUBLE_COLON){
@@ -583,7 +582,7 @@ class PHPCallGraph {
                                 $calleeFile = '';
                                 $calleeParams = '()';
                                 
-				$this->info("Function call: ".$calledFunction);
+                                $this->info("Function call: ".$calledFunction);
 
                                 if (in_array($calledFunction, $this->internalFunctions)) {
                                     if (!$this->showInternalFunctions) {
@@ -608,10 +607,10 @@ class PHPCallGraph {
                     }
                 } else {
                     //TODO: parse calls inside double quoted strings
-		    $this->info('    ignoring code inside ""');
+                    $this->info('    ignoring code inside ""');
                 }
             }
-	    $this->debug('== endFunction ==');
+            $this->debug('== endFunction ==');
             $this->driver->endFunction();
         }
     }
@@ -640,50 +639,53 @@ class PHPCallGraph {
     }
 
 			    
-   protected function getTokenValues($tokens, $i) {
-     $width = 10;
-     $pad = ' ';
-     $out = "\n";
-     $start = -5;
-     $end = 4;
-     for ($j = $start; $j <= $end; $j++) {
-       $n = ($i + $j);
-       $currentToken = $tokens[$n];
-       $tokenType = '';
-       $cell = '';
-       $header = '';
-       if (is_array($currentToken)) {
-         $mainValue = $currentToken[1];
-	 $mainValue = str_replace("\n", '\n', $mainValue);
-	 $mainValue = str_replace("\t", '\t', $mainValue);
-	 if ($mainVlaue = '') {
-	   $mainValue = 'nil';
-         } 
-         $cell = $mainValue;
-	 $tokenType = token_name($currentToken[0]);
-       } else {
-         $cell = '"'.$currentToken.'"';
-       }
-       $cell = $cell;
-       $cell =  str_pad($cell, $width, $pad);
-       $tokenType = str_pad(substr($tokenType,0,$width), $width, $pad);
-       $header = '['.$j.']';
-       $header =  str_pad($header, $width, $pad);
+    protected function getTokenValues($tokens, $i) {
+        $width = 10;
+        $pad = ' ';
+        $out = "\n";
+        $start = -5;
+        $end = 4;
+        $headerLine = '';
+        $rowLine    = '';
+        $tokenLine  = '';
+        for ($j = $start; $j <= $end; $j++) {
+            $n = ($i + $j);
+            $currentToken = $tokens[$n];
+            $tokenType = '';
+            $cell = '';
+            $header = '';
+            if (is_array($currentToken)) {
+                $mainValue = $currentToken[1];
+                $mainValue = str_replace("\n", '\n', $mainValue);
+                $mainValue = str_replace("\t", '\t', $mainValue);
+                if ($mainVlaue = '') {
+                    $mainValue = 'nil';
+                } 
+                $cell = $mainValue;
+                $tokenType = token_name($currentToken[0]);
+            } else {
+                $cell = '"'.$currentToken.'"';
+            }
+            $cell = $cell;
+            $cell =  str_pad($cell, $width, $pad);
+            $tokenType = str_pad(substr($tokenType,0,$width), $width, $pad);
+            $header = '['.$j.']';
+            $header =  str_pad($header, $width, $pad);
 
-       $headerLine .= $header.' ';
-       $rowLine .= $cell.' ';
-       $tokenLine .= $tokenType.' ';
-     }
-     $out .= $headerLine."\n";
-     $out .= $rowLine."\n";
-     $out .= $tokenLine."\n";
-     return $out;
- }
+            $headerLine .= $header.' ';
+            $rowLine .= $cell.' ';
+            $tokenLine .= $tokenType.' ';
+        }
+        $out .= $headerLine."\n";
+        $out .= $rowLine."\n";
+        $out .= $tokenLine."\n";
+        return $out;
+    }
 
-protected $variableTypes = array();
-protected function recordVariableAsType($class, $variable) {
-	  $this->debug("RECORDING $variable AS TYPE $class");
-	  $this->variableTypes[$variable] = $class;
-}
+    protected $variableTypes = array();
+    protected function recordVariableAsType($class, $variable) {
+        $this->debug("RECORDING $variable AS TYPE $class");
+        $this->variableTypes[$variable] = $class;
+    }
 }
 ?>
