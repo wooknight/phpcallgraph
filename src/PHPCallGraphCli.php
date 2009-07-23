@@ -21,7 +21,7 @@
  *
  * @package    PHPCallGraph
  * @author     Falko Menge <fakko at users dot sourceforge dot net>
- * @copyright  2007 Falko Menge
+ * @copyright  2007-2009 Falko Menge
  * @license    http://www.gnu.org/licenses/gpl.txt GNU General Public License
  */
 
@@ -65,6 +65,15 @@ class PHPCallGraphCli {
             )
         );
         $outputfileOption->shorthelp = 'Output file';
+
+        $outputDirOption = $input->registerOption(
+            new ezcConsoleOption( 
+                'u',
+                'umloutputdir',
+                ezcConsoleInput::TYPE_STRING
+            )
+        );
+        $outputDirOption->shorthelp = 'UML output directory (only used for the umlgraph output format';
 
         $recursiveOption = $input->registerOption(
             new ezcConsoleOption( 
@@ -184,6 +193,9 @@ class PHPCallGraphCli {
                 case 'umlgraph':
                     require_once 'drivers/UmlGraphSequenceDiagramDriver.php';
                     $driver = new UmlGraphSequenceDiagramDriver();
+                    if ($outputDirOption->value !== false) {
+                        //$driver->setOutputDirectory($outputDirOption->value);
+                    }
                     break;
                 case false:
                 case 'txt':
