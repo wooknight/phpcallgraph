@@ -1,0 +1,8 @@
+<?php
+class Bar {
+    public function getFoo() {
+        $returnValue = new Foo();
+	return $returnValue;
+    }
+}
+?>

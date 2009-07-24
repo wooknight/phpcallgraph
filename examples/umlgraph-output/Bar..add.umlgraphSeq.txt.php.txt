@@ -1,0 +1,7 @@
+<?php
+class Bar {
+    public function add($x, $y) {
+        return $x+$y;
+    }
+}
+?>

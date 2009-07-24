@@ -1,0 +1,9 @@
+<?php
+class Bar {
+    public function duplicateFoo($inputFoo) {
+        $returnValue[] = $inputFoo;
+        $returnValue[] = $inputFoo;
+	return $returnValue;
+    }
+}
+?>

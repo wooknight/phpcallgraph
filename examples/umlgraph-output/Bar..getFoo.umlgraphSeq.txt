@@ -1,0 +1,46 @@
+.PS
+copy "/Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/lib/umlgraph/sequence.pic";
+
+# Measured in virtual inches
+#Variable Name  Default Value   Operation
+boxht    =0.3; #       Object box height
+boxwid   =1.25; #       Object box width
+awid     =0.25; # Active lifeline width
+spacing  =0.25;  #Spacing between messages
+movewid  =0.75; #Spacing between objects
+dashwid  =0.05; #Interval for dashed lines
+maxpswid =18;   #Maximum width of picture
+maxpsht  =18;   #Maximum height of picture
+	 
+pobject(Incoming,"External Messages")
+object(ObjBar,":Bar");
+step();
+active(ObjBar);
+step();
+pobject(FillerO);
+object(ObjFoo,":Foo");
+step();
+active(ObjFoo);
+step();
+pobject(FillerO);
+pobject(Filler1);
+# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/test/testfiles/Bar.php:46 = Bar::getFoo()
+message(Incoming,ObjBar,"getFoo()");
+# addCall from Bar::getFoo():48 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/test/testfiles/Foo.php = Foo, __construct()
+
+message(ObjBar,ObjFoo,"1 __construct()");
+step();
+# endFunction
+
+
+
+
+step();
+step();
+step();
+inactive(ObjBar);
+complete(ObjBar);
+inactive(ObjFoo);
+complete(ObjFoo);
+
+.PE

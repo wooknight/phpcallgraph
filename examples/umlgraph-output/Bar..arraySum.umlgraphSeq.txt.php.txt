@@ -1,0 +1,11 @@
+<?php
+class Bar {
+    public function arraySum($array) {
+      $sum = 0;
+      if (is_array($array)) {
+        $sum = array_sum($array);
+      }
+      return $sum;
+    }   
+}
+?>
