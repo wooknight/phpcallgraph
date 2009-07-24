@@ -7,11 +7,15 @@ PHPUnit_Util_Filter::addDirectoryToWhitelist(
 
 // set up include path
 set_include_path(
+    // phpCallGraph
     realpath(dirname(__FILE__) . '/../src') . PATH_SEPARATOR
-    . realpath(dirname(__FILE__) . '/../lib/ezcomponents-instantsvc/components') . PATH_SEPARATOR
-    //. realpath(dirname(__FILE__) . '/../lib/ezcomponents') . PATH_SEPARATOR
+    // eZ Components
+    . realpath(dirname(__FILE__) . '/../lib/ezcomponents') . PATH_SEPARATOR
+    // other external libraries, e.g. Static Reflection
     . realpath(dirname(__FILE__) . '/../lib') . PATH_SEPARATOR
+    // original include path from php.ini
     . get_include_path() . PATH_SEPARATOR
+    // PEAR files shipped with phpCallGraph (only used if no PEAR installed)
     . realpath(dirname(__FILE__) . '/../lib/pear')
 );
 
