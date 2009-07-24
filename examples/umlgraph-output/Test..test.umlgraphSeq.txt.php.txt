@@ -1,0 +1,7 @@
+<?php
+class Test {
+    function test($nix, Array $ar, &$ref, $std, $na, $opt = NULL, $def = "FooBar") {
+    	$this->ambiguous();
+    }
+}
+?>

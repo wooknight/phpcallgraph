@@ -1,0 +1,8 @@
+<?php
+class Test {
+    function ambiguous() {
+    	$myBar = new Bar();
+	$myBar->ambiguous();
+    }
+}
+?>

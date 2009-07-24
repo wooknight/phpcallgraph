@@ -1,0 +1,6 @@
+<?php
+class - {
+function userDefinedFunction($nix, Array $ar, &$ref, $std, $na, $opt = NULL, $def = "FooBar") {
+}
+}
+?>

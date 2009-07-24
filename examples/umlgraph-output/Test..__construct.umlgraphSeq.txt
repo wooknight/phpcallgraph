@@ -1,0 +1,111 @@
+.PS
+copy "/Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/lib/umlgraph/sequence.pic";
+
+# Measured in virtual inches
+#Variable Name  Default Value   Operation
+boxht    =0.3; #       Object box height
+boxwid   =1.25; #       Object box width
+awid     =0.25; # Active lifeline width
+spacing  =0.25;  #Spacing between messages
+movewid  =0.75; #Spacing between objects
+dashwid  =0.05; #Interval for dashed lines
+maxpswid =18;   #Maximum width of picture
+maxpsht  =18;   #Maximum height of picture
+	 
+pobject(Incoming,"External Messages")
+object(ObjTest,":Test");
+step();
+active(ObjTest);
+step();
+pobject(FillerO);
+object(ObjFoo,":Foo");
+step();
+active(ObjFoo);
+step();
+pobject(FillerO);
+object(ObjstdClass,":stdClass");
+step();
+active(ObjstdClass);
+step();
+pobject(FillerO);
+object(ObjBar,":Bar");
+step();
+active(ObjBar);
+step();
+pobject(FillerO);
+object(ObjClassUnknown,":ClassUnknown");
+step();
+active(ObjClassUnknown);
+step();
+pobject(FillerO);
+pobject(Filler1);
+# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/test/testfiles/TestClass.php:7 = Test::__construct()
+message(Incoming,ObjTest,"__construct()");
+# addCall from Test::__construct():9 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/test/testfiles/Foo.php = Foo, __construct()
+
+message(ObjTest,ObjFoo,"1 __construct()");
+step();
+# addCall from Test::__construct():10 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/test/testfiles/TestClass.php = Test, test($nix, $ar, &$ref, $std, $na, $opt, $def)
+
+message(ObjTest,ObjTest,"2 test($nix, $ar, &$ref, $std, $na, $opt, $def)");
+step();
+# addCall from Test::__construct():10 to  = stdClass, __construct()
+
+message(ObjTest,ObjstdClass,"3 __construct()");
+step();
+# addCall from Test::__construct():11 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/test/testfiles/Foo.php = Foo, getInputString()
+
+message(ObjTest,ObjFoo,"4 getInputString()");
+step();
+# addCall from Test::__construct():13 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/test/testfiles/Bar.php = Bar, add($x, $y)
+
+message(ObjTest,ObjBar,"5 add($x, $y)");
+step();
+# addCall from Test::__construct():14 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/test/testfiles/TestClass.php = Test, test($nix, $ar, &$ref, $std, $na, $opt, $def)
+
+message(ObjTest,ObjTest,"6 test($nix, $ar, &$ref, $std, $na, $opt, $def)");
+step();
+# addCall from Test::__construct():14 to  = stdClass, __construct()
+
+message(ObjTest,ObjstdClass,"7 __construct()");
+step();
+# addCall from Test::__construct():15 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/test/testfiles/TestClass.php = Test, test($nix, $ar, &$ref, $std, $na, $opt, $def)
+
+message(ObjTest,ObjTest,"8 test($nix, $ar, &$ref, $std, $na, $opt, $def)");
+step();
+# addCall from Test::__construct():15 to  = stdClass, __construct()
+
+message(ObjTest,ObjstdClass,"9 __construct()");
+step();
+# addCall from Test::__construct():16 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/test/testfiles/TestClass.php = ClassUnknown, userDefinedFunction($nix, $ar, &$ref, $std, $na, $opt, $def)
+
+message(ObjTest,ObjClassUnknown,"10 userDefinedFunction($nix, $ar, &$ref, $std, $na, $opt, $def)");
+step();
+# addCall from Test::__construct():16 to  = stdClass, __construct()
+
+message(ObjTest,ObjstdClass,"11 __construct()");
+step();
+# addCall from Test::__construct():18 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/test/testfiles/TestClass.php = Test, selfTest()
+
+message(ObjTest,ObjTest,"12 selfTest()");
+step();
+# endFunction
+
+
+
+
+step();
+step();
+step();
+inactive(ObjTest);
+complete(ObjTest);
+inactive(ObjFoo);
+complete(ObjFoo);
+inactive(ObjstdClass);
+complete(ObjstdClass);
+inactive(ObjBar);
+complete(ObjBar);
+inactive(ObjClassUnknown);
+complete(ObjClassUnknown);
+
+.PE

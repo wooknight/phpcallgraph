@@ -1,0 +1,39 @@
+.PS
+copy "/Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/lib/umlgraph/sequence.pic";
+
+# Measured in virtual inches
+#Variable Name  Default Value   Operation
+boxht    =0.3; #       Object box height
+boxwid   =1.25; #       Object box width
+awid     =0.25; # Active lifeline width
+spacing  =0.25;  #Spacing between messages
+movewid  =0.75; #Spacing between objects
+dashwid  =0.05; #Interval for dashed lines
+maxpswid =18;   #Maximum width of picture
+maxpsht  =18;   #Maximum height of picture
+	 
+pobject(Incoming,"External Messages")
+object(ObjTest,":Test");
+step();
+active(ObjTest);
+step();
+pobject(FillerO);
+pobject(Filler1);
+# startFunction:  /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/test/testfiles/TestClass.php:26 = Test::thisTest()
+message(Incoming,ObjTest,"thisTest()");
+# addCall from Test::thisTest():28 to /Library/WebServer/Documents/tikiwiki/zikstream/doc/phpcallgraph/phpcallgraph/test/testfiles/TestClass.php = Test, test($nix, $ar, &$ref, $std, $na, $opt, $def)
+
+message(ObjTest,ObjTest,"1 test($nix, $ar, &$ref, $std, $na, $opt, $def)");
+step();
+# endFunction
+
+
+
+
+step();
+step();
+step();
+inactive(ObjTest);
+complete(ObjTest);
+
+.PE
