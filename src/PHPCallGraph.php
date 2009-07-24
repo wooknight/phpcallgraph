@@ -506,7 +506,7 @@ class PHPCallGraph {
 
 				    $variable = $tokens[$i-2][1];
 				    $this->debug("Variable = $variable");
-				    $calleeClass=lookupTypeForVariable($variable, $calleeClass);
+				    $calleeClass=$this->lookupTypeForVariable($variable, $calleeClass);
 				    $this->debug('found as '.$calleeClass);
 				    if ($calleeClass) {
                                             $calleeParams =  $this->generateParametersForSignature(
