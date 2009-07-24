@@ -20,11 +20,6 @@ for TEST in $TESTS; do
     LIBS=$umlgraphLIBS
     UMLSEQFILE=$TEST.$DRIVER
     ../bin/phpcallgraph $DEBUG -f $DRIVER -o $UMLSEQFILE $LIBS
-    for FORMAT in $FORMATS; do 
-	OUTPUTFILE=$UMLSEQFILE.$FORMAT
-	pic2plot $UMLSEQFILE -T$FORMAT > $OUTPUTFILE
-    done
-#    ../bin/phpcallgraph $DEBUG -f png -o $TEST.png $LIBSUMLG
 done
 
 
