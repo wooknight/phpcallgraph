@@ -194,7 +194,7 @@ class PHPCallGraphCli {
                     require_once 'drivers/UmlGraphSequenceDiagramDriver.php';
                     $driver = new UmlGraphSequenceDiagramDriver();
                     if ($outputDirOption->value !== false) {
-                        //$driver->setOutputDirectory($outputDirOption->value);
+                        $driver->setOutputDirectory($outputDirOption->value);
                     }
                     break;
                 case false:

@@ -15,6 +15,17 @@ class Test {
         Test::test(1, array(), $this, new stdClass(), null);
         userDefinedFunction(1, array(), $this, new stdClass(), null); 
         time();
+	$this->selfTest();
+    }
+
+    /** Designed to test whether $self gets associated with the class
+    */
+    function selfTest() {
+        $self->test();
+    }
+
+    functio thisTest() {
+    	$this->test();
     }
 
     function test($nix, Array $ar, &$ref, $std, $na, $opt = NULL, $def = "FooBar") {

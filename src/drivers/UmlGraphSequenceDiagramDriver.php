@@ -21,7 +21,7 @@
  *
  * @package    PHPCallGraph
  * @author     Martin Cleaver <mrjc at users dot sourceforge dot net>
- * @copyright  2009 Martin Cleaver
+ * @copyright  2009 Martin Cleaver, Blended Perspectives http://www.blendive.com/
  * @license    http://www.gnu.org/licenses/gpl.txt GNU General Public License
  */
 
@@ -31,33 +31,46 @@ error_reporting(E_ALL ^ E_NOTICE);
 require_once 'CallgraphDriver.php';
 
 /**
- * implementation of a call graph generation strategy which renders output as a UML Graph Sequence Diagram input file
- * a later evolution may output as the graphic, for now we do the input file.
+ * Implementation of a call graph generation strategy which renders output as a UML Graph Sequence Diagram input file
  *
  * A good variant for someone to build would be an XMI sequence diagram.
  *
  * TODO: add routines specific for messsage types, so instead of this:
  *        $this->addToMessageSequences('message(Incoming,'.$obj.',"'.$method.'");');
  *        $this->addToMessageSequencesMessage('Incoming',$obj,$method);
+ *
+ * KNOWN ISSUES:
+ * - Sometimes you will see calls to UnknownClass. This is a limitation of PHPCallGraph itself, you are welcome to join the 
+ *   project to help us fix this.
+ *
  */
 class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
 
     protected $debug = false;
-    protected $warnings = false; // SMELL: what debug/warning class to use?
+    protected $warnings = false; // SMELL: we should use a debug/warning class, and these methods moved up into a common utility mixin.
+    protected $info = true;
 
+    /** 
+    Where to find the UMLGraph library 
+    This defaults to relative to the bin/phpcallgraph file
+    */
+
+    protected $sequenceLibrary = null; 
+    protected $outputDir = 'umlgraph-output';
     /** 
       objects already seen
     */
     protected $objects = array();
     /**
-    sequence number of the last message
+    incrementing sequence number shown on the graphs
     */
     protected $sequenceNumber = 0;
-    protected $useColor = true;
-    protected $graphInput = '';
-    protected $graph;
+
+
     protected $currentCaller = '';
     protected $sourceCodeOfCurrentlyAnalysedMethod = '';
+
+    /** Whether to show php internal functions */
     protected $internalFunctions = false;
 
     /**
@@ -67,6 +80,7 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
 
     protected $saveMethodCodeIntoStandaloneFile = true;
 
+    /** buffers to accumulate output for the phases */
     protected $graphInit;
     protected $graphDefinitions;
     protected $graphSequence;
@@ -80,9 +94,14 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
     /**
      * @return CallgraphDriver
      */
-    public function __construct($outputFormat = 'txt', $sequenceLibrary = '/usr/local/lib/sequence.pic') {
+    public function __construct($outputFormat = 'txt', $sequenceLibrary = '') {
     	print "\n\n\n\n===================================\n";
-        $this->setSequenceLibrary($sequenceLibrary);
+	if (! $sequenceLibrary) {
+	   $sequenceLibrary = realpath(dirname(__FILE__) . '/../../lib/umlgraph/sequence.pic');
+	}
+	$this->setSequenceLibrary($sequenceLibrary);
+
+	global $libDir;
         $this->setOutputFormat($outputFormat);
         $functions = get_defined_functions();
         $this->internalFunctions = $functions['internal'];
@@ -90,9 +109,7 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
 
     public function __destruct() {
     	  $this->closeObjects();
-
     	   print "===========Finishing: \n\n";
-//	   print $this->graphInput;
     }
 
     /**
@@ -102,10 +119,21 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
         $this->initializeNewGraph();
     }
 
+    public function setOutputDirectory($dir) {
+    	 if (is_dir($dir)) {
+	    $this->outputDir = $dir;
+	 } else {
+	   print "ERROR $dir does not exist\n";
+	 }
+    }
+
+
     /**
      * @return void
      */
     protected function initializeNewGraph() {
+     $this->exitUnlessSequenceLibExists();
+     $this->exitUnlessOutputDirExists();
      $this->graphInit = '';
      $this->graphDefinitions = '';
      $this->graphSequence = '';
@@ -115,7 +143,7 @@ class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
 
      $this->sequenceNumber = 1;
     	      $this->addToInit( ".PS\n" .
-			     'copy "/usr/local/lib/sequence.pic";');
+			     'copy "'.$this->sequenceLibrary.'";');
 	$this->addToInit("
 # Measured in virtual inches
 #Variable Name  Default Value   Operation
@@ -136,8 +164,11 @@ maxpsht  =18;   #Maximum height of picture
      * @param string $sequenceLibrary  Path to sequence library, either relative or absolute
      * @return void
      */
-    public function setSequenceLibrary($sequenceLibrary = 'sequence.pic') {
+    public function setSequenceLibrary($sequenceLibrary) {
+    	$this->info('setSequenceLibrary', "sequenceLibarary set to '$sequenceLibrary'");
         $this->sequenceLibrary = $sequenceLibrary;
+
+	$this->exitUnlessSequenceLibExists();
     }
 
     /**
@@ -152,15 +183,6 @@ maxpsht  =18;   #Maximum height of picture
 //        $this->outputFormat = $outputFormat;
 
 	$this->warning("setOutputFormat", "setting ignored (needs reconciling with driver)");
-    }
-
-    /**
-     * Enables or disables the use of color
-     * @param boolean $boolean True if color should be used
-     * @return void
-     */
-    public function setUseColor($boolean = true) {
-        $this->useColor = $boolean;
     }
 
     /**
@@ -210,10 +232,9 @@ maxpsht  =18;   #Maximum height of picture
     }
 
 
-    protected function classForObj ($object) {
-    
+    protected function classForObj ($object) {    
     	if (strpos($object,'Obj') === false) {
-	   die("Object nameshould have contained Obj (was $object)\n");
+	   die("Object nameshould have contained Obj (was $object)\n"); // Internal error: contact driver author
 	} else {
 	   return substr($object, strlen('Obj'));
 	}
@@ -400,7 +421,21 @@ maxpsht  =18;   #Maximum height of picture
 	 $filename = $this->removeAnyParameters($filename);
 	 $filename = $filename . '.umlgraphSeq';
     	 $this->debug('filenameForFunctionSequenceGraph', "SAVING FOR $function as $filename");
-	 return 'output/'.$filename;
+	 return $this->outputDir.'/'.$filename;
+    }
+
+    protected function exitUnlessOutputDirExists(){
+         if (!is_dir($this->outputDir)) {
+	     trigger_error("Your output directory (presently set to '".$this->outputDir."') must exist", E_USER_ERROR);
+	     exit;
+         }
+    }
+
+    protected function exitUnlessSequenceLibExists() {
+         if (!file_exists($this->sequenceLibrary)) {
+	     trigger_error("Your sequence library (presently set to '".$this->sequenceLibrary."') does not exist", E_USER_ERROR);
+	     exit;
+         }
     }
 
     /** 
@@ -433,9 +468,6 @@ maxpsht  =18;   #Maximum height of picture
 
     protected function registerObjectIfNew($object) {
         
-//        if ($object == 'ObjClassUnknown') {
-//	   return;
-//	}
 	$this->debug("REGISTERING", $object);
     	if (! $this->objects[$object]) {
 	   $this->objects[$object] = 1;
@@ -477,6 +509,12 @@ maxpsht  =18;   #Maximum height of picture
         if ($this->debug) {
 	  print "|$section | ".$string."\n";
 	}
+    }
+
+    protected function info($section, $string) {
+        if ($this->info) {
+          print "|$section | ".$string."\n";
+        }
     }
 
     protected function addToInit($string) {
