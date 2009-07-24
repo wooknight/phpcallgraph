@@ -1,5 +1,0 @@
-The components Base and ConsoleTools are part of eZ Components and subject
-to the New BSD license which can be found at http://ez.no/ezcomponents/license
-
-The components Reflection and CodeAnalyzer are part of InstantSVC and subject
-to the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt).

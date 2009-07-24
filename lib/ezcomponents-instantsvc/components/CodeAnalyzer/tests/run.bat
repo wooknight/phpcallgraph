@@ -1,1 +1,0 @@
-@phpunit ezcCodeAnalyzerSuite dev-suite.php
