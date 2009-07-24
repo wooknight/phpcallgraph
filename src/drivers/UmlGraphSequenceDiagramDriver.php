@@ -46,8 +46,8 @@ require_once 'CallgraphDriver.php';
  */
 class UmlGraphSequenceDiagramDriver implements CallgraphDriver {
 
-    protected $debug = false;
-    protected $warnings = false; // SMELL: we should use a debug/warning class, and these methods moved up into a common utility mixin.
+    protected $debug = true;
+    protected $warnings = true; // SMELL: we should use a debug/warning class, and these methods moved up into a common utility mixin.
     protected $info = true;
 
     /** 
