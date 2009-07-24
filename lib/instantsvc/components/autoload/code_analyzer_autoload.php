@@ -10,9 +10,9 @@
  */
 
 return array(
-    'iscCodeAnalyzer' => 'CodeAnalyzer/code_analyzer.php',
-    'iscCodeAnalyzerClassLoader' => 'CodeAnalyzer/class_loader.php',
-    'iscCodeAnalyzerFileDetails' => 'CodeAnalyzer/file_details.php'
+    'iscCodeAnalyzer' => 'CodeAnalyzer/src/code_analyzer.php',
+    'iscCodeAnalyzerClassLoader' => 'CodeAnalyzer/src/class_loader.php',
+    'iscCodeAnalyzerFileDetails' => 'CodeAnalyzer/src/file_details.php'
 );
 
 ?>
