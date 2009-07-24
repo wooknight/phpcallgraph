@@ -24,7 +24,7 @@ class Test {
         $self->test();
     }
 
-    functio thisTest() {
+    function thisTest() {
     	$this->test();
     }
 
