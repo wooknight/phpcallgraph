@@ -99,7 +99,7 @@ class PHPCallGraph {
     protected $debug = false;
 
     protected $showWarnings = true;
-    protected $showInfo = true;
+    protected $showInfo = false;
 
 
     /**
@@ -216,15 +216,14 @@ class PHPCallGraph {
 
     public function parse(array $filesOrDirs, $recursive = false) {
         $files = $this->collectFileNames($filesOrDirs, $recursive);
-	if ($this->debug) {
-	   var_dump($files);
-	}
+        if ($this->debug) {
+            var_dump($files);
+        }
 
         $ca = new iscCodeAnalyzer(null);
-        $ca->inspectFiles($files);
         $ca->setDebug($this->debug);
         $ca->setAutoloadFile($this->autoloadFile);
-
+        $ca->inspectFiles($files);
         $this->codeSummary = $ca->getCodeSummary();
         $this->analyseCodeSummary();
     }
@@ -351,8 +350,7 @@ class PHPCallGraph {
         $callerNameWithoutParameterList = substr($callerName, 0, strpos($callerName, '('));
         
         if (!in_array($callerNameWithoutParameterList, $this->ignoreList)) {
-            $this->debug('phpCallGraph: analyzing ', $callerName);
-
+            $this->debug('phpCallGraph: analyzing ' . $callerName);
             $offset = $startLine - 1;
             $length = $endLine - $startLine + 1;
 
@@ -452,7 +450,7 @@ class PHPCallGraph {
                                 // catch block
                                 continue;
                             } elseif ($previousPreviousToken[0] == T_NEW){
-                                $this->debug('Found constructor');
+                                $this->debug('Found object creation with new operator');
                                 if (!$this->showExternalCalls) {
                                     continue;
                                 }
@@ -472,7 +470,7 @@ class PHPCallGraph {
                                 } else {
                                     // TODO: decide how this case should be handled (could be a PEAR class or a class of a PHP extension, e.g. GTK)
                                     //if ($this->showInternalFunctions)
-                                    $calleeName = "$calleeClass::__construct()";
+                                    $calleeName = "$calleeClass::__construct()"; // TODO: it could also be $calleeClass::$calleeClass() implemented in PHP4-style, however if we don't have the code, we can't now
                                     $calleeFile = '';
                                 }
 
@@ -504,15 +502,15 @@ class PHPCallGraph {
                                     $calleeName = $token[1];
                                     $this->debug("Calling for $calleeName");
 
-				    $variable = $tokens[$i-2][1];
-				    $this->debug("Variable = $variable");
-				    $calleeClass=$this->lookupTypeForVariable($variable, $calleeClass);
-				    $this->debug('found as '.$calleeClass);
-				    if ($calleeClass) {
-                                            $calleeParams =  $this->generateParametersForSignature(
-                                                $this->codeSummary['classes'][$calleeClass]['methods'][$calleeName]['params']
-                                            );
-                                            $calleeFile = $this->codeSummary['classes'][$calleeClass]['file'];
+                                    $variable = $tokens[$i-2][1];
+                                    $this->debug("Variable = $variable");
+                                    $calleeClass = $this->lookupTypeForVariable($variable);
+                                    $this->debug('found as ' . $calleeClass);
+                                    if ($calleeClass) {
+                                        $calleeParams =  $this->generateParametersForSignature(
+                                            $this->codeSummary['classes'][$calleeClass]['methods'][$calleeName]['params']
+                                        );
+                                        $calleeFile = $this->codeSummary['classes'][$calleeClass]['file'];
                                     } else {
                                         if (
                                                 isset($this->methodLookupTable[$calleeName])
@@ -524,11 +522,11 @@ class PHPCallGraph {
                                             $calleeClass  = $this->methodLookupTable[$calleeName][0];
                                             if (isset($this->codeSummary['classes'][$calleeClass])) {
                                                 $calleeParams =  $this->generateParametersForSignature(
-                                                        $this->codeSummary['classes'][$calleeClass]['methods'][$calleeName]['params']
-                                                        );
+                                                    $this->codeSummary['classes'][$calleeClass]['methods'][$calleeName]['params']
+                                                );
                                                 $calleeFile   = $this->codeSummary['classes'][$calleeClass]['file'];
 
-                                                print "RECORDING CLASS OF $previousPreviousToken[1] VARIABLE to be $calleeClass\n";
+                                                $this->info("RECORDING CLASS OF $previousPreviousToken[1] VARIABLE to be $calleeClass\n");
                                                 print $this->getTokenValues($tokens, $i);
 
                                             } else {
@@ -606,7 +604,7 @@ class PHPCallGraph {
                                 }
                                 $calleeName = $calledFunction . $calleeParams;
                             }
-                            $this->debug("---> $calleeName called from line $lineNumber");
+                            $this->debug("---> $calleeName called from line $lineNumber and defined in $calleeFile");
                             $this->driver->addCall($lineNumber, $calleeFile, $calleeName);
                         }
                     }
@@ -694,26 +692,21 @@ class PHPCallGraph {
     }
 
 
-/**
-	Returns a recorded type for a given variable, unless the variable is named '$self'
-	in which case returns the class name.
-
-	If no match is found returns null.
-*/
-     protected function lookupTypeForVariable($variable, $thisClass) {
-	if ($variable == '$self') {
-	    $type = $thisClass;
-	} else {
-	    $recordedType = $this->variableTypes[$variable];
-	    if ($recordedType) {
-	       $type = $recordedType;
-	    } else {
-	       $this->warning("No recorded type for $variable whilst processing $thisClass");
-	       $type = null;
-	    }
-	}
-	$this->info('LOOKUP FOR '.$variable.' returns '.$type);
-	return $type;
+    /**
+     * Returns a recorded type for a given variable, unless the variable is named '$self'
+     * in which case returns the class name.
+     * If no match is found returns null.
+     */
+    protected function lookupTypeForVariable($variable) {
+        $recordedType = $this->variableTypes[$variable];
+        if ($recordedType) {
+            $type = $recordedType;
+        } else {
+            $this->warning("No recorded type for $variable");
+            $type = null;
+        }
+        $this->info('LOOKUP FOR '.$variable.' returns '.$type);
+        return $type;
     }
 }
 ?>
