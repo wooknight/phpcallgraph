@@ -36,7 +36,7 @@ require_once 'drivers/TextDriver.php';
  */
 class PHPCallGraph {
 
-    const VERSION = '0.7.0-pl1';
+    const VERSION = '0.8.0';
 
     /**
      * @var string[]
