@@ -31,19 +31,19 @@ digraph G {
 		"Foo::getInputString()" [label=getInputString, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,518", width="1.94", height="0.50"];
 		"Foo::getInputString()" -> "Foo::getInputString()" [pos="e,129,534 61,534 52,544 64,554 95,554 115,554 128,550 131,544"];
 	}
-	subgraph cluster_Test {
-		graph [label=Test,
+	subgraph cluster_TestClass {
+		graph [label=TestClass,
 			color=gray20,
 			lp="274,118",
 			bb="28,54,519,130"];
-		"Test::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,80", width="1.61", height="0.50"];
-		"Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=test, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="294,80", width="0.75", height="0.50"];
-		"Test::ambiguous()" [label=ambiguous, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="455,80", width="1.53", height="0.50"];
-		"Test::__construct()" -> "Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [pos="e,266,80 154,80 187,80 227,80 256,80"];
-		"Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" -> "Test::ambiguous()" [pos="e,399,80 322,80 340,80 365,80 389,80"];
+		"TestClass::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,80", width="1.61", height="0.50"];
+		"TestClass::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=test, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="294,80", width="0.75", height="0.50"];
+		"TestClass::ambiguous()" [label=ambiguous, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="455,80", width="1.53", height="0.50"];
+		"TestClass::__construct()" -> "TestClass::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [pos="e,266,80 154,80 187,80 227,80 256,80"];
+		"TestClass::test($nix, $ar, &$ref, $std, $na, $opt, $def)" -> "TestClass::ambiguous()" [pos="e,399,80 322,80 340,80 365,80 389,80"];
 	}
 	"userDefinedFunction($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=userDefinedFunction, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,26", width="2.61", height="0.50"];
 	"Bar::arraySum($array)" -> "is_array()" [pos="e,250,272 144,272 174,272 210,272 240,272"];
 	"Bar::arraySum($array)" -> "array_sum()" [pos="e,252,229 135,261 166,253 208,241 242,232"];
-	"Test::__construct()" -> "time()" [pos="e,269,154 128,95 152,106 187,122 218,134 232,140 246,145 259,150"];
+	"TestClass::__construct()" -> "time()" [pos="e,269,154 128,95 152,106 187,122 218,134 232,140 246,145 259,150"];
 }

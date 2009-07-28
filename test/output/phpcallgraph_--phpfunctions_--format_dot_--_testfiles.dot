@@ -1,66 +1,74 @@
 digraph G {
 	graph [fontname=Verdana, fontsize=12, rankdir=LR];
 	node [label="\N"];
-	graph [bb="0,0,864,684"];
+	graph [bb="0,0,864,769"];
 	subgraph cluster_Bar {
 		graph [label=Bar,
 			color=gray20,
-			lp="607,556",
-			bb="536,168,678,568"];
-		"Bar::sayHello()" [label=sayHello, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,518", width="1.28", height="0.50"];
-		"Bar::ambiguous()" [label=ambiguous, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,410", width="1.53", height="0.50"];
-		"Bar::add($x, $y)" [label=add, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,194", width="0.75", height="0.50"];
-		"Bar::arraySum($array)" [label=arraySum, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,356", width="1.36", height="0.50"];
-		"Bar::getFoo()" [label=getFoo, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,302", width="1.08", height="0.50"];
-		"Bar::duplicateFoo($inputFoo)" [label=duplicateFoo, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,248", width="1.75", height="0.50"];
-		"Bar::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,464", width="1.61", height="0.50"];
+			lp="607,640",
+			bb="536,252,678,652"];
+		"Bar::sayHello()" [label=sayHello, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,602", width="1.28", height="0.50"];
+		"Bar::ambiguous()" [label=ambiguous, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,494", width="1.53", height="0.50"];
+		"Bar::add($x, $y)" [label=add, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,278", width="0.75", height="0.50"];
+		"Bar::arraySum($array)" [label=arraySum, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,440", width="1.36", height="0.50"];
+		"Bar::getFoo()" [label=getFoo, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,386", width="1.08", height="0.50"];
+		"Bar::duplicateFoo($inputFoo)" [label=duplicateFoo, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,332", width="1.75", height="0.50"];
+		"Bar::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="607,548", width="1.61", height="0.50"];
 	}
 	subgraph "cluster_internal PHP functions" {
 		graph [label="internal PHP functions",
 			color=gray20,
-			lp="778,502",
-			bb="701,330,854,514"];
-		"is_array()" [label=is_array, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="777,410", width="1.19", height="0.50"];
-		"array_sum()" [label=array_sum, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="777,356", width="1.47", height="0.50"];
-		"time()" [label=time, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="777,464", width="0.81", height="0.50"];
+			lp="778,586",
+			bb="701,414,854,598"];
+		"is_array()" [label=is_array, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="777,494", width="1.19", height="0.50"];
+		"array_sum()" [label=array_sum, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="777,440", width="1.47", height="0.50"];
+		"time()" [label=time, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="777,548", width="0.81", height="0.50"];
 	}
 	subgraph cluster_Foo {
 		graph [label=Foo,
 			color=gray20,
-			lp="777,220",
-			bb="698,84,856,232"];
-		"Foo::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="777,182", width="1.61", height="0.50"];
-		"Foo::getInputString()" [label=getInputString, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="777,110", width="1.94", height="0.50"];
-		"Foo::getInputString()" -> "Foo::getInputString()" [pos="e,807,127 747,127 741,137 751,146 777,146 794,146 804,142 807,137"];
+			lp="777,304",
+			bb="698,168,856,316"];
+		"Foo::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="777,266", width="1.61", height="0.50"];
+		"Foo::getInputString()" [label=getInputString, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="777,194", width="1.94", height="0.50"];
+		"Foo::getInputString()" -> "Foo::getInputString()" [pos="e,807,211 747,211 741,221 751,230 777,230 794,230 804,226 807,221"];
 	}
-	subgraph cluster_Test {
-		graph [label=Test,
+	subgraph cluster_TestClass {
+		graph [label=TestClass,
 			color=gray20,
-			lp="262,278",
-			bb="8,214,516,290"];
-		"Test::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="75,240", width="1.61", height="0.50"];
-		"Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=test, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,240", width="0.75", height="0.50"];
-		"Test::ambiguous()" [label=ambiguous, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="452,240", width="1.53", height="0.50"];
-		"Test::__construct()" -> "Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [pos="e,237,240 134,240 164,240 200,240 227,240"];
-		"Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" -> "Test::ambiguous()" [pos="e,396,240 293,240 317,240 354,240 386,240"];
+			lp="262,358",
+			bb="8,294,516,370"];
+		"TestClass::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="75,320", width="1.61", height="0.50"];
+		"TestClass::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=test, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,320", width="0.75", height="0.50"];
+		"TestClass::ambiguous()" [label=ambiguous, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="452,320", width="1.53", height="0.50"];
+		"TestClass::__construct()" -> "TestClass::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [pos="e,237,320 134,320 164,320 200,320 227,320"];
+		"TestClass::test($nix, $ar, &$ref, $std, $na, $opt, $def)" -> "TestClass::ambiguous()" [pos="e,396,320 293,320 317,320 354,320 386,320"];
 	}
 	subgraph cluster_stdClass {
 		graph [label=stdClass,
 			color=gray20,
-			lp="265,80",
-			bb="198,16,332,92"];
-		"stdClass::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,42", width="1.61", height="0.50"];
+			lp="265,164",
+			bb="198,100,332,176"];
+		"stdClass::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,126", width="1.61", height="0.50"];
 	}
-	"userDefinedFunction($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=userDefinedFunction, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,316", width="2.61", height="0.50"];
-	"Bar::arraySum($array)" -> "is_array()" [pos="e,742,399 644,368 670,376 705,387 732,396"];
-	"Bar::arraySum($array)" -> "array_sum()" [pos="e,723,356 656,356 674,356 694,356 713,356"];
-	"Bar::getFoo()" -> "Foo::__construct()" [pos="e,762,200 640,292 653,288 667,282 678,275 708,256 736,228 755,208"];
-	"Test::__construct()" -> "Foo::__construct()" [pos="e,729,172 101,224 119,213 145,199 170,192 388,132 453,144 678,164 692,166 706,168 719,170"];
-	"Test::__construct()" -> "stdClass::__construct()" [pos="e,231,57 84,222 98,192 130,134 170,96 185,82 204,70 222,61"];
-	"Test::__construct()" -> "Foo::getInputString()" [pos="e,716,101 88,222 104,201 135,166 170,150 350,71 588,86 706,100"];
-	"Test::__construct()" -> "Bar::add($x, $y)" [pos="e,580,193 115,227 132,222 152,216 170,213 317,189 494,191 570,193"];
-	"Test::__construct()" -> "userDefinedFunction($nix, $ar, &$ref, $std, $na, $opt, $def)" [pos="e,198,303 99,256 118,269 145,284 170,294 176,297 182,299 188,300"];
-	"Test::__construct()" -> "time()" [pos="e,767,481 77,258 86,321 118,532 170,572 351,707 472,662 678,572 716,555 745,516 762,490"];
-	"Test::ambiguous()" -> "Bar::__construct()" [pos="e,561,453 455,258 462,296 483,387 536,437 541,442 546,445 552,448"];
-	"Test::ambiguous()" -> "Bar::ambiguous()" [pos="e,563,399 458,258 469,288 495,349 536,383 541,388 548,392 554,395"];
+	subgraph cluster_Test {
+		graph [label=Test,
+			color=gray20,
+			lp="265,80",
+			bb="229,16,301,92"];
+		"Test::test()" [label=test, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,42", width="0.75", height="0.50"];
+	}
+	"userDefinedFunction($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=userDefinedFunction, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="265,396", width="2.61", height="0.50"];
+	"Bar::arraySum($array)" -> "is_array()" [pos="e,742,483 644,452 670,460 705,471 732,480"];
+	"Bar::arraySum($array)" -> "array_sum()" [pos="e,723,440 656,440 674,440 694,440 713,440"];
+	"Bar::getFoo()" -> "Foo::__construct()" [pos="e,762,284 640,376 653,372 667,366 678,359 708,340 736,312 755,292"];
+	"TestClass::__construct()" -> "Foo::__construct()" [pos="e,729,256 101,304 120,293 146,280 170,273 389,215 453,228 678,248 692,250 706,252 719,254"];
+	"TestClass::__construct()" -> "stdClass::__construct()" [pos="e,231,141 84,302 99,273 130,217 170,180 185,166 205,154 222,146"];
+	"TestClass::__construct()" -> "Foo::getInputString()" [pos="e,715,185 88,302 105,282 135,248 170,233 351,157 588,171 705,184"];
+	"TestClass::__construct()" -> "Bar::add($x, $y)" [pos="e,580,277 114,307 131,301 152,296 170,293 317,270 494,274 570,277"];
+	"TestClass::__construct()" -> "Test::test()" [pos="e,241,51 79,302 88,261 114,159 170,96 187,77 212,63 232,55"];
+	"TestClass::__construct()" -> "userDefinedFunction($nix, $ar, &$ref, $std, $na, $opt, $def)" [pos="e,198,383 99,336 118,349 145,364 170,374 176,377 182,379 188,380"];
+	"TestClass::__construct()" -> "time()" [pos="e,767,565 77,338 86,402 118,616 170,656 351,792 472,746 678,656 716,639 745,600 762,574"];
+	"TestClass::ambiguous()" -> "Bar::__construct()" [pos="e,561,537 455,338 461,377 482,469 536,521 541,526 546,529 552,532"];
+	"TestClass::ambiguous()" -> "Bar::ambiguous()" [pos="e,564,483 458,338 468,369 494,432 536,467 541,472 548,476 555,479"];
 }

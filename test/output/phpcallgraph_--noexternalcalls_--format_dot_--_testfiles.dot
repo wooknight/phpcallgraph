@@ -22,16 +22,16 @@ digraph G {
 		"Foo::getInputString()" [label=getInputString, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,434", width="1.94", height="0.50"];
 		"Foo::getInputString()" -> "Foo::getInputString()" [pos="e,122,451 68,451 61,461 71,470 95,470 110,470 120,466 123,461"];
 	}
-	subgraph cluster_Test {
-		graph [label=Test,
+	subgraph cluster_TestClass {
+		graph [label=TestClass,
 			color=gray20,
 			lp="233,574",
 			bb="28,510,438,586"];
-		"Test::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,536", width="1.61", height="0.50"];
-		"Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=test, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="254,536", width="0.75", height="0.50"];
-		"Test::ambiguous()" [label=ambiguous, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="374,536", width="1.53", height="0.50"];
-		"Test::__construct()" -> "Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [pos="e,226,536 154,536 175,536 197,536 216,536"];
-		"Test::test($nix, $ar, &$ref, $std, $na, $opt, $def)" -> "Test::ambiguous()" [pos="e,318,536 282,536 290,536 299,536 308,536"];
+		"TestClass::__construct()" [label=__construct, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,536", width="1.61", height="0.50"];
+		"TestClass::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=test, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="254,536", width="0.75", height="0.50"];
+		"TestClass::ambiguous()" [label=ambiguous, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="374,536", width="1.53", height="0.50"];
+		"TestClass::__construct()" -> "TestClass::test($nix, $ar, &$ref, $std, $na, $opt, $def)" [pos="e,226,536 154,536 175,536 197,536 216,536"];
+		"TestClass::test($nix, $ar, &$ref, $std, $na, $opt, $def)" -> "TestClass::ambiguous()" [pos="e,318,536 282,536 290,536 299,536 308,536"];
 	}
 	"userDefinedFunction($nix, $ar, &$ref, $std, $na, $opt, $def)" [label=userDefinedFunction, fontname=Verdana, fontsize=12, style=filled, color=lavender, shape=ellipse, pos="95,26", width="2.61", height="0.50"];
 }
