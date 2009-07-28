@@ -527,7 +527,7 @@ class PHPCallGraph {
                                                 $calleeFile   = $this->codeSummary['classes'][$calleeClass]['file'];
 
                                                 $this->info("RECORDING CLASS OF $previousPreviousToken[1] VARIABLE to be $calleeClass\n");
-                                                print $this->getTokenValues($tokens, $i);
+                                                $this->info($this->getTokenValues($tokens, $i));
 
                                             } else {
                                                 $this-warning("calleeClass is unset");
