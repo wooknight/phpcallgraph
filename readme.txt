@@ -29,7 +29,8 @@ Usage:
      the Graphviz toolkit which can be downloaded at
      http://www.graphviz.org/ is required.
 
-     For Umlgraph output you need plotutil's pic2plot and the sequence.pic file from UmlGraph
+     For the 'umlgraph' output format you need pic2plot, which is part of the
+     GNU plotutils package.
 
      bin/phpcallgraph [-f <string>] [-o <string>] [-r] [-d <string>] [-n] [-p] [-a <string>] [-v] [-g] [-h] [--] <string:sources> [<string:sources> ...]
 
@@ -42,6 +43,8 @@ Options:
                             by dot, e.g. png, svg, pdf, ps, ...
                             (see http://graphviz.org/doc/info/output.html)
     -o / --outputfile       Output file
+    -u / --umloutputdir     UML output directory (only used for the umlgraph output
+                            format
     -r / --recursive        Analyze directories recursive
     -d / --dotcommand       Set dot command
     -n / --noexternalcalls  Do not show calls to methods or functions which are
@@ -90,4 +93,5 @@ Examples:
 
 Author:
     Falko Menge <fakko at users dot sourceforge dot net>
+    Till Klampaeckel <till at php dot net>
     Martin Cleaver <mrjc at users dot sourceforge dot net> (UmlGraphSequenceDiagramDriver)
