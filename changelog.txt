@@ -1,3 +1,48 @@
+0.8.0 - 05 August 2009
+======================
+- Switched layouting in GraphVizDriver from top-to-bottom to left-to-right,
+  since that allows for more compact call graph layouts
+- New output driver that generates UML sequence diagrams using UMLGraph
+  (http://umlgraph.org) [thanks to Martin Cleaver]
+- New output driver that outputs the calls as an associative array
+  [thanks to Till Klampaeckel]
+- New output driver that detects dead (unreachable) code
+- Switched to most recent versions of ezcBase, ezcConsoleTools, and ezcReflection
+- Updated autoload files for ezcBase and ezcConsoleTools
+- Modified CodeAnalyzer autoload file to work as an external repository in ezcBase
+- Added command line option -u / --umloutputdir
+- Added values 'array' and 'umlgraph' for the output format option
+- Added diagnostics output, so buffer around currentToken is self-evident
+- Candidate fix for ambiguous ->method call
+- Test for ambiguous ->method call
+- Added debugging trace to PHPCallGraph.php
+- Extended startFunction method signature to pass sourcecode of member
+  presently being analyzed ()
+- Added unit tests using PHPUnit
+- Created whitelist for PHPUnit's code coverage analysis
+- Added a configuration file for phpUnderControl
+- Added Apache Ant build script for use with phpUnderControl
+- Fixed an issue with reference parameters by sending function signatures
+  through htmlspecialchars() before inserting them into the XML code generated
+  by the CGA driver
+- Improved source code documentation
+- Introduced Static Reflection as storage objects in DeadCodeDriver
+- Added StaticReflection from InstantSVC SVN via svn:externals
+- Implemented output driver for dead code detection
+- Spelling of the program name changed
+- Added example for ArrayDriver in readme file
+- Added new options to readme file
+- Registered ArrayDriver in commandline interface
+- Added some files to the ignore list of the PEAR package definition
+- Added a shell script to set up autoloading for the external libraries
+- PEAR package Console_GetOpt removed
+- License infos updated
+- Script for generating a PEAR package description
+- Added autoload definition for InstantSVC CodeAnalyzer
+- Added reset method to driver interface and CGA driver
+- Added reset method to TextDriver
+- Created separate folders for InstantSVC libraries
+
 0.7.0-pl1 - 04 February 2009
 ============================
 - Fixed parameter handling for Windows
@@ -13,7 +58,7 @@
   the CodeAnalyzer (helpful if you get no output at all, since it shows errors
   during code analysis)
 - Added white-list-based filtering of function calls in the sandbox of the
-  InstantSVN CodeAnalyzer
+  InstantSVC CodeAnalyzer
 - Added the possibility to define a PHP file with an autoload function,
   which will be included into the sandbox
 - Added generation of include statements for the sandbox
