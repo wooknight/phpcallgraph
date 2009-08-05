@@ -91,7 +91,8 @@ Examples:
     bin/phpcallgraph -r -f array test/testfiles/ | php -r '$a = unserialize(file_get_contents("php://stdin")); var_export($a);'
     bin/phpcallgraph -r -f deadcode test/testfiles/
 
-Author:
+Authors:
     Falko Menge <fakko at users dot sourceforge dot net>
     Till Klampaeckel <till at php dot net>
+    Christian Weiske <cweiske at php dot net>
     Martin Cleaver <mrjc at users dot sourceforge dot net> (UmlGraphSequenceDiagramDriver)
