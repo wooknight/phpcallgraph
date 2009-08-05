@@ -11,7 +11,7 @@ require_once 'PEAR/Frontend.php';
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
 $channel = '__uri'; // FIXME
-$version = '0.7.0'; // FIXME
+$version = '0.8.0'; // FIXME
 $name    = 'phpCallGraph';
 $summary = 'phpCallGraph';
 
@@ -91,7 +91,7 @@ foreach ($install_as as $key => $val) {
     $pfm->addInstallAs($key, $val);
 }
 
-$pfm->addMaintainer('lead', 'falco', 'Falko Menge', 'fakko at users dot sourceforge dot net');
+$pfm->addMaintainer('lead', 'falko', 'Falko Menge', 'fakko at users dot sourceforge dot net');
 
 $pfm->setLicense('GPLv3', 'http://www.gpl.org');
 
