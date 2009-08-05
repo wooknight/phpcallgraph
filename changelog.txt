@@ -9,9 +9,10 @@
 - New output driver that detects dead (unreachable) code
 - Switched to most recent versions of ezcBase, ezcConsoleTools, and ezcReflection
 - Updated autoload files for ezcBase and ezcConsoleTools
+- Created separate folders for InstantSVC libraries
 - Modified CodeAnalyzer autoload file to work as an external repository in ezcBase
-- Added command line option -u / --umloutputdir
 - Added values 'array' and 'umlgraph' for the output format option
+- Added command line option -u / --umloutputdir
 - Added diagnostics output, so buffer around currentToken is self-evident
 - Candidate fix for ambiguous ->method call
 - Test for ambiguous ->method call
@@ -28,8 +29,7 @@
 - Improved source code documentation
 - Introduced Static Reflection as storage objects in DeadCodeDriver
 - Added StaticReflection from InstantSVC SVN via svn:externals
-- Implemented output driver for dead code detection
-- Spelling of the program name changed
+- Spelling of the program name changed into phpCallGraph
 - Added example for ArrayDriver in readme file
 - Added new options to readme file
 - Registered ArrayDriver in commandline interface
@@ -37,11 +37,9 @@
 - Added a shell script to set up autoloading for the external libraries
 - PEAR package Console_GetOpt removed
 - License infos updated
-- Script for generating a PEAR package description
+- Script for generating a PEAR package description [thanks to Christian Weiske]
 - Added autoload definition for InstantSVC CodeAnalyzer
-- Added reset method to driver interface and CGA driver
-- Added reset method to TextDriver
-- Created separate folders for InstantSVC libraries
+- Added reset method to driver interface and all driver implementations
 
 0.7.0-pl1 - 04 February 2009
 ============================
