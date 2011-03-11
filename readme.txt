@@ -47,6 +47,7 @@ Options:
                             format
     -r / --recursive        Analyze directories recursive
     -d / --dotcommand       Set dot command
+    -i / --ignore           Set a regular expression for files or folders to ignore
     -n / --noexternalcalls  Do not show calls to methods or functions which are
                             external to a class
     -p / --phpfunctions     Show calls to internal PHP functions
@@ -90,6 +91,7 @@ Examples:
     bin/phpcallgraph -p -- test/testfiles/Foo.php test/testfiles/Bar.php
     bin/phpcallgraph -r -f array test/testfiles/ | php -r '$a = unserialize(file_get_contents("php://stdin")); var_export($a);'
     bin/phpcallgraph -r -f deadcode test/testfiles/
+    bin/phpcallgraph -g -r -i "PHPCallGraph.php|lib/ezcomponents" -f png -o phpcallgraph-src1.png src/ lib/
 
 Authors:
     Falko Menge <fakko at users dot sourceforge dot net>

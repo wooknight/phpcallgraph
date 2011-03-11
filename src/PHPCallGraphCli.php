@@ -93,6 +93,15 @@ class PHPCallGraphCli {
         );
         $dotcommandOption->shorthelp = 'Set dot command';
 
+        $ignoreOption = $input->registerOption(
+            new ezcConsoleOption(
+                'i',
+                'ignore',
+                ezcConsoleInput::TYPE_STRING
+            )
+        );
+        $ignoreOption->shorthelp = 'Set a regular expression for files or folders to ignore';
+
         $noexternalcallsOption = $input->registerOption(
             new ezcConsoleOption( 
                 'n',
@@ -223,7 +232,7 @@ class PHPCallGraphCli {
             $phpcg->setAutoloadFile($autoloadOption->value);
 
             // start generation
-            $phpcg->parse($input->getArguments(), $recursiveOption->value);
+            $phpcg->parse($input->getArguments(), $recursiveOption->value, $ignoreOption->value);
 
             // output result
             if ($outputfileOption->value === false) {

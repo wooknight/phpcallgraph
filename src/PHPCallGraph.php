@@ -193,29 +193,37 @@ class PHPCallGraph {
         $this->showInternalFunctions = $boolean;
     }
 
-    public function collectFileNames(array $filesOrDirs, $recursive = false) {
+    public function collectFileNames(array $filesOrDirs, $recursive = false, $ignore="") {
         $files = array();
         foreach ($filesOrDirs as $fileOrDir) {
-            if (is_file($fileOrDir)) {
-                $files[] = $fileOrDir;
-            } elseif (is_dir($fileOrDir)) {
-                $globbed = glob("$fileOrDir/*");
-                if ($recursive) {
-                    $files = array_merge($files, $this->collectFileNames($globbed, true));
-                } else {
-                    foreach($globbed as $path) {
-                        if (is_file($path)) {
-                            $files[] = $path;
+            if(!$ignore || !preg_match("~".str_replace("~", "\~", $ignore)."~", $fileOrDir)) {
+                if (is_file($fileOrDir)) {
+                    $files[] = $fileOrDir;
+                } elseif (is_dir($fileOrDir)) {
+		    // add trailing slash, but only if missing 
+		    if(substr($fileOrDir, -1) != "/") {
+		      $fileOrDir .= "/"; 
+		    }
+                    $globbed = glob($fileOrDir."*");
+                    if ($recursive) {
+                        $files = array_merge($files, $this->collectFileNames($globbed, true, $ignore));
+                    } else {
+                        foreach($globbed as $path) {
+                            if (is_file($path)) {
+                                $files[] = $path;
+                            }
                         }
                     }
                 }
+            } else {
+                $this->debug('Ignoring '.$fileOrDir.' because of ignoring option ('.$ignore.')');
             }
         }
         return $files;
     }
 
-    public function parse(array $filesOrDirs, $recursive = false) {
-        $files = $this->collectFileNames($filesOrDirs, $recursive);
+    public function parse(array $filesOrDirs, $recursive = false, $ignore="") {
+        $files = $this->collectFileNames($filesOrDirs, $recursive, $ignore);
         if ($this->debug) {
             var_dump($files);
         }
