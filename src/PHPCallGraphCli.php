@@ -179,7 +179,12 @@ class PHPCallGraphCli {
 
         if ($helpOption->value === true) {
             echo $input->getHelpText(
-                 "\nPHPCallGraph v" . PHPCallGraph::VERSION . "\n\n"
+                 "\n      _          ___      _ _  ___              _\n"
+                 . " ____| |__ ____ / __|__ _| | |/ __|_ _ __ _ ___| |__\n"
+                 . "|  _ \  _ \  _ V (__/ _` | | ( (,-/ '_V _` | _ \  _ \\\n"
+                 . "|  __/_| |_| __/\___\__,_|_|_|\___|_| \__,_| __/_| |_|\n"
+                 . "|_|       |_|     phpCallGraph.sf.net     |_|   v" . PHPCallGraph::VERSION . "\n"
+                 . "\n"
                  . "A tool to generate static call graphs for PHP source code.\n"
                  . "The graphs can be leveraged to gain a better understanding of\n"
                  . "large software systems or even to debunk design flaws in them."
