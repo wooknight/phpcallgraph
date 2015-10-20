@@ -1,0 +1,121 @@
+[PHP]
+
+;;; InstantSVC Reflection Sandbox PHP.ini
+;;; only necessary features are enabled.
+;;; code executeion is suppressed where possible
+
+;; On for debugging reasons
+display_errors = On
+display_startup_errors = On
+
+
+
+register_globals = Off
+register_long_arrays = Off
+log_errors = Off
+output_buffering = 4096
+register_argc_argv = Off
+magic_quotes_gpc = Off
+variables_order = "GPCS"
+error_reporting = E_ALL
+allow_call_time_pass_reference = Off
+
+error_prepend_string = "##ERR##"
+
+;;;;;;;;;;;;;;;;;;;;
+; Language Options ;
+;;;;;;;;;;;;;;;;;;;;
+engine = On
+zend.ze1_compatibility_mode = Off
+short_open_tag = On
+asp_tags = Off
+precision    =  14
+y2k_compliance = On
+zlib.output_compression = Off
+implicit_flush = On
+
+unserialize_callback_func=
+serialize_precision = 100
+
+; Safe Mode
+safe_mode = Off
+safe_mode_gid = Off
+safe_mode_include_dir =
+safe_mode_exec_dir =
+safe_mode_allowed_env_vars = PHP_
+safe_mode_protected_env_vars = LD_LIBRARY_PATH
+;open_basedir =
+
+;TODO:
+; This directive allows you to disable certain functions for security reasons.
+; It receives a comma-delimited list of function names. This directive is
+; *NOT* affected by whether Safe Mode is turned On or Off.
+disable_functions = ;This line will be replaced dynamically by the list of all functions available in the current PHP interpreter but not in the whitelist of the CodeAnalyzer
+
+; This directive allows you to disable certain classes for security reasons.
+; It receives a comma-delimited list of class names. This directive is
+; *NOT* affected by whether Safe Mode is turned On or Off.
+;disable_classes = COMPersistHelper, com_exception, com_safearray_proxy, com, dotnet, Directory, SimpleXMLElement, DOMException, DOMStringList, DOMNameList, DOMImplementationList, DOMImplementationSource, DOMImplementation, DOMNode, DOMComment, DOMLocator, DOMConfiguration, DOMProcessingInstruction, DOMXPath, DirectoryIterator, RecursiveDirectoryIterator, SplFileObject, SplTempFileObject, SimpleXMLIterator, SplObjectStorage, XMLReader, XMLWriter
+disable_classes = ;This line will be replaced dynamically by the list of all classes available in the current PHP interpreter but not in the whitelist of the CodeAnalyzer
+expose_php = Off
+
+max_execution_time = 30     ; Maximum execution time of each script, in seconds
+max_input_time = 60	; Maximum amount of time each script may spend parsing request data
+memory_limit = 8M      ; Maximum amount of memory a script may consume (8MB)
+
+
+error_reporting = E_ALL | E_NOTICE | E_STRICT
+
+
+
+
+; Log errors into a log file (server-specific log, stderr, or error_log (below))
+; As stated above, you're strongly advised to use error logging in place of
+; error displaying on production web sites.
+log_errors = On
+
+; Set maximum length of log_errors. In error_log information about the source is
+; added. The default is 1024 and 0 allows to not apply any maximum length at all.
+log_errors_max_len = 1024
+
+; Do not log repeated messages. Repeated errors must occur in same file on same
+; line until ignore_repeated_source is set true.
+ignore_repeated_errors = Off
+
+; Ignore source of message when ignoring repeated messages. When this setting
+; is On you will not log errors with repeated messages from different files or
+; sourcelines.
+ignore_repeated_source = Off
+
+; If this parameter is set to Off, then memory leaks will not be shown (on
+; stdout or in the log). This has only effect in a debug compile, and if
+; error reporting includes E_WARNING in the allowed list
+report_memleaks = On
+
+; Store the last error/warning message in $php_errormsg (boolean).
+track_errors = Off
+
+
+auto_globals_jit = On
+post_max_size = 8M
+magic_quotes_gpc = Off
+magic_quotes_runtime = Off
+magic_quotes_sybase = Off
+auto_prepend_file =
+auto_append_file =
+default_mimetype = "text/html"
+doc_root =
+user_dir =
+extension_dir = "./"
+
+enable_dl = Off
+
+allow_url_fopen = Off
+default_socket_timeout = 60
+define_syslog_variables  = Off
+
+
+
+; Local Variables:
+; tab-width: 4
+; End:

@@ -1,0 +1,9 @@
+[done] add a php.ini if possible to prevent any code execution in the sandbox process
+   -   derive php.ini from the one of the php interpreter used by the sandbox
+       (may be different if the CodeAnalyzer is integrated into a web application)
+   -   implement summarizeInterfaces
+   -   investigate problems with reading from pipes.
+       leads to deadlogs on crawling through source tree
+   -   implement a new class which can be ask to rate a specific metric
+       on the base of some configurable values in a ini file for example
+   -   Document the possibility of using the PECL extension Fileinfo

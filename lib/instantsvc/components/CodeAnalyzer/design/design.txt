@@ -1,0 +1,61 @@
+eZ component: CodeAnalyzer, Design
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Code Analyzer package should be based on the reflection component as a high
+level API for handling language elements. This way it leverages the internal
+parser of the PHP interpreter which can be assumed to be one of the best parsers
+for the language.
+
+Design description
+------------------
+The requirement of being fault tolerant has a major influence on the design of
+the classes. Since the source files have to be loaded to employ the reflection
+component, some kind of a sandbox environment is needed to ensure that errors in
+the input files which stop the script execution do not affect the Code Analyzer
+classes during execution.
+
+A simple way to achieve this is to start the analysis of the files in a separate
+PHP interpreter process. If an error occurs only this child process stops, but
+the Code Analyzer is able to report or simply ignore the error and to continue
+with the next file.
+
+ezcCodeAnalyzerClassLoader
+	This class provides methods to recursively include all files that contain
+	PHP code from a given directory and all its subdirectories. Any output of
+	the included code will be suppressed and files are only loaded if they do
+	not contain any syntax errors. This fault tolerance is achieved by creating
+	a new child PHP process and performing a syntax check before loading the
+	file into the parent PHP process.
+
+ezcCodeAnalyzer
+	The Class ezcCodeAnalyzer implements different analyses which can be
+	started either separately using one of the summarization methods or all
+	together by calling a central collector method.
+
+ezcCodeAnalyzerFileDetails
+	Class ezcCodeAnalyzer uses this class which is actually an ezcBaseStruct as
+	data structure for some of the details of a given file. All data retrieval
+	operations which include guessing the MIME type, counting the lines of code,
+	and retrieving the file size are performed during object creation.
+
+Guidelines
+----------
+
+Algorithms
+----------
+The static call graph of the CodeAnalyzer class gives an impression of the
+collaboration between the methods. In some methods recursion is used for
+traversing hierarchical directory and class structures but most of the methods
+are not very complex. They simply collect statistics while leveraging the
+Reflection component.
+
+Data structures
+---------------
+The Class Loader needs no properties because the code loaded is stored in PHP's
+internal data structures. The Code Analyzer uses associative arrays, Reflection
+objects, and instances of ezcCodeAnalyzerFileDetails to store the statistical
+data.
+
+Diagrams
+========
+callgraph-code_analyzer.png - Static call graph for class ezcCodeAnalyzer

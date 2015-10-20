@@ -1,0 +1,53 @@
+eZ component: CodeAnalyzer, Requirements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Introduction
+============
+The Reflection component provides structural details about language elements
+like classes and functions at runtime. But to be able to use it, those language
+elements have to be loaded. Due to the fact that most applications tend to put
+each class and function definition in a separate file, it is required to load
+those files.
+
+Description
+-----------
+The CodeAnalyzer component is able to load entire class trees or function
+libraries into a sandbox environment and to examine the language elements found
+in them. In addition to that it is a high level interface to perform statistical
+analyses and software metrics with the Reflection package.
+
+Current implementation
+----------------------
+The current implementation can be considered as stable and it meets all
+requirements which arised during development of several tools using it.
+
+Requirements
+============
+The component should be able to load entire source trees and collect information
+about files respectively classes found. Some basic software metrics should be
+implemented. The required metrics include counting the lines of code (LoC) and
+the number of classes, methods, attributes, subclasses and functions.
+Furthermore the CodeAnalyzer should collect statistics about the usage of
+documentation tags and warn if important tags are missing. A possible extension
+point is to include abilities to scan for coding standard violations.
+
+Design goals
+============
+The component should be easy to use through a convenient high level API and it
+should be aware of possible errors in the source code files, i.e. the
+CodeAnalyzer should not crash because of syntax errors in a file parsed. This is
+very important because if the Code Analyzer would be this instable, it would
+only be useful as a standalone tool for analyzing smaller applications. But in
+order to become a software metrics library which can be included in other
+applications - such as Web Service tools - it has to be reliable.
+
+
+Special considerations
+======================
+
+Format
+======
+The package should at least work with PHP5 source code.
+
+Diagrams
+========

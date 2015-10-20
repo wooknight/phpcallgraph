@@ -1,0 +1,1230 @@
+%!PS-Adobe-2.0
+%%Creator: Graphviz version 2.12 (Mon Dec  4 22:04:37 UTC 2006)
+%%For: Bill Gates
+%%Title: iscCodeAnalyzer
+%%Pages: (atend)
+%%BoundingBox: (atend)
+%%EndComments
+save
+%%BeginProlog
+/DotDict 200 dict def
+DotDict begin
+
+/setupLatin1 {
+mark
+/EncodingVector 256 array def
+ EncodingVector 0
+
+ISOLatin1Encoding 0 255 getinterval putinterval
+EncodingVector 45 /hyphen put
+
+% Set up ISO Latin 1 character encoding
+/starnetISO {
+        dup dup findfont dup length dict begin
+        { 1 index /FID ne { def }{ pop pop } ifelse
+        } forall
+        /Encoding EncodingVector def
+        currentdict end definefont
+} def
+/Times-Roman starnetISO def
+/Times-Italic starnetISO def
+/Times-Bold starnetISO def
+/Times-BoldItalic starnetISO def
+/Helvetica starnetISO def
+/Helvetica-Oblique starnetISO def
+/Helvetica-Bold starnetISO def
+/Helvetica-BoldOblique starnetISO def
+/Courier starnetISO def
+/Courier-Oblique starnetISO def
+/Courier-Bold starnetISO def
+/Courier-BoldOblique starnetISO def
+cleartomark
+} bind def
+
+%%BeginResource: procset graphviz 0 0
+/coord-font-family /Times-Roman def
+/default-font-family /Times-Roman def
+/coordfont coord-font-family findfont 8 scalefont def
+
+/InvScaleFactor 1.0 def
+/set_scale {
+       dup 1 exch div /InvScaleFactor exch def
+       scale
+} bind def
+
+% styles
+/solid { [] 0 setdash } bind def
+/dashed { [9 InvScaleFactor mul dup ] 0 setdash } bind def
+/dotted { [1 InvScaleFactor mul 6 InvScaleFactor mul] 0 setdash } bind def
+/invis {/fill {newpath} def /stroke {newpath} def /show {pop newpath} def} bind def
+/bold { 2 setlinewidth } bind def
+/filled { } bind def
+/unfilled { } bind def
+/rounded { } bind def
+/diagonals { } bind def
+
+% hooks for setting color 
+/nodecolor { sethsbcolor } bind def
+/edgecolor { sethsbcolor } bind def
+/graphcolor { sethsbcolor } bind def
+/nopcolor {pop pop pop} bind def
+
+/beginpage {	% i j npages
+	/npages exch def
+	/j exch def
+	/i exch def
+	/str 10 string def
+	npages 1 gt {
+		gsave
+			coordfont setfont
+			0 0 moveto
+			(\() show i str cvs show (,) show j str cvs show (\)) show
+		grestore
+	} if
+} bind def
+
+/set_font {
+	findfont exch
+	scalefont setfont
+} def
+
+% draw aligned label in bounding box aligned to current point
+/alignedtext {			% width adj text
+	/text exch def
+	/adj exch def
+	/width exch def
+	gsave
+		width 0 gt {
+			text stringwidth pop adj mul 0 rmoveto
+		} if
+		[] 0 setdash
+		text show
+	grestore
+} def
+
+/boxprim {				% xcorner ycorner xsize ysize
+		4 2 roll
+		moveto
+		2 copy
+		exch 0 rlineto
+		0 exch rlineto
+		pop neg 0 rlineto
+		closepath
+} bind def
+
+/ellipse_path {
+	/ry exch def
+	/rx exch def
+	/y exch def
+	/x exch def
+	matrix currentmatrix
+	newpath
+	x y translate
+	rx ry scale
+	0 0 1 0 360 arc
+	setmatrix
+} bind def
+
+/endpage { showpage } bind def
+/showpage { } def
+
+/layercolorseq
+	[	% layer color sequence - darkest to lightest
+		[0 0 0]
+		[.2 .8 .8]
+		[.4 .8 .8]
+		[.6 .8 .8]
+		[.8 .8 .8]
+	]
+def
+
+/layerlen layercolorseq length def
+
+/setlayer {/maxlayer exch def /curlayer exch def
+	layercolorseq curlayer 1 sub layerlen mod get
+	aload pop sethsbcolor
+	/nodecolor {nopcolor} def
+	/edgecolor {nopcolor} def
+	/graphcolor {nopcolor} def
+} bind def
+
+/onlayer { curlayer ne {invis} if } def
+
+/onlayers {
+	/myupper exch def
+	/mylower exch def
+	curlayer mylower lt
+	curlayer myupper gt
+	or
+	{invis} if
+} def
+
+/curlayer 0 def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+14 default-font-family set_font
+1 setmiterlimit
+% /arrowlength 10 def
+% /arrowwidth 5 def
+
+% make sure pdfmark is harmless for PS-interpreters other than Distiller
+/pdfmark where {pop} {userdict /pdfmark /cleartomark load put} ifelse
+% make '<<' and '>>' safe on PS Level 1 devices
+/languagelevel where {pop languagelevel}{1} ifelse
+2 lt {
+    userdict (<<) cvn ([) cvn load put
+    userdict (>>) cvn ([) cvn load put
+} if
+
+%%EndSetup
+setupLatin1
+%%Page: 1 1
+%%PageBoundingBox: 150 150 7838 2433
+%%PageOrientation: Portrait
+gsave
+150 150 7838 2433 boxprim clip newpath
+0 0 1 beginpage
+4.16667 4.16667 set_scale 0 rotate 40 40 translate
+0.000 0.000 1.000 graphcolor
+newpath -4 -4 moveto
+-4 544 lineto
+1841 544 lineto
+1841 -4 lineto
+closepath fill
+1 setlinewidth
+0.000 0.000 1.000 graphcolor
+newpath -4 -4 moveto
+-4 544 lineto
+1841 544 lineto
+1841 -4 lineto
+closepath stroke
+% __construct
+gsave
+0.541 0.251 0.933 nodecolor
+394 522 45.9706 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+394 522 45.9706 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+361 516 moveto
+(__construct)
+[6.96 6.96 6.24 6.96 6.72 5.52 3.84 4.56 6.72 6.24 3.84]
+xshow
+grestore
+% getCodeSummary
+gsave
+0.541 0.251 0.933 nodecolor
+521 522 62.9706 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+521 522 62.9706 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+471 516 moveto
+(getCodeSummary)
+[6.72 6.24 3.84 9.36 6.96 6.96 6.24 7.68 6.72 10.32 10.32 6.24 4.56 6.72]
+xshow
+grestore
+% getStats
+gsave
+0.541 0.251 0.933 nodecolor
+637 522 34.971 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+637 522 34.971 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+614.5 516 moveto
+(getStats)
+[6.72 6.24 3.84 7.68 3.84 6.24 3.84 5.52]
+xshow
+grestore
+% collect
+gsave
+0.541 0.251 0.933 nodecolor
+721 522 30.971 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+721 522 30.971 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+702.5 516 moveto
+(collect)
+[6.24 6.96 3.6 3.6 6.24 6.24 3.84]
+xshow
+grestore
+% parseDir
+gsave
+0.541 0.251 0.933 nodecolor
+588 450 36.971 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+588 450 36.971 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+563.5 444 moveto
+(parseDir)
+[6.96 6.24 4.56 5.52 6.24 10.08 3.6 4.56]
+xshow
+grestore
+% collect->parseDir
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 698 510 moveto
+677 499 645 482 622 468 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 623.441 464.797 moveto
+613 463 lineto
+620.042 470.916 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 623.441 464.797 moveto
+613 463 lineto
+620.042 470.916 lineto
+closepath stroke
+grestore
+% flatoutStatsArray
+gsave
+0.541 0.251 0.933 nodecolor
+721 450 59.9708 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+721 450 59.9708 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+673.5 444 moveto
+(flatoutStatsArray)
+[4.32 3.6 6.24 3.84 6.96 6.72 3.84 7.68 3.84 6.24 3.84 5.52 9.84 4.56 4.56 6.24 6.72]
+xshow
+grestore
+% collect->flatoutStatsArray
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 721 504 moveto
+721 496 721 487 721 478 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 724.5 478 moveto
+721 468 lineto
+717.5 478 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 724.5 478 moveto
+721 468 lineto
+717.5 478 lineto
+closepath stroke
+grestore
+% inspectFiles
+gsave
+0.541 0.251 0.933 nodecolor
+863 450 45.9706 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+863 450 45.9706 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+830 444 moveto
+(inspectFiles)
+[3.6 6.72 5.52 6.96 6.24 6.24 3.84 7.44 3.6 3.6 6.24 5.52]
+xshow
+grestore
+% collect->inspectFiles
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 744 510 moveto
+766 499 800 482 826 469 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 827.958 471.916 moveto
+835 464 lineto
+824.559 465.797 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 827.958 471.916 moveto
+835 464 lineto
+824.559 465.797 lineto
+closepath stroke
+grestore
+% parseDir->parseDir
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 601 467 moveto
+619 485 643 479 643 450 curveto
+643 425 626 417 609 427 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 606.9 424.2 moveto
+601 433 lineto
+611.1 429.8 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 606.9 424.2 moveto
+601 433 lineto
+611.1 429.8 lineto
+closepath stroke
+grestore
+% flatoutStatsArray->flatoutStatsArray
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 739 467 moveto
+766 485 799 479 799 450 curveto
+799 424 773 417 748 428 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 746.042 425.084 moveto
+739 433 lineto
+749.441 431.203 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 746.042 425.084 moveto
+739 433 lineto
+749.441 431.203 lineto
+closepath stroke
+grestore
+% summarizeInSandbox
+gsave
+0.541 0.251 0.933 nodecolor
+489 378 72.9706 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+489 378 72.9706 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+429 372 moveto
+(summarizeInSandbox)
+[5.52 6.72 10.32 10.32 6.24 4.56 3.6 6.24 6.24 4.56 6.72 7.68 6.24 6.72 6.96 6.96 6.96 6.72]
+xshow
+grestore
+% inspectFiles->summarizeInSandbox
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 829 438 moveto
+822 436 815 434 808 432 curveto
+726 411 630 397 565 387 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 565.299 383.512 moveto
+555 386 lineto
+564.602 390.478 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 565.299 383.512 moveto
+555 386 lineto
+564.602 390.478 lineto
+closepath stroke
+grestore
+% buildInheritanceTree
+gsave
+0.541 0.251 0.933 nodecolor
+863 378 70.9706 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+863 378 70.9706 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+805 372 moveto
+(buildInheritanceTree)
+[6.96 6.72 3.6 3.6 6.96 4.56 6.72 6.72 6.24 4.56 3.6 3.84 6.24 6.72 6.24 6.24 7.92 4.56 6.24 6.24]
+xshow
+grestore
+% inspectFiles->buildInheritanceTree
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 863 432 moveto
+863 424 863 415 863 406 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 866.5 406 moveto
+863 396 lineto
+859.5 406 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 866.5 406 moveto
+863 396 lineto
+859.5 406 lineto
+closepath stroke
+grestore
+% summarizeProject
+gsave
+0.541 0.251 0.933 nodecolor
+1121 378 62.9706 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+1121 378 62.9706 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+1071 372 moveto
+(summarizeProject)
+[5.52 6.72 10.32 10.32 6.24 4.56 3.6 6.24 6.24 7.68 4.56 6.96 3.84 6.24 6.24 3.84]
+xshow
+grestore
+% inspectFiles->summarizeProject
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 901 440 moveto
+944 428 1016 408 1066 394 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 1067.43 397.226 moveto
+1076 391 lineto
+1065.42 390.521 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 1067.43 397.226 moveto
+1076 391 lineto
+1065.42 390.521 lineto
+closepath stroke
+grestore
+% summarizeFile
+gsave
+0.541 0.251 0.933 nodecolor
+382 306 52.9708 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+382 306 52.9708 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+341.5 300 moveto
+(summarizeFile)
+[5.52 6.72 10.32 10.32 6.24 4.56 3.6 6.24 6.24 7.44 3.6 3.6 6.24]
+xshow
+grestore
+% summarizeInSandbox->summarizeFile
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 464 361 moveto
+449 351 430 339 414 328 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 416.1 325.2 moveto
+406 322 lineto
+411.9 330.8 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 416.1 325.2 moveto
+406 322 lineto
+411.9 330.8 lineto
+closepath stroke
+grestore
+% countClassesSeeingMethods
+gsave
+0.541 0.251 0.933 nodecolor
+545 306 91.9707 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+545 306 91.9707 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+465.5 300 moveto
+(countClassesSeeingMethods)
+[6.24 6.96 6.72 6.72 3.84 9.36 3.6 6.24 5.52 5.52 6.24 5.52 7.68 6.24 6.24 3.6 6.72 6.72 12.48 6.24 3.84 6.72 6.96 6.96 5.52]
+xshow
+grestore
+% summarizeProject->countClassesSeeingMethods
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1062 372 moveto
+953 360 725 335 646 324 curveto
+638 323 630 321 622 320 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 622.492 316.529 moveto
+612 318 lineto
+621.119 323.393 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 622.492 316.529 moveto
+612 318 lineto
+621.119 323.393 lineto
+closepath stroke
+grestore
+% countClassesSeeingProperties
+gsave
+0.541 0.251 0.933 nodecolor
+751 306 95.9706 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+751 306 95.9706 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+668 300 moveto
+(countClassesSeeingProperties)
+[6.24 6.96 6.72 6.72 3.84 9.36 3.6 6.24 5.52 5.52 6.24 5.52 7.68 6.24 6.24 3.6 6.72 6.72 7.68 4.56 6.96 6.96 6.24 4.56 3.84 3.6 6.24 5.52]
+xshow
+grestore
+% summarizeProject->countClassesSeeingProperties
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1069 368 moveto
+1006 356 900 335 828 321 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 828.492 317.529 moveto
+818 319 lineto
+827.119 324.393 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 828.492 317.529 moveto
+818 319 lineto
+827.119 324.393 lineto
+closepath stroke
+grestore
+% countInheritedMethods
+gsave
+0.541 0.251 0.933 nodecolor
+942 306 76.9708 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+942 306 76.9708 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+877.5 300 moveto
+(countInheritedMethods)
+[6.24 6.96 6.72 6.72 3.84 4.56 6.72 6.72 6.24 4.56 3.6 3.84 6.24 6.96 12.48 6.24 3.84 6.72 6.96 6.96 5.52]
+xshow
+grestore
+% summarizeProject->countInheritedMethods
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1084 363 moveto
+1057 352 1020 337 990 326 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 991.56 322.863 moveto
+981 322 lineto
+988.717 329.26 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 991.56 322.863 moveto
+981 322 lineto
+988.717 329.26 lineto
+closepath stroke
+grestore
+% countOverriddenMethods
+gsave
+0.541 0.251 0.933 nodecolor
+1121 306 83.9706 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+1121 306 83.9706 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+1050 300 moveto
+(countOverriddenMethods)
+[6.24 6.96 6.72 6.72 3.84 10.08 6.72 6.24 4.56 4.56 3.6 6.96 6.96 6.24 6.72 12.48 6.24 3.84 6.72 6.96 6.96 5.52]
+xshow
+grestore
+% summarizeProject->countOverriddenMethods
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1121 360 moveto
+1121 352 1121 343 1121 334 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 1124.5 334 moveto
+1121 324 lineto
+1117.5 334 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 1124.5 334 moveto
+1121 324 lineto
+1117.5 334 lineto
+closepath stroke
+grestore
+% countPossibleOverriddes
+gsave
+0.541 0.251 0.933 nodecolor
+1305 306 81.9707 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+1305 306 81.9707 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+1235.5 300 moveto
+(countPossibleOverriddes)
+[6.24 6.96 6.72 6.72 3.84 7.68 6.96 5.52 5.52 3.6 6.96 3.6 6.24 10.08 6.72 6.24 4.56 4.56 3.6 6.96 6.96 6.24 5.52]
+xshow
+grestore
+% summarizeProject->countPossibleOverriddes
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1158 363 moveto
+1186 352 1225 337 1255 326 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 1256.28 329.26 moveto
+1264 322 lineto
+1253.44 322.863 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 1256.28 329.26 moveto
+1264 322 lineto
+1253.44 322.863 lineto
+closepath stroke
+grestore
+% collectMethodsStats
+gsave
+0.541 0.251 0.933 nodecolor
+1474 306 68.9708 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+1474 306 68.9708 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+1417.5 300 moveto
+(collectMethodsStats)
+[6.24 6.96 3.6 3.6 6.24 6.24 3.84 12.48 6.24 3.84 6.72 6.96 6.96 5.52 7.68 3.84 6.24 3.84 5.52]
+xshow
+grestore
+% summarizeProject->collectMethodsStats
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1174 368 moveto
+1229 358 1319 340 1396 324 curveto
+1401 323 1406 322 1412 320 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 1412.88 323.393 moveto
+1422 318 lineto
+1411.51 316.529 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 1412.88 323.393 moveto
+1422 318 lineto
+1411.51 316.529 lineto
+closepath stroke
+grestore
+% collectFunctionStats
+gsave
+0.541 0.251 0.933 nodecolor
+1630 306 68.9708 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+1630 306 68.9708 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+1573.5 300 moveto
+(collectFunctionStats)
+[6.24 6.96 3.6 3.6 6.24 6.24 3.84 7.44 6.72 6.72 6.24 3.84 3.6 6.96 6.72 7.68 3.84 6.24 3.84 5.52]
+xshow
+grestore
+% summarizeProject->collectFunctionStats
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1181 372 moveto
+1264 364 1420 347 1552 324 curveto
+1558 323 1563 322 1569 320 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 1569.88 323.393 moveto
+1579 318 lineto
+1568.51 316.529 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 1569.88 323.393 moveto
+1579 318 lineto
+1568.51 316.529 lineto
+closepath stroke
+grestore
+% collectClassStats
+gsave
+0.541 0.251 0.933 nodecolor
+1777 306 59.9708 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+1777 306 59.9708 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+1729.5 300 moveto
+(collectClassStats)
+[6.24 6.96 3.6 3.6 6.24 6.24 3.84 9.36 3.6 6.24 5.52 5.52 7.68 3.84 6.24 3.84 5.52]
+xshow
+grestore
+% summarizeProject->collectClassStats
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1184 376 moveto
+1292 371 1518 357 1708 324 curveto
+1713 323 1718 322 1723 320 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 1723.88 323.393 moveto
+1733 318 lineto
+1722.51 316.529 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 1723.88 323.393 moveto
+1733 318 lineto
+1722.51 316.529 lineto
+closepath stroke
+grestore
+% summarizeClasses
+gsave
+0.541 0.251 0.933 nodecolor
+284 162 63.9706 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+284 162 63.9706 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+233 156 moveto
+(summarizeClasses)
+[5.52 6.72 10.32 10.32 6.24 4.56 3.6 6.24 6.24 9.36 3.6 6.24 5.52 5.52 6.24 5.52]
+xshow
+grestore
+% summarizeFile->summarizeClasses
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 350 291 moveto
+334 282 315 269 303 252 curveto
+291 234 287 209 285 190 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 288.478 189.602 moveto
+284 180 lineto
+281.512 190.299 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 288.478 189.602 moveto
+284 180 lineto
+281.512 190.299 lineto
+closepath stroke
+grestore
+% summarizeInterfaces
+gsave
+0.541 0.251 0.933 nodecolor
+382 234 69.9708 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+382 234 69.9708 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+324.5 228 moveto
+(summarizeInterfaces)
+[5.52 6.72 10.32 10.32 6.24 4.56 3.6 6.24 6.24 4.56 6.72 3.84 6.24 4.56 4.32 6.24 6.24 6.24 5.52]
+xshow
+grestore
+% summarizeFile->summarizeInterfaces
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 382 288 moveto
+382 280 382 271 382 262 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 385.5 262 moveto
+382 252 lineto
+378.5 262 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 385.5 262 moveto
+382 252 lineto
+378.5 262 lineto
+closepath stroke
+grestore
+% summarizeFunctions
+gsave
+0.541 0.251 0.933 nodecolor
+555 162 69.9706 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+555 162 69.9706 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+498 156 moveto
+(summarizeFunctions)
+[5.52 6.72 10.32 10.32 6.24 4.56 3.6 6.24 6.24 7.44 6.72 6.72 6.24 3.84 3.6 6.96 6.72 5.52]
+xshow
+grestore
+% summarizeFile->summarizeFunctions
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 407 290 moveto
+423 280 444 266 461 252 curveto
+486 231 513 205 531 187 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 533.404 189.546 moveto
+538 180 lineto
+528.454 184.596 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 533.404 189.546 moveto
+538 180 lineto
+528.454 184.596 lineto
+closepath stroke
+grestore
+% countSubclasses
+gsave
+0.541 0.251 0.933 nodecolor
+751 234 57.9708 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+751 234 57.9708 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+705.5 228 moveto
+(countSubclasses)
+[6.24 6.96 6.72 6.72 3.84 7.68 6.72 6.96 6.24 3.6 6.24 5.52 5.52 6.24 5.52]
+xshow
+grestore
+% countClassesSeeingMethods->countSubclasses
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 590 290 moveto
+624 278 669 263 702 251 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 703.427 254.226 moveto
+712 248 lineto
+701.416 247.521 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 703.427 254.226 moveto
+712 248 lineto
+701.416 247.521 lineto
+closepath stroke
+grestore
+% countClassesSeeingProperties->countSubclasses
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 751 288 moveto
+751 280 751 271 751 262 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 754.5 262 moveto
+751 252 lineto
+747.5 262 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 754.5 262 moveto
+751 252 lineto
+747.5 262 lineto
+closepath stroke
+grestore
+% countPossibleOverriddes->countSubclasses
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1246 293 moveto
+1235 291 1224 290 1214 288 curveto
+1073 265 907 248 817 240 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 817.299 236.512 moveto
+807 239 lineto
+816.602 243.478 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 817.299 236.512 moveto
+807 239 lineto
+816.602 243.478 lineto
+closepath stroke
+grestore
+% summarizeClassSignature
+gsave
+0.541 0.251 0.933 nodecolor
+84 90 83.9707 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+84 90 83.9707 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+12.5 84 moveto
+(summarizeClassSignature)
+[5.52 6.72 10.32 10.32 6.24 4.56 3.6 6.24 6.24 9.36 3.6 6.24 5.52 5.52 7.68 3.6 6.72 6.72 6.24 3.84 6.72 4.56 6.24]
+xshow
+grestore
+% summarizeClasses->summarizeClassSignature
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 244 148 moveto
+213 137 171 121 137 109 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 137.584 105.521 moveto
+127 106 lineto
+135.573 112.226 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 137.584 105.521 moveto
+127 106 lineto
+135.573 112.226 lineto
+closepath stroke
+grestore
+% summarizeClassProperties
+gsave
+0.541 0.251 0.933 nodecolor
+272 90 85.9707 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+272 90 85.9707 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+198.5 84 moveto
+(summarizeClassProperties)
+[5.52 6.72 10.32 10.32 6.24 4.56 3.6 6.24 6.24 9.36 3.6 6.24 5.52 5.52 7.68 4.56 6.96 6.96 6.24 4.56 3.84 3.6 6.24 5.52]
+xshow
+grestore
+% summarizeClasses->summarizeClassProperties
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 281 144 moveto
+280 136 278 127 277 118 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 280.393 117.119 moveto
+275 108 lineto
+273.529 118.492 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 280.393 117.119 moveto
+275 108 lineto
+273.529 118.492 lineto
+closepath stroke
+grestore
+% summarizeClassMethods
+gsave
+0.541 0.251 0.933 nodecolor
+458 90 81.9707 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+458 90 81.9707 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+388.5 84 moveto
+(summarizeClassMethods)
+[5.52 6.72 10.32 10.32 6.24 4.56 3.6 6.24 6.24 9.36 3.6 6.24 5.52 5.52 12.48 6.24 3.84 6.72 6.96 6.96 5.52]
+xshow
+grestore
+% summarizeClasses->summarizeClassMethods
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 320 147 moveto
+346 136 381 122 409 110 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 411.015 112.964 moveto
+419 106 lineto
+408.415 106.464 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 411.015 112.964 moveto
+419 106 lineto
+408.415 106.464 lineto
+closepath stroke
+grestore
+% summarizeInterfaces->summarizeClasses
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 359 217 moveto
+346 208 329 195 315 185 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 317.1 182.2 moveto
+307 179 lineto
+312.9 187.8 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 317.1 182.2 moveto
+307 179 lineto
+312.9 187.8 lineto
+closepath stroke
+grestore
+% summarizeFunctionParameters
+gsave
+0.541 0.251 0.933 nodecolor
+513 18 97.9706 18 ellipse_path fill
+1 setlinewidth
+filled
+0.541 0.251 0.933 nodecolor
+513 18 97.9706 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+428 12 moveto
+(summarizeFunctionParameters)
+[5.52 6.72 10.32 10.32 6.24 4.56 3.6 6.24 6.24 7.44 6.72 6.72 6.24 3.84 3.6 6.96 6.72 7.68 6.24 4.56 6.24 10.32 6.24 3.84 6.24 4.56 5.52]
+xshow
+grestore
+% summarizeFunctions->summarizeFunctionParameters
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 556 144 moveto
+557 125 557 95 549 72 curveto
+546 62 540 53 535 44 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 537.8 41.9 moveto
+529 36 lineto
+532.2 46.1 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 537.8 41.9 moveto
+529 36 lineto
+532.2 46.1 lineto
+closepath stroke
+grestore
+% summarizeClassMethods->summarizeFunctionParameters
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 472 72 moveto
+478 64 486 53 493 44 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 495.8 46.1 moveto
+499 36 lineto
+490.2 41.9 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 495.8 46.1 moveto
+499 36 lineto
+490.2 41.9 lineto
+closepath stroke
+grestore
+% countSubclasses->countSubclasses
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 768 251 moveto
+794 269 827 263 827 234 curveto
+827 208 801 201 777 212 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 775.042 209.084 moveto
+768 217 lineto
+778.441 215.203 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 775.042 209.084 moveto
+768 217 lineto
+778.441 215.203 lineto
+closepath stroke
+grestore
+endpage
+showpage
+grestore
+%%PageTrailer
+%%EndPage: 1
+%%Trailer
+%%Pages: 1
+%%BoundingBox: 150 150 7838 2433
+end
+restore
+%%EOF
