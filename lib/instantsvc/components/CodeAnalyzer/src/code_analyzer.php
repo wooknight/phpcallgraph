@@ -521,7 +521,7 @@ SANDBOXCODE;
             //echo '$filename = ', var_export($filename, true), ";\n";
             //echo '$result   = ', var_export($result, true), ";\n";
 
-            $arr = split('#-#-#-#-#', $result);
+            $arr = preg_split('/#-#-#-#-#/', $result);
 
             if (isset($arr[1])) {
                 $old = error_reporting(0);
