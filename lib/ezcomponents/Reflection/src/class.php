@@ -73,6 +73,21 @@ class ezcReflectionClass extends ReflectionClass
             throw new ezcReflectionCallToUndefinedMethodException( __CLASS__, $method );
         }
     }
+public function __get ( $name )
+{
+        if ($name === "class")
+        {
+               return $this->reflectionSource;
+        }
+}
+
+public function __set ( $name , $value )
+{
+        if ($name === "class")
+        {
+                $this->reflectionSource= $value;
+        }
+}
 
     /**
      * Forwards a method invocation to either the reflection source passed to
